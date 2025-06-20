@@ -1,14 +1,15 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+// import { useState } from 'react'
+// import reactLogo from './assets/react.svg'
+// import viteLogo from '/vite.svg'
+import './App.scss'
+import { Button, Typography, Container } from '@mui/material';
 
 function App() {
-  const [count, setCount] = useState(0)
+  // const [count, setCount] = useState(0)
 
   return (
     <>
-      <div>
+      {/* <div>
         <a href="https://vite.dev" target="_blank">
           <img src={viteLogo} className="logo" alt="Vite logo" />
         </a>
@@ -27,7 +28,16 @@ function App() {
       </div>
       <p className="read-the-docs">
         Click on the Vite and React logos to learn more
-      </p>
+      </p> */}
+
+      <Container maxWidth="sm" style={{ marginTop: '2rem', textAlign: 'center' }}>
+        <Typography variant="h4" gutterBottom>
+          Ciao Material UI! 🎉
+        </Typography>
+        <Button variant="contained" color="primary">
+          Cliccami
+        </Button>
+      </Container>
     </>
   )
 }
