@@ -2,7 +2,9 @@
 // import reactLogo from './assets/react.svg'
 // import viteLogo from '/vite.svg'
 import './App.scss'
-import { Button, Typography, Container } from '@mui/material';
+// import { Button, Typography, Container } from '@mui/material';
+import { BrowserRouter } from 'react-router-dom';
+import AppRoutes from './routes/router';
 
 function App() {
   // const [count, setCount] = useState(0)
@@ -30,14 +32,17 @@ function App() {
         Click on the Vite and React logos to learn more
       </p> */}
 
-      <Container maxWidth="sm" style={{ marginTop: '2rem', textAlign: 'center' }}>
+      {/* <Container maxWidth="sm" style={{ marginTop: '2rem', textAlign: 'center' }}>
         <Typography variant="h4" gutterBottom>
           Ciao Material UI! 🎉
         </Typography>
         <Button variant="contained" color="primary">
           Cliccami
         </Button>
-      </Container>
+      </Container> */}
+      <BrowserRouter>
+        <AppRoutes />
+      </BrowserRouter>
     </>
   )
 }
