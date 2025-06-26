@@ -1,33 +1,55 @@
 import React from 'react';
 import { Box, Typography, Button, Container, Stack } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import pageEaten from '../../assets/images/page-eaten.svg';
 
 const NotFoundComponent: React.FC = () => {
   const navigate = useNavigate();
 
   return (
-    <Container maxWidth="sm">
+    <Container>
       <Box
         sx={{
-          textAlign: 'center',
-          marginTop: 10,
+          textAlign: 'center'
         }}
       >
-        <Typography variant="h1" color="primary" gutterBottom>
+
+        <Box
+          component="img"
+          src={pageEaten}
+          alt="Pagina mangiata"
+          sx={{
+            width: {
+              xs: '30%',   // su schermi piccoli (<600px)
+              sm: '50%',   // su schermi medi (≥600px)
+              md: '80%',   // su schermi più grandi (≥900px)
+            },
+            maxWidth: 300,
+            mx: 'auto',
+            mb: 4,
+            display: 'block',
+          }}
+        />
+
+        <Typography variant="h1" color="primary">
           404
         </Typography>
 
+        <Typography variant="h2" gutterBottom>
+          NOT FOUND
+        </Typography>
+
         <Typography variant="h5" gutterBottom>
-          Oops! La pagina che cerchi non esiste.
+          nel senso che questa pagina non esiste
         </Typography>
 
         <Typography variant="body1" color="text.secondary" mb={4}>
-          Forse hai scritto male l’indirizzo o la pagina è stata rimossa.
+          o magari esiste, ma palesemente non è quello che cercavi.
         </Typography>
 
         <Stack direction="row" justifyContent="center" spacing={2}>
           <Button variant="contained" color="primary" onClick={() => navigate('/')}>
-            Torna alla Home
+            Torniamo alla Home, ok?
           </Button>
         </Stack>
       </Box>
