@@ -1,36 +1,46 @@
-import {
-    SwipeableDrawer,
-    List,
-    ListItemButton,
-    ListItemIcon,
-    ListItemText,
-} from '@mui/material';
-import HomeIcon from '@mui/icons-material/Home';
-import { Link } from 'react-router-dom';
+import React from 'react';
+import { Drawer, Box } from '@mui/material';
+import { useSelector, useDispatch } from 'react-redux';
+import type { RootState } from '../../store/store';
+import { toggleDrawer } from './store/drawer-slice';
 
-const SideDrawer = () => {
+interface SideDrawerProps {
+  children: React.ReactNode;
+  width?: number;
+}
 
-    return (
-        <SwipeableDrawer
-            open={true} // da gestire via Redux
-            onOpen={() => { }}
-            onClose={() => { }}
-        >
-            
-            <List>
-                <ListItemButton component={Link} to="/home">
-                    <ListItemIcon>
-                        <HomeIcon />
-                    </ListItemIcon>
-                    <ListItemText primary="Home" />
-                </ListItemButton>
-                
-                {/* promemoria: aggiungere le altre routes qui. o magari il tutorial o qualche easter egg */}
+const SideDrawer: React.FC<SideDrawerProps> = ({ children, width = 250 }) => {
+  const dispatch = useDispatch();
+  const { open, position } = useSelector((state: RootState) => state.drawer);
 
-            </List>
+  const handleToggle = () => {
+    dispatch(toggleDrawer());
+  };
 
-        </SwipeableDrawer>
-    );
+  const drawerSx =
+    position === 'top' || position === 'bottom'
+      ? { height: width, width: '100%' }
+      : { width };
+
+  const boxSx = {
+    width: position === 'top' || position === 'bottom' ? 'auto' : width,
+    height: position === 'top' || position === 'bottom' ? width : '100%',
+    display: 'flex',
+    flexDirection: 'column',
+  };
+
+  return (
+    <Drawer
+      anchor={position}
+      open={open}
+      onClose={handleToggle}
+      PaperProps={{ sx: drawerSx }}
+    >
+      <Box sx={boxSx} onClick={handleToggle} onKeyDown={handleToggle}>
+        {children}
+      </Box>
+    </Drawer>
+  );
 };
 
 export default SideDrawer;
