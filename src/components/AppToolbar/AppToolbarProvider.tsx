@@ -9,11 +9,10 @@ interface Props {
 }
 
 const AppToolbarProvider: React.FC<Props> = ({ children }) => {
-  const [title] = useState('Titolo iniziale');
+  const [title] = useState('ANTISGAM');
   const dispatch = useDispatch();
 
   const menuClickHandler = () => {
-    console.log('Hamburger cliccato!');
     dispatch(toggleDrawer());
   };
 
