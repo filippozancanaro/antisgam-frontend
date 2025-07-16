@@ -2,7 +2,7 @@ import { createContext } from 'react';
 
 interface IHomepageContext {
   title: string;
-  menuClickHandler: () => void;
+  // menuClickHandler: () => void;
 }
 
 export const HomepageContext = createContext<IHomepageContext | null>(null);

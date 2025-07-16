@@ -7,14 +7,11 @@ interface Props {
 }
 
 const HomepageProvider: React.FC<Props> = ({ children }) => {
-  const [title] = useState('Titolo iniziale');
+  const [title] = useState('Homepage');
 
-  const menuClickHandler = () => {
-    console.log('Hamburger cliccato!');
-  };
 
   return (
-    <HomepageContext.Provider value={{ title, menuClickHandler }}>
+    <HomepageContext.Provider value={{ title }}>
       {children}
     </HomepageContext.Provider>
   );
