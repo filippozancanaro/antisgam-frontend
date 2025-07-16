@@ -36,7 +36,7 @@ const Homepage: React.FC = () => {
         {/* Followers */}
         <Grid size={{ xs: 12, sm: 12, md: 6, xl: 4 }}>
           <Box sx={{ bgcolor: '#e0f7fa', p: 2, textAlign: 'center' }}>
-            <Typography variant="h6">Followers</Typography>
+            <Typography variant="h6" sx={{color: 'common.black'}}>FOLLOWERS</Typography>
             {/* drag & drop placeholder */}
 
             <FilePicker
@@ -54,7 +54,7 @@ const Homepage: React.FC = () => {
         {/* Following */}
         <Grid size={{ xs: 12, sm: 12, md: 6, xl: 4 }}>
           <Box sx={{ bgcolor: '#fce4ec', p: 2, textAlign: 'center' }}>
-            <Typography variant="h6">Following</Typography>
+            <Typography variant="h6"  sx={{color: 'common.black'}}>SEGUITI</Typography>
             {/* drag & drop placeholder */}
 
             <FilePicker
