@@ -103,7 +103,13 @@ const FilePicker: React.FC = () => {
         }}
 
       >
-        <CardContent>
+        <CardContent
+          sx={{
+            padding: 0,
+            '&:last-child': {
+              paddingBottom: 0,
+            },
+          }}>
           <Box sx={{ minHeight: 150, px: 2 }} className={styles.iconarea}>
             <Typography variant="subtitle1" className={styles.title}>
               {pageTitle}
