@@ -6,6 +6,7 @@ export interface FilePickerContextProps {
   getSelectedFile: () => { name: string; content: string } | null;
   cleanSelection: () => void;
   isFileSelected: boolean;
+  acceptedFiles?: string[] | null;
 }
 
 export const FilePickerContext = createContext<FilePickerContextProps | null>(null);

@@ -65,6 +65,7 @@ const FilePickerProvider: React.FC<Props> = ({
     getSelectedFile,
     cleanSelection,
     isFileSelected,
+    acceptedFiles
   };
 
   return (

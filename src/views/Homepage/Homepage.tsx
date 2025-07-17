@@ -5,6 +5,8 @@ import {
   Grid,
   Typography,
   Button,
+  Tabs,
+  Tab,
 } from '@mui/material';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import RocketLaunchIcon from '@mui/icons-material/RocketLaunch';
@@ -17,66 +19,99 @@ const Homepage: React.FC = () => {
 
   // const { title } = context;
 
+  const modeSelectionHandler = (value: 'zip' | 'json') => {
+    context.changeMode(value);
+  }
+
   return (
     <Box sx={{ p: 2 }}>
       <Grid container spacing={2}>
         {/* Titolo: 1 - CARICA LE LISTE */}
-        <Grid size={{ xs: 12 }}>
+        <Grid size={{ xs: 12, md: 6, lg: 8 }}>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <Typography variant="h5" sx={{ mr: 1 }}>
-              1 - CARICA LE LISTE
+              1 - CARICA I TUOI DATI O LE LISTE
             </Typography>
             <FormatListBulletedIcon color="primary" />
           </Box>
         </Grid>
-
-        {/* Spazio a sinistra su XL (2/12) */}
-        <Grid size={{ xl: 2 }} sx={{ display: { xs: 'none', xl: 'block' } }} />
-
-        {/* Followers */}
-        <Grid size={{ xs: 12, sm: 12, md: 6, xl: 4 }}>
-          <Box sx={{ bgcolor: '#e0f7fa', p: 2, textAlign: 'center' }}>
-            <Typography variant="h6" sx={{color: 'common.black'}}>FOLLOWERS</Typography>
-            {/* drag & drop placeholder */}
-
-            <FilePicker
-              acceptedFiles={['application/json']}
-              pageTitle="Followers"
-              enabled={true}
-              onUploadStarted={(name) => console.log('START:', name)}
-              onUploadCompleted={(name, content) => console.log('DONE:', name, content)}
-              onSelectionCleaned={() => console.log('CLEANED')}
-            />
-
+        <Grid size={{ xs: 12, md: 6, lg: 4 }}>
+          <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+            <Tabs value={context.mode} onChange={(_e, value: 'zip' | 'json') => modeSelectionHandler(value)} aria-label="basic tabs example">
+              <Tab label="Carica ZIP" value="zip" />
+              <Tab label="Carica JSON" value="json" />
+            </Tabs>
           </Box>
         </Grid>
 
-        {/* Following */}
-        <Grid size={{ xs: 12, sm: 12, md: 6, xl: 4 }}>
-          <Box sx={{ bgcolor: '#fce4ec', p: 2, textAlign: 'center' }}>
-            <Typography variant="h6"  sx={{color: 'common.black'}}>SEGUITI</Typography>
-            {/* drag & drop placeholder */}
+        {context.mode === 'zip' ?
+          <>
+            <Grid size={{ md: 3, xl: 4 }} sx={{ display: { xs: 'none', md: 'block' } }} />
+            {/* Modalità ZIP */}
+            {/* Zip di dati */}
+            <Grid size={{ xs: 12, sm: 12, md: 6, xl: 4 }}>
+              <Box sx={{ bgcolor: '#e0f7fa', p: 2, textAlign: 'center' }}>
+                <Typography variant="h6" sx={{ color: 'common.black' }}>CARICA LO ZIP CON I TUOI DATI</Typography>
+                <FilePicker
+                  acceptedFiles={['.zip']}
+                  pageTitle="File di dati da Instagram"
+                  enabled={true}
+                  onUploadStarted={(name) => console.log('START:', name)}
+                  onUploadCompleted={(name, content) => console.log('DONE:', name, content)}
+                  onSelectionCleaned={() => console.log('CLEANED')}
+                />
 
-            <FilePicker
-              acceptedFiles={['application/json']}
-              pageTitle="Followers"
-              enabled={true}
-              onUploadStarted={(name) => console.log('START:', name)}
-              onUploadCompleted={(name, content) => console.log('DONE:', name, content)}
-              onSelectionCleaned={() => console.log('CLEANED')}
-            />
+              </Box>
+            </Grid>
+            <Grid size={{ md: 3, xl: 4 }} sx={{ display: { xs: 'none', md: 'block' } }} />
+          </> :
+          <>
+            {/* Modalità JSON */}
+            <Grid size={{ xl: 2 }} sx={{ display: { xs: 'none', xl: 'block' } }} />
+            {/* Followers */}
+            <Grid size={{ xs: 12, sm: 12, md: 6, xl: 4 }}>
+              <Box sx={{ bgcolor: '#e0f7fa', p: 2, textAlign: 'center' }}>
+                <Typography variant="h6" sx={{ color: 'common.black' }}>FOLLOWERS</Typography>
 
-          </Box>
-        </Grid>
+                <FilePicker
+                  acceptedFiles={['.json']}
+                  pageTitle="Followers"
+                  enabled={true}
+                  onUploadStarted={(name) => console.log('START:', name)}
+                  onUploadCompleted={(name, content) => console.log('DONE:', name, content)}
+                  onSelectionCleaned={() => console.log('CLEANED')}
+                />
 
-        {/* Spazio a destra su XL (2/12) */}
-        <Grid size={{ xl: 2 }} sx={{ display: { xs: 'none', xl: 'block' } }} />
+              </Box>
+            </Grid>
+
+            {/* Following */}
+            <Grid size={{ xs: 12, sm: 12, md: 6, xl: 4 }}>
+              <Box sx={{ bgcolor: '#fce4ec', p: 2, textAlign: 'center' }}>
+                <Typography variant="h6" sx={{ color: 'common.black' }}>SEGUITI</Typography>
+
+                <FilePicker
+                  acceptedFiles={['.json']}
+                  pageTitle="Followers"
+                  enabled={true}
+                  onUploadStarted={(name) => console.log('START:', name)}
+                  onUploadCompleted={(name, content) => console.log('DONE:', name, content)}
+                  onSelectionCleaned={() => console.log('CLEANED')}
+                />
+
+              </Box>
+            </Grid>
+
+            <Grid size={{ xl: 2 }} sx={{ display: { xs: 'none', xl: 'block' } }} />
+
+          </>
+        }
 
         {/* Bottone "Dove li trovo?" */}
         <Grid size={{ xs: 12 }}>
           <Box sx={{ display: 'flex', justifyContent: 'center' }}>
             <Button variant="outlined" size="large">
-              Dove li trovo?
+              Spiegami tutto
             </Button>
           </Box>
         </Grid>

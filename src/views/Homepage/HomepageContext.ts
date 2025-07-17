@@ -2,7 +2,9 @@ import { createContext } from 'react';
 
 interface IHomepageContext {
   title: string;
-  // menuClickHandler: () => void;
+  mode: 'zip' | 'json';
+  
+  changeMode: (value: 'zip' | 'json') => void;
 }
 
 export const HomepageContext = createContext<IHomepageContext | null>(null);

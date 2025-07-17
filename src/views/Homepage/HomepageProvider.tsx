@@ -8,10 +8,14 @@ interface Props {
 
 const HomepageProvider: React.FC<Props> = ({ children }) => {
   const [title] = useState('Homepage');
+  const [mode, setMode] = useState<'zip' | 'json'>('zip');
 
+  const changeMode = (value: 'zip' | 'json') => {
+    setMode(value);
+  };
 
   return (
-    <HomepageContext.Provider value={{ title }}>
+    <HomepageContext.Provider value={{ title, mode, changeMode }}>
       {children}
     </HomepageContext.Provider>
   );

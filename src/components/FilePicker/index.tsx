@@ -14,7 +14,7 @@ interface Props {
 const ExportedFilePicker: React.FC<Props> = (props) => {
   return (
     <FilePickerProvider {...props}>
-      <FilePicker {...props} />
+      <FilePicker />
     </FilePickerProvider>
   );
 };

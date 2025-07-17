@@ -31,6 +31,7 @@ const FilePicker: React.FC = () => {
   if (!context) throw new Error('FilePicker must be used within FilePickerProvider');
 
   const {
+    acceptedFiles,
     pageTitle,
     handleFile,
     cleanSelection,
@@ -70,7 +71,18 @@ const FilePicker: React.FC = () => {
     }
   };
 
-  // animazioni per drag & drop
+  const getAcceptable = () => {
+    if (acceptedFiles == null)
+      return '';
+
+    if (acceptedFiles?.length <= 0)
+      return '';
+
+    if (acceptedFiles?.length <= 1)
+      return acceptedFiles[0];
+
+    return acceptedFiles.join(',');
+  }
 
 
   return (
@@ -141,6 +153,7 @@ const FilePicker: React.FC = () => {
       <input
         type="file"
         style={{ display: 'none' }}
+        accept={getAcceptable()}
         ref={inputRef}
         onChange={(e) => handleFileChange(e)}
       />
