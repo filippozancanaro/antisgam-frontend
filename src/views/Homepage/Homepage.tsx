@@ -53,6 +53,7 @@ const Homepage: React.FC = () => {
               <Box sx={{ bgcolor: '#e0f7fa', p: 2, textAlign: 'center' }}>
                 <Typography variant="h6" sx={{ color: 'common.black' }}>CARICA LO ZIP CON I TUOI DATI</Typography>
                 <FilePicker
+                  key="zipfile"
                   acceptedFiles={['.zip']}
                   pageTitle="File di dati da Instagram"
                   enabled={true}
@@ -74,7 +75,8 @@ const Homepage: React.FC = () => {
                 <Typography variant="h6" sx={{ color: 'common.black' }}>FOLLOWERS</Typography>
 
                 <FilePicker
-                  acceptedFiles={['.json']}
+                  key="followers"
+                  acceptedFiles={['application/json']}
                   pageTitle="Followers"
                   enabled={true}
                   onUploadStarted={(name) => console.log('START:', name)}
@@ -91,8 +93,9 @@ const Homepage: React.FC = () => {
                 <Typography variant="h6" sx={{ color: 'common.black' }}>SEGUITI</Typography>
 
                 <FilePicker
-                  acceptedFiles={['.json']}
-                  pageTitle="Followers"
+                  key="following"
+                  acceptedFiles={['application/json']}
+                  pageTitle="Following"
                   enabled={true}
                   onUploadStarted={(name) => console.log('START:', name)}
                   onUploadCompleted={(name, content) => console.log('DONE:', name, content)}
