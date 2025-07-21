@@ -17,7 +17,7 @@ const Homepage: React.FC = () => {
   const context = useContext(HomepageContext);
   if (!context) throw new Error('Toolbar deve essere usato all’interno di <HomepageProvider>');
 
-  const { manageJsonFile } = context;
+  const { manageJsonFile, manageZipFile } = context;
 
   const modeSelectionHandler = (value: 'zip' | 'json') => {
     context.changeMode(value);
@@ -56,11 +56,11 @@ const Homepage: React.FC = () => {
                 <Typography variant="h6" sx={{ color: 'common.black' }}>CARICA LO ZIP CON I TUOI DATI</Typography>
                 <FilePicker
                   key="zipfile"
-                  acceptedFiles={['.zip']}
+                  acceptedFiles={['application/x-zip-compressed', 'application/zip']}
                   pageTitle="File di dati da Instagram"
                   enabled={true}
                   onUploadStarted={(name) => console.log('START:', name)}
-                  onUploadCompleted={(name, content) => console.log('DONE:', name, content)}
+                  onUploadCompleted={(_name, content) => manageZipFile(content)}
                   onSelectionCleaned={() => console.log('CLEANED')}
                 />
 

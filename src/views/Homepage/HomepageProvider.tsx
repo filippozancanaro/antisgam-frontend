@@ -3,6 +3,7 @@ import type { ReactNode } from 'react';
 import { HomepageContext } from './HomepageContext';
 import type { IFollower } from '../../interfaces/followers/followers';
 import type { IFollowingWrapper } from '../../interfaces/following/following';
+import { ZipManager } from '../../utilities';
 
 interface Props {
   children: ReactNode;
@@ -15,6 +16,7 @@ const HomepageProvider: React.FC<Props> = ({ children }) => {
   const changeMode = (value: 'zip' | 'json') => {
     setMode(value);
   };
+
   const manageJsonFile = async (
     file: File | null,
     type: 'followers' | 'following'
@@ -55,13 +57,57 @@ const HomepageProvider: React.FC<Props> = ({ children }) => {
     }
   };
 
+  const manageZipFile = async (file: File): Promise<void> => {
+    const zip = await ZipManager.unzipZipFile(file);
+    if (!zip) return;
+
+    const pathSegments = ['connections', 'followers_and_following'];
+
+    // ✅ Recupera files followers
+    const followersFiles = ZipManager.getFilesFromZip(
+      zip,
+      pathSegments,
+      null,
+      {
+        nameStartsWith: 'followers',
+        nameEndsWith: '.json'
+      }
+    );
+
+    // ✅ Recupera files following
+    const followingFiles = ZipManager.getFilesFromZip(
+      zip,
+      pathSegments,
+      null,
+      {
+        nameStartsWith: 'following',
+        nameEndsWith: '.json'
+      }
+    );
+
+    // ✅ Leggi contenuto JSON dei file
+    const followersContents = await Promise.all(
+      followersFiles.map((f) => f.async('string'))
+    );
+
+    const followingContents = await Promise.all(
+      followingFiles.map((f) => f.async('string'))
+    );
+
+    // TODO: fare il parsing in IFollowers / IFollowingWrapper e analizzarli
+    console.log('Followers contents:', followersContents);
+    console.log('Following contents:', followingContents);
+  };
+
+
   return (
     <HomepageContext.Provider
       value={{
         title,
         mode,
         changeMode,
-        manageJsonFile
+        manageJsonFile,
+        manageZipFile
       }}
     >
       {children}

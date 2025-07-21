@@ -6,6 +6,7 @@ interface IHomepageContext {
   
   changeMode: (value: 'zip' | 'json') => void;
   manageJsonFile: (file: File, mode: 'followers' | 'following') => Promise<void>;
+  manageZipFile: (file: File) => Promise<void>;
 }
 
 export const HomepageContext = createContext<IHomepageContext | null>(null);
