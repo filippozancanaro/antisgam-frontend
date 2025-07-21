@@ -17,7 +17,7 @@ const Homepage: React.FC = () => {
   const context = useContext(HomepageContext);
   if (!context) throw new Error('Toolbar deve essere usato all’interno di <HomepageProvider>');
 
-  // const { title } = context;
+  const { manageJsonFile } = context;
 
   const modeSelectionHandler = (value: 'zip' | 'json') => {
     context.changeMode(value);
@@ -26,8 +26,9 @@ const Homepage: React.FC = () => {
   return (
     <Box sx={{ p: 2 }}>
       <Grid container spacing={2}>
+        <Grid size={{ md: 3, lg: 1, xl: 2 }} sx={{ display: { xs: 'none', lg: 'block' } }} />
         {/* Titolo: 1 - CARICA LE LISTE */}
-        <Grid size={{ xs: 12, md: 6, lg: 8 }}>
+        <Grid size={{ xs: 12, md: 6, lg: 5, xl: 4 }}>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <Typography variant="h5" sx={{ mr: 1 }}>
               1 - CARICA I TUOI DATI O LE LISTE
@@ -35,7 +36,7 @@ const Homepage: React.FC = () => {
             <FormatListBulletedIcon color="primary" />
           </Box>
         </Grid>
-        <Grid size={{ xs: 12, md: 6, lg: 4 }}>
+        <Grid size={{ xs: 12, md: 6, lg: 5, xl: 4 }}>
           <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
             <Tabs value={context.mode} onChange={(_e, value: 'zip' | 'json') => modeSelectionHandler(value)} aria-label="basic tabs example">
               <Tab label="Carica ZIP" value="zip" />
@@ -43,6 +44,7 @@ const Homepage: React.FC = () => {
             </Tabs>
           </Box>
         </Grid>
+        <Grid size={{ md: 3, lg: 1, xl: 2 }} sx={{ display: { xs: 'none', lg: 'block' } }} />
 
         {context.mode === 'zip' ?
           <>
@@ -68,9 +70,9 @@ const Homepage: React.FC = () => {
           </> :
           <>
             {/* Modalità JSON */}
-            <Grid size={{ xl: 2 }} sx={{ display: { xs: 'none', xl: 'block' } }} />
+            <Grid size={{ md: 1, xl: 2 }} sx={{ display: { xs: 'none', md: 'block' } }} />
             {/* Followers */}
-            <Grid size={{ xs: 12, sm: 12, md: 6, xl: 4 }}>
+            <Grid size={{ xs: 12, sm: 12, md: 5, xl: 4 }}>
               <Box sx={{ bgcolor: '#e0f7fa', p: 2, textAlign: 'center' }}>
                 <Typography variant="h6" sx={{ color: 'common.black' }}>FOLLOWERS</Typography>
 
@@ -80,7 +82,7 @@ const Homepage: React.FC = () => {
                   pageTitle="Followers"
                   enabled={true}
                   onUploadStarted={(name) => console.log('START:', name)}
-                  onUploadCompleted={(name, content) => console.log('DONE:', name, content)}
+                  onUploadCompleted={(_name, content) => manageJsonFile(content, 'followers')}
                   onSelectionCleaned={() => console.log('CLEANED')}
                 />
 
@@ -88,7 +90,7 @@ const Homepage: React.FC = () => {
             </Grid>
 
             {/* Following */}
-            <Grid size={{ xs: 12, sm: 12, md: 6, xl: 4 }}>
+            <Grid size={{ xs: 12, sm: 12, md: 5, xl: 4 }}>
               <Box sx={{ bgcolor: '#fce4ec', p: 2, textAlign: 'center' }}>
                 <Typography variant="h6" sx={{ color: 'common.black' }}>SEGUITI</Typography>
 
@@ -98,14 +100,14 @@ const Homepage: React.FC = () => {
                   pageTitle="Following"
                   enabled={true}
                   onUploadStarted={(name) => console.log('START:', name)}
-                  onUploadCompleted={(name, content) => console.log('DONE:', name, content)}
+                  onUploadCompleted={(_name, content) => manageJsonFile(content, 'following')}
                   onSelectionCleaned={() => console.log('CLEANED')}
                 />
 
               </Box>
             </Grid>
 
-            <Grid size={{ xl: 2 }} sx={{ display: { xs: 'none', xl: 'block' } }} />
+            <Grid size={{ md:1, xl: 2 }} sx={{ display: { xs: 'none', md: 'block' } }} />
 
           </>
         }
@@ -120,7 +122,8 @@ const Homepage: React.FC = () => {
         </Grid>
 
         {/* Titolo: 2 - ESEGUI */}
-        <Grid size={{ xs: 12 }}>
+        <Grid size={{ md: 3, lg: 1, xl: 2 }} sx={{ display: { xs: 'none', lg: 'block' } }} />
+        <Grid size={{ xs: 12, md: 6, lg: 10, xl: 8 }}>
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <Typography variant="h5" sx={{ mr: 1 }}>
               2 - ESEGUI
@@ -128,6 +131,7 @@ const Homepage: React.FC = () => {
             <RocketLaunchIcon color="primary" />
           </Box>
         </Grid>
+        <Grid size={{ md: 3, lg: 1, xl: 2 }} sx={{ display: { xs: 'none', lg: 'block' } }} />
 
         {/* Bottone "ANDIAMO!" */}
         <Grid size={{ xs: 12 }}>
