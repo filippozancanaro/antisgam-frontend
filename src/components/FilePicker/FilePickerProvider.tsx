@@ -8,7 +8,7 @@ interface Props {
   pageTitle: string;
   enabled: boolean;
   onUploadStarted?: (fileName: string) => void;
-  onUploadCompleted?: (fileName: string, content: string) => void;
+  onUploadCompleted?: (fileName: string, content: File) => void;
   onSelectionCleaned?: () => void;
 }
 
@@ -22,7 +22,7 @@ const FilePickerProvider: React.FC<Props> = ({
   onSelectionCleaned,
 }) => {
   const [fileName, setFileName] = useState<string | null>(null);
-  const [fileContent, setFileContent] = useState<string | null>(null);
+  const [fileContent, setFileContent] = useState<File | null>(null);
 
   const isFileSelected = Boolean(fileName && fileContent);
 
@@ -36,9 +36,34 @@ const FilePickerProvider: React.FC<Props> = ({
     if (onSelectionCleaned) onSelectionCleaned();
   }, [onSelectionCleaned]);
 
+  // qui leggevo come un file di testo, ma ora lo leggo come un file
+  // const OLD_handleFile = (file: File) => {
+  //   if (!enabled || !file) return;
+
+  //   if (
+  //     acceptedFiles &&
+  //     acceptedFiles.length > 0 &&
+  //     !acceptedFiles.some((type) => file.type.includes(type))
+  //   ) {
+  //     return;
+  //   }
+
+  //   if (onUploadStarted) onUploadStarted(file.name);
+
+  //   const reader = new FileReader();
+  //   reader.onload = () => {
+  //     const content = reader.result as string;
+  //     setFileName(file.name);
+  //     setFileContent(content);
+  //     if (onUploadCompleted) onUploadCompleted(file.name, content);
+  //   };
+  //   reader.readAsText(file);
+  // };
+  
   const handleFile = (file: File) => {
     if (!enabled || !file) return;
 
+    // Verifica tipo accettato
     if (
       acceptedFiles &&
       acceptedFiles.length > 0 &&
@@ -49,15 +74,13 @@ const FilePickerProvider: React.FC<Props> = ({
 
     if (onUploadStarted) onUploadStarted(file.name);
 
-    const reader = new FileReader();
-    reader.onload = () => {
-      const content = reader.result as string;
-      setFileName(file.name);
-      setFileContent(content);
-      if (onUploadCompleted) onUploadCompleted(file.name, content);
-    };
-    reader.readAsText(file);
+    // Nessuna lettura: passiamo direttamente il file
+    setFileName(file.name);
+    setFileContent(file); // se ora è di tipo File
+
+    if (onUploadCompleted) onUploadCompleted(file.name, file);
   };
+
 
   const contextValue: FilePickerContextProps = {
     pageTitle,

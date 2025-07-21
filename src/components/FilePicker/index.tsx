@@ -7,7 +7,7 @@ interface Props {
   pageTitle: string;
   enabled: boolean;
   onUploadStarted?: (fileName: string) => void;
-  onUploadCompleted?: (fileName: string, content: string) => void;
+  onUploadCompleted?: (fileName: string, content: File) => void;
   onSelectionCleaned?: () => void;
 }
 
