@@ -38,14 +38,16 @@ const HomepageProvider: React.FC<Props> = ({ children }) => {
       if (type === 'followers') {
         const followersData = data as IFollower;
         console.log('Followers data:', followersData);
-        // TODO: gestisci followersData come ti serve
+        
+        addFollowers(followersData);
         return;
       }
 
       if (type === 'following') {
         const followingData = data as IFollowingWrapper;
         console.log('Following data:', followingData);
-        // TODO: gestisci followingData come ti serve
+        
+        addFollowing(followingData);
         return;
       }
 
@@ -97,8 +99,29 @@ const HomepageProvider: React.FC<Props> = ({ children }) => {
     // TODO: fare il parsing in IFollowers / IFollowingWrapper e analizzarli
     console.log('Followers contents:', followersContents);
     console.log('Following contents:', followingContents);
+
+    if (followersContents && followersContents?.length > 0)
+      followersContents.forEach((f) => {
+        const parsedF = JSON.parse(f) as IFollower;
+        addFollowers(parsedF);
+      });
+
+    if (followingContents && followingContents?.length > 0)
+      followingContents.forEach((f) => {
+        const parsedF = JSON.parse(f) as IFollowingWrapper;
+        addFollowing(parsedF);
+      });
   };
 
+  const addFollowers = (followers: IFollower) => {
+    // recupero tutti i nicknames e li salvo nello state
+    console.log('Aggiungo followers:', followers);
+  }
+
+  const addFollowing = (following: IFollowingWrapper) => {
+    // recupero tutti i nicknames e li salvo nello state
+    console.log('Aggiungo following:', following);
+  }
 
   return (
     <HomepageContext.Provider
