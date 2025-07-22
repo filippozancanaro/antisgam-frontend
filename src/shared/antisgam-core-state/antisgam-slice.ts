@@ -1,13 +1,15 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 
 interface AntisgamState {
-  followersData: string[];   // Array di nickname (deduplicati già nel form)
-  followingData: string[];
+  followersData: string[];     // nicknames di chi ti segue
+  followingData: string[];     // nicknames di chi tu segui
+  unfollowersData: string[];   // nicknames che tu segui ma che non ti seguono
 }
 
 const initialState: AntisgamState = {
   followersData: [],
   followingData: [],
+  unfollowersData: [],
 };
 
 const antisgamSlice = createSlice({
@@ -20,12 +22,22 @@ const antisgamSlice = createSlice({
     setFollowing: (state, action: PayloadAction<string[]>) => {
       state.followingData = action.payload;
     },
+    setUnfollowers: (state, action: PayloadAction<string[]>) => {
+      state.unfollowersData = action.payload;
+    },
     resetAntisgam: (state) => {
       state.followersData = [];
       state.followingData = [];
+      state.unfollowersData = [];
     },
   },
 });
 
-export const { setFollowers, setFollowing, resetAntisgam } = antisgamSlice.actions;
+export const {
+  setFollowers,
+  setFollowing,
+  setUnfollowers,
+  resetAntisgam,
+} = antisgamSlice.actions;
+
 export default antisgamSlice.reducer;
