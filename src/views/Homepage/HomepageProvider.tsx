@@ -4,14 +4,21 @@ import { HomepageContext } from './HomepageContext';
 import type { IFollower } from '../../interfaces/followers/followers';
 import type { IFollowingWrapper } from '../../interfaces/following/following';
 import { ZipManager } from '../../utilities';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { setFollowers, setFollowing } from '../../shared/antisgam-core-state/antisgam-slice';
 
 interface Props {
   children: ReactNode;
 }
 
 const HomepageProvider: React.FC<Props> = ({ children }) => {
-  const [title] = useState('Homepage');
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const [mode, setMode] = useState<'zip' | 'json'>('zip');
+  const [formFollowers, setFormFollowers] = useState<Set<string> | null>(null);
+  const [formFollowing, setFormFollowing] = useState<Set<string> | null>(null);
 
   const changeMode = (value: 'zip' | 'json') => {
     setMode(value);
@@ -22,10 +29,12 @@ const HomepageProvider: React.FC<Props> = ({ children }) => {
     type: 'followers' | 'following'
   ): Promise<void> => {
     // 1. Verifica file non nullo
-    if (!file) return;
+    if (!file)
+      return;
 
     // 2. Verifica MIME type
-    if (file.type !== 'application/json') return;
+    if (file.type !== 'application/json')
+      return;
 
     try {
       // 3. Lettura contenuto testuale
@@ -37,21 +46,21 @@ const HomepageProvider: React.FC<Props> = ({ children }) => {
       // 5. Serializzazione per tipo richiesto
       if (type === 'followers') {
         const followersData = data as IFollower;
-        console.log('Followers data:', followersData);
-        
-        addFollowers(followersData);
+
+        // Aggiungo i followers allo state
+        addFollowersToForm([followersData]);
         return;
       }
 
       if (type === 'following') {
         const followingData = data as IFollowingWrapper;
-        console.log('Following data:', followingData);
-        
-        addFollowing(followingData);
+
+        // Aggiungo i following allo state
+        addFollowingToForm(followingData);
         return;
       }
 
-      // Se il tipo è diverso da quelli previsti
+      // Se il tipo è diverso da quelli previsti (non dovrebbe, ma nel dubbio male non fa)
       return;
     } catch (error) {
       console.warn('Errore nel parsing JSON:', error);
@@ -60,34 +69,56 @@ const HomepageProvider: React.FC<Props> = ({ children }) => {
   };
 
   const manageZipFile = async (file: File): Promise<void> => {
-    const zip = await ZipManager.unzipZipFile(file);
-    if (!zip) return;
+    if (file == null || !file)
+      return;
 
+    if (file.type !== 'application/zip' && file.type !== 'application/x-zip-compressed')
+      return;
+
+    // unzip del file
+    const zip = await ZipManager.unzipZipFile(file);
+
+    // verifica che il file non sia nullo
+    if (!zip)
+      return;
+
+    // il path dello zip di meta attualmente è questo, valutare se spostarlo in una variabile di ambiente poi
+    // TODO => spostare in una variabile di ambiente
     const pathSegments = ['connections', 'followers_and_following'];
 
-    // ✅ Recupera files followers
+    // Recupero tutti i files "followers * .json"
     const followersFiles = ZipManager.getFilesFromZip(
       zip,
       pathSegments,
-      null,
+      null, // evito in questa fase di mettere un nome fisso, non so come si comporti il naming per i vippones con tanti followerz (maledetti vippones)
       {
         nameStartsWith: 'followers',
         nameEndsWith: '.json'
       }
     );
 
-    // ✅ Recupera files following
+    if (followersFiles?.length <= 0) {
+      console.error('Nessun file followers trovato nello zip.');
+      return;
+    }
+
+    // Recupero tutti i files "following * .json"
     const followingFiles = ZipManager.getFilesFromZip(
       zip,
       pathSegments,
-      null,
+      null, // evito in questa fase di mettere un nome fisso, non so come si comporti il naming per i vippones con tanti followerz (maledetti vippones)
       {
         nameStartsWith: 'following',
         nameEndsWith: '.json'
       }
     );
 
-    // ✅ Leggi contenuto JSON dei file
+    if (followingFiles?.length <= 0) {
+      console.error('Nessun file following trovato nello zip.');
+      return;
+    }
+
+    // Estraggo il contenuto JSON dei file
     const followersContents = await Promise.all(
       followersFiles.map((f) => f.async('string'))
     );
@@ -96,41 +127,112 @@ const HomepageProvider: React.FC<Props> = ({ children }) => {
       followingFiles.map((f) => f.async('string'))
     );
 
-    // TODO: fare il parsing in IFollowers / IFollowingWrapper e analizzarli
-    console.log('Followers contents:', followersContents);
-    console.log('Following contents:', followingContents);
-
+    // Aggiungo i followers e following allo state
     if (followersContents && followersContents?.length > 0)
       followersContents.forEach((f) => {
-        const parsedF = JSON.parse(f) as IFollower;
-        addFollowers(parsedF);
+        const parsedF = JSON.parse(f) as IFollower[];
+        addFollowersToForm(parsedF);
       });
 
     if (followingContents && followingContents?.length > 0)
       followingContents.forEach((f) => {
         const parsedF = JSON.parse(f) as IFollowingWrapper;
-        addFollowing(parsedF);
+        addFollowingToForm(parsedF);
       });
   };
 
-  const addFollowers = (followers: IFollower) => {
+  const addFollowersToForm = (followersList: IFollower[]) => {
     // recupero tutti i nicknames e li salvo nello state
-    console.log('Aggiungo followers:', followers);
+    console.log('Aggiungo followers:', followersList);
+
+    if (!followersList || followersList.length <= 0)
+      return;
+
+    // creo un set di nicknames per evitare duplicati
+    const followerNicknames: Set<string> = new Set<string>();
+    followersList.forEach(followers => {
+
+      if (followers && followers.string_list_data && followers.string_list_data.length > 0) {
+        followers.string_list_data.forEach((follower) => {
+          if (follower.value && !followerNicknames.has(follower.value))
+            followerNicknames.add(follower.value);
+        });
+      }
+
+    });
+
+    console.log('Aggiungo followers nicknames:', followerNicknames);
+
+    setFormFollowers(followerNicknames);
   }
 
-  const addFollowing = (following: IFollowingWrapper) => {
+  const addFollowingToForm = (following: IFollowingWrapper) => {
     // recupero tutti i nicknames e li salvo nello state
     console.log('Aggiungo following:', following);
+
+    if (!following || following.relationships_following == null || following?.relationships_following == null)
+      return;
+
+    // creo un set di nicknames per evitare duplicati
+    const followingNicknames: Set<string> = new Set<string>();
+    following.relationships_following.forEach((rf) => {
+
+      if (rf.string_list_data && rf.string_list_data.length > 0) {
+        rf.string_list_data.forEach((follower) => {
+          if (follower.value && !followingNicknames.has(follower.value))
+            followingNicknames.add(follower.value);
+        });
+      }
+
+    });
+
+    console.log('Aggiungo following nicknames:', followingNicknames);
+
+    setFormFollowing(followingNicknames);
   }
+
+  const cleanupFormField = (fieldName?: 'followers' | 'following') => {
+    if (!fieldName)
+      return;
+
+    if (fieldName === 'followers') {
+      setFormFollowers(null);
+    }
+
+    if (fieldName === 'following') {
+      setFormFollowing(null);
+    }
+  }
+
+  const analyzeData = async (): Promise<void> => {
+    console.log(formFollowers);
+    console.log(formFollowing);
+
+    if (!formFollowers || !formFollowing) {
+      console.warn('Followers o Following mancanti, impossibile analizzare.');
+      return;
+    }
+
+    // 1. Salvataggio su Redux
+    dispatch(setFollowers(Array.from(formFollowers)));
+    dispatch(setFollowing(Array.from(formFollowing)));
+
+    // 2. Redirect su "/loading"
+    navigate('/loading');
+  };
 
   return (
     <HomepageContext.Provider
       value={{
-        title,
         mode,
+        formFollowers,
+        formFollowing,
+
         changeMode,
         manageJsonFile,
-        manageZipFile
+        manageZipFile,
+        cleanupFormField,
+        analyzeData
       }}
     >
       {children}

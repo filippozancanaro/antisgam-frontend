@@ -6,9 +6,10 @@ import JSZip from 'jszip';
  * @returns Istanza di JSZip con tutti i file mappati
  */
 export const unzipZipFile = async (file: File): Promise<JSZip | null> => {
-  if (!file || !file.name.endsWith('.zip')) return null;
-
   try {
+
+    if (!file || !file.name.endsWith('.zip')) return null;
+
     const zip = await JSZip.loadAsync(file);
     return zip;
   } catch (error) {
@@ -27,16 +28,21 @@ export const getFolderFromZip = (
   zip: JSZip,
   pathSegments: string[]
 ): JSZip.JSZipObject[] => {
-  if (!zip) return [];
+  try {
+    if (!zip) return [];
 
-  const path = pathSegments.join('/'); // es. "root/child/final"
-  const prefix = path === '' ? '' : `${path}/`;
+    const path = pathSegments.join('/'); // es. "root/child/final"
+    const prefix = path === '' ? '' : `${path}/`;
 
-  const filesInFolder = Object.values(zip.files).filter((file) =>
-    file.name.startsWith(prefix)
-  );
+    const filesInFolder = Object.values(zip.files).filter((file) =>
+      file.name.startsWith(prefix)
+    );
 
-  return filesInFolder;
+    return filesInFolder;
+  } catch (error) {
+    console.error('Errore durante l\'accesso alla cartella ZIP:', error);
+    return [];
+  }
 };
 
 /**
@@ -56,30 +62,35 @@ export const getFilesFromZip = (
     nameEndsWith: string;
   } | null,
 ): JSZip.JSZipObject[] => {
-  const folderFiles = getFolderFromZip(zip, pathSegments);
+  try {
+    const folderFiles = getFolderFromZip(zip, pathSegments);
 
-  // Usa fileNames se forniti
-  if (fileNames && fileNames.length > 0) {
-    return folderFiles.filter((file) =>
-      fileNames.includes(file.name.split('/').pop() || '')
-    );
-  }
-
-  // Usa findFiles se valido
-  if (findFiles) {
-    const { nameStartsWith, nameEndsWith } = findFiles;
-
-    if (!nameStartsWith || !nameEndsWith) {
-      console.error('[ZipHandler] findFiles deve avere ENTRAMBI nameStartsWith e nameEndsWith');
-      return [];
+    // Usa fileNames se forniti
+    if (fileNames && fileNames.length > 0) {
+      return folderFiles.filter((file) =>
+        fileNames.includes(file.name.split('/').pop() || '')
+      );
     }
 
-    return folderFiles.filter((file) => {
-      const baseName = file.name.split('/').pop() || '';
-      return baseName.startsWith(nameStartsWith) && baseName.endsWith(nameEndsWith);
-    });
-  }
+    // Usa findFiles se valido
+    if (findFiles) {
+      const { nameStartsWith, nameEndsWith } = findFiles;
 
-  console.error('[ZipHandler] Parametri insufficienti per filtrare file');
-  return [];
+      if (!nameStartsWith || !nameEndsWith) {
+        console.error('[ZipHandler] findFiles deve avere ENTRAMBI nameStartsWith e nameEndsWith');
+        return [];
+      }
+
+      return folderFiles.filter((file) => {
+        const baseName = file.name.split('/').pop() || '';
+        return baseName.startsWith(nameStartsWith) && baseName.endsWith(nameEndsWith);
+      });
+    }
+
+    console.error('[ZipHandler] Parametri insufficienti per filtrare file');
+    return [];
+  } catch (error) {
+    console.error('Errore durante la ricerca dei file nello ZIP:', error);
+    return [];
+  }
 };
