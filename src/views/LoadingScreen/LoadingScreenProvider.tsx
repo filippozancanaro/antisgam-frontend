@@ -64,10 +64,13 @@ const LoadingScreenProvider: React.FC<Props> = ({ children }) => {
       following.filter((nickname) => !followersSet.has(nickname))
     );
 
-    dispatch(setUnfollowers(Array.from(unfollowersSet)));
+    const sortedUnfollowers = Array.from(unfollowersSet).sort((a, b) =>
+      a.localeCompare(b)
+    );
 
-    if (followers === following)
-      navigate('/results');
+    dispatch(setUnfollowers(sortedUnfollowers));
+
+    navigate('/results');
   }, [dispatch, navigate]);
 
   useEffect(() => {

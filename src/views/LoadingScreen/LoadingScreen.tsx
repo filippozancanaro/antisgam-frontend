@@ -11,7 +11,7 @@ const LoadingScreen: React.FC = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setIndice((prev) => (prev + 1) % context.suggerimenti.length);
-    }, 3000); // Cambia suggerimento ogni 3 sec
+    }, 5000); // Cambia suggerimento ogni 5 sec
 
     return () => clearInterval(interval);
   }, [context.suggerimenti.length]);
@@ -24,7 +24,7 @@ const LoadingScreen: React.FC = () => {
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        bgcolor: '#f5f5f5',
+        // bgcolor: '#f5f5f5',
       }}
     >
       <CircularProgress color="primary" />

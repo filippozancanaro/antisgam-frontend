@@ -1,5 +1,5 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
-import { Homepage, LoadingScreen, NotFound } from '../views';
+import { Homepage, LoadingScreen, NotFound, Results } from '../views';
 import { ApplicationRoute } from '../components';
 
 const AppRoutes = () => {
@@ -10,7 +10,7 @@ const AppRoutes = () => {
                 <Route path="/" element={<Homepage />} />
                 <Route path="/home" element={<Homepage />} />
                 <Route path="/loading" element={<LoadingScreen />} />
-                {/* <Route path="/results" element={<UnfollowersComponent />} /> */}
+                <Route path="/results" element={<Results />} />
                 <Route path="/404-not-found" element={<NotFound />} />
                 <Route path="*" element={<Navigate to="/404-not-found" replace />} />
             </Route>
