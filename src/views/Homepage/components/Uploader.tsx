@@ -27,9 +27,8 @@ const Uploader: React.FC = () => {
                             <FilePicker
                                 key="zipfile"
                                 acceptedFiles={['application/x-zip-compressed', 'application/zip']}
-                                pageTitle="File di dati da Instagram"
+                                label="File di dati da Instagram"
                                 enabled={true}
-                                // onUploadStarted={(name) => console.log('START:', name)}
                                 onUploadCompleted={(_name, content) => manageZipFile(content)}
                                 onSelectionCleaned={() => {
                                     cleanupFormField('followers');
@@ -52,9 +51,8 @@ const Uploader: React.FC = () => {
                             <FilePicker
                                 key="followers"
                                 acceptedFiles={['application/json']}
-                                pageTitle="Followers"
+                                label="Followers"
                                 enabled={true}
-                                // onUploadStarted={(name) => console.log('START:', name)}
                                 onUploadCompleted={(_name, content) => manageJsonFile(content, 'followers')}
                                 onSelectionCleaned={() => {
                                     cleanupFormField('followers');
@@ -72,9 +70,8 @@ const Uploader: React.FC = () => {
                             <FilePicker
                                 key="following"
                                 acceptedFiles={['application/json']}
-                                pageTitle="Following"
+                                label="Following"
                                 enabled={true}
-                                // onUploadStarted={(name) => console.log('START:', name)}
                                 onUploadCompleted={(_name, content) => manageJsonFile(content, 'following')}
                                 onSelectionCleaned={() => {
                                     cleanupFormField('following');
