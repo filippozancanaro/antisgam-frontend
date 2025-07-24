@@ -7,6 +7,7 @@ import { ZipManager } from '../../utilities';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { setFollowers, setFollowing } from '../../shared/antisgam-core-state/antisgam-slice';
+import { useGlobalCleanup } from '../../shared/antisgam-cleanup/AntisgamCleanup';
 
 interface Props {
   children: ReactNode;
@@ -15,10 +16,12 @@ interface Props {
 const HomepageProvider: React.FC<Props> = ({ children }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const cleanup = useGlobalCleanup();
 
   const [mode, setMode] = useState<'zip' | 'json'>('zip');
   const [formFollowers, setFormFollowers] = useState<Set<string> | null>(null);
   const [formFollowing, setFormFollowing] = useState<Set<string> | null>(null);
+  const [uploaderETag, setUploaderETag] = useState<number>(0);
 
   const changeMode = (value: 'zip' | 'json') => {
     setMode(value);
@@ -221,9 +224,23 @@ const HomepageProvider: React.FC<Props> = ({ children }) => {
     navigate('/loading');
   };
 
+  const resetForm = async (): Promise<void> => {
+    // 1. Reset dello state
+    cleanupFormField('followers');
+    cleanupFormField('following');
+
+    // modifico l'etag per forzare il re-render del componente Uploader
+    const updatedUploaderETag = (uploaderETag < (Number.MAX_VALUE - 4)) ? uploaderETag + 1 : 0;
+    setUploaderETag(updatedUploaderETag);
+
+    // 2. Reset del Redux store
+    cleanup();
+  };
+
   return (
     <HomepageContext.Provider
       value={{
+        uploaderETag,
         mode,
         formFollowers,
         formFollowing,
@@ -232,7 +249,8 @@ const HomepageProvider: React.FC<Props> = ({ children }) => {
         manageJsonFile,
         manageZipFile,
         cleanupFormField,
-        analyzeData
+        analyzeData,
+        resetForm
       }}
     >
       {children}

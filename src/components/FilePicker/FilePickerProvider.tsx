@@ -5,7 +5,7 @@ import { FilePickerContext, type FilePickerContextProps } from './FilePickerCont
 interface Props {
   children: ReactNode;
   acceptedFiles?: string[] | null;
-  pageTitle: string;
+  label: string;
   enabled: boolean;
   onUploadStarted?: (fileName: string) => void;
   onUploadCompleted?: (fileName: string, content: File) => void;
@@ -15,7 +15,7 @@ interface Props {
 const FilePickerProvider: React.FC<Props> = ({
   children,
   acceptedFiles,
-  pageTitle,
+  label,
   enabled,
   onUploadStarted,
   onUploadCompleted,
@@ -35,30 +35,6 @@ const FilePickerProvider: React.FC<Props> = ({
     setFileContent(null);
     if (onSelectionCleaned) onSelectionCleaned();
   }, [onSelectionCleaned]);
-
-  // qui leggevo come un file di testo, ma ora lo leggo come un file
-  // const OLD_handleFile = (file: File) => {
-  //   if (!enabled || !file) return;
-
-  //   if (
-  //     acceptedFiles &&
-  //     acceptedFiles.length > 0 &&
-  //     !acceptedFiles.some((type) => file.type.includes(type))
-  //   ) {
-  //     return;
-  //   }
-
-  //   if (onUploadStarted) onUploadStarted(file.name);
-
-  //   const reader = new FileReader();
-  //   reader.onload = () => {
-  //     const content = reader.result as string;
-  //     setFileName(file.name);
-  //     setFileContent(content);
-  //     if (onUploadCompleted) onUploadCompleted(file.name, content);
-  //   };
-  //   reader.readAsText(file);
-  // };
   
   const handleFile = (file: File) => {
     if (!enabled || !file) return;
@@ -76,14 +52,14 @@ const FilePickerProvider: React.FC<Props> = ({
 
     // Nessuna lettura: passiamo direttamente il file
     setFileName(file.name);
-    setFileContent(file); // se ora è di tipo File
+    setFileContent(file);
 
     if (onUploadCompleted) onUploadCompleted(file.name, file);
   };
 
 
   const contextValue: FilePickerContextProps = {
-    pageTitle,
+    label,
     handleFile,
     getSelectedFile,
     cleanSelection,

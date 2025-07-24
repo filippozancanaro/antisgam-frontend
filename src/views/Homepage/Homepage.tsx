@@ -44,7 +44,7 @@ const Homepage: React.FC = () => {
         </Grid>
         <Grid size={{ md: 3, lg: 1, xl: 2 }} sx={{ display: { xs: 'none', lg: 'block' } }} />
 
-        <Uploader />
+        <Uploader key={`uploader_${context.uploaderETag}`} />
 
         {/* Bottone "Dove li trovo?" */}
         <Grid size={{ xs: 12 }}>
@@ -79,7 +79,7 @@ const Homepage: React.FC = () => {
         {/* Bottone testo "oppure, ricominciamo" */}
         <Grid size={{ xs: 12 }}>
           <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-            <Button variant="text" size="medium">
+            <Button variant="text" size="medium" onClick={() => context.resetForm()}>
               oppure, ricominciamo
             </Button>
           </Box>

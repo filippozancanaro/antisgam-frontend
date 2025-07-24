@@ -4,7 +4,7 @@ import FilePicker from './FilePicker';
 
 interface Props {
   acceptedFiles?: string[] | null;
-  pageTitle: string;
+  label: string;
   enabled: boolean;
   onUploadStarted?: (fileName: string) => void;
   onUploadCompleted?: (fileName: string, content: File) => void;

@@ -1,7 +1,7 @@
 import { createContext } from 'react';
 
 export interface FilePickerContextProps {
-  pageTitle: string;
+  label: string;
   handleFile: (file: File) => void;
   getSelectedFile: () => { name: string; content: File } | null;
   cleanSelection: () => void;

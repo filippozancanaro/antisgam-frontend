@@ -32,7 +32,7 @@ const FilePicker: React.FC = () => {
 
   const {
     acceptedFiles,
-    pageTitle,
+    label,
     handleFile,
     cleanSelection,
     isFileSelected,
@@ -98,14 +98,9 @@ const FilePicker: React.FC = () => {
         onDrop={(e) => {
           e.preventDefault();
           setIsDraggingOver(false);
-          // gestione file
+          // gestione file drag and drop
           handleDrop(e);
         }}
-        // sx={{
-        //   cursor: 'pointer',
-        //   transition: 'box-shadow 0.2s ease-in-out',
-        //   '&:hover': { boxShadow: 3 },
-        // }}
         sx={{
           cursor: 'pointer',
           bgcolor: isDraggingOver ? 'primary.main' : undefined,
@@ -124,7 +119,7 @@ const FilePicker: React.FC = () => {
           }}>
           <Box sx={{ minHeight: 150, px: 2 }} className={styles.iconarea}>
             <Typography variant="subtitle1" className={styles.title}>
-              {pageTitle}
+              {label}
             </Typography>
 
             <Fade in={loading} unmountOnExit>
