@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, Typography, Button, Container, Stack } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import pageEaten from '../../assets/images/page-eaten.svg';
+import pageEaten from '../../../public/assets/images/page-eaten.svg';
 
 const NotFoundComponent: React.FC = () => {
   const navigate = useNavigate();
