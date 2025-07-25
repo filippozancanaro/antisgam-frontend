@@ -18,28 +18,30 @@ const LoadingScreenProvider: React.FC<Props> = ({ children }) => {
   const suggerimentiScemi = [
     'Segui la via del cammello e troverai la tua oasi',
     'Non dimenticare di bere acqua, anche se non hai sete',
-    'La pazienza è la virtù dei forti, ma anche dei caricamenti',
-    'Un caricamento al giorno toglie il medico di torno',
+    'La pazienza è la virtù dei pazienti',
+    'Non piangere perchè ci sta mettendo troppo, piangi perché la benzina costa troppo',
     'Se il caricamento dura troppo, prova a contare le pecore',
-    'Ricorda: ogni caricamento è un passo verso la tua destinazione',
-    'La vita è come un caricamento: a volte ci vuole tempo, ma alla fine ne vale la pena',
+    'Ricordati di pagare le tasse',
+    'La vita è come una scatola di cioccolatini: a volte trovi quelli con il ripieno strano',
     'Non preoccuparti, il caricamento finirà prima o poi',
-    'Se il caricamento si blocca, prova a fare una pausa e rilassarti',
-    'Ogni caricamento è un’opportunità per riflettere sulla vita e sulle tue scelte',
-    'La pazienza è la chiave per affrontare i caricamenti più lunghi',
-    'Un caricamento lento è solo un caricamento che si prende il suo tempo',
-    'Non c’è fretta, il caricamento arriverà quando sarà pronto',
-    'Se il caricamento sembra infinito, prova a immaginare un mondo senza caricamenti',
-    'La vita è un caricamento continuo: a volte veloce, a volte lento, ma sempre in movimento',
-    'Un caricamento è come una storia: ha un inizio, uno sviluppo e una conclusione',
-    'Non dimenticare di sorridere durante il caricamento, potrebbe rendere l’attesa più piacevole',
-    'La vita è come un caricamento: a volte ci sono errori, ma si può sempre riprovare',
-    'Un caricamento è come un viaggio: a volte ci sono ostacoli, ma alla fine si arriva a destinazione',
-    'Se il caricamento si blocca, prova a fare un respiro profondo e riprovare',
-    'La vita è piena di caricamenti: alcuni brevi, altri lunghi, ma tutti necessari per crescere',
-    'Un caricamento è come un puzzle: a volte ci vuole tempo per mettere insieme i pezzi, ma alla fine si vede il quadro completo',
+    'Se il caricamento si blocca, prova ad andare nel panico',
+    'Ogni caricamento è un’opportunità per riflettere sulla vita e sulle tue scelte: mi raccomando, fai quelle sbagliate',
+    'Pensa che roba se mettevo un caricamento infinito e se tutto questo fosse una trollata',
+    'The alla pesca o the al limone?',
+    'Un caricamento non è mai in ritardo, Frodo Baggins, né in anticipo: termina esattamente quando intende farlo',
+    'Se il caricamento sembra infinito, probabilmente lo è realmente',
+    'La vita è un caricamento continuo: quando è il momento della pensione si blocca e va in crash',
+    'Un caricamento è come una storia: ha un inizio, uno sviluppo e forse pure una conclusione',
+    'Non dimenticare di sorridere durante il caricamento, potrebbe rendere l’attesa più piacevole (o farti venire un crampo ala mascella lol)',
+    'Lo sapevi che le formiche sono immuni al danno da caduta? Ecco, ora lo sai',
+    'Un caricamento è come un viaggio: se fa caldo eh... che palle',
+    'Se il caricamento si blocca, prova a riprovare',
+    'Non è la macchina che guida, lei non si fida di chi guida, sgrida chi non guida',
+    '"Where the f*ck am I?" - Confusion',
+    'Lo sapevi che i turchi ottomani non si davano il 5, ma il 40?',
+    'Come mai vuoi sapere chi ti ha unfollowato? Ti interessa veramente?',
     'Hai mai pensato al fatto che il cervello si è scelto il nome da solo?',
-    'Il Listenbourgh è una nazione fondata nel 1949 da un gruppo di metallari guidato da... boh, si, quel tipo la',
+    'Il Listenbourgh è una nazione fondata nel 1949 da un gruppo di sceicchi metallari guidato da Gianni il paninaro, la moneta ufficiale sono i tappi di birra e la lingua ufficiale è il dialetto di Milano',
     'Ancora qui stai? O si è bloccato il caricamento?',
     'Sei sicuro di voler continuare? Il caricamento potrebbe essere lungo',
     'Ripensaci amico, il caricamento potrebbe essere infinito',
@@ -49,9 +51,39 @@ const LoadingScreenProvider: React.FC<Props> = ({ children }) => {
   ];
 
   const [suggerimenti] = useState<string[]>(suggerimentiScemi);
+  const [minWaitOver, setMinWaitOver] = useState(false);
+  const [analysisDone, setAnalysisDone] = useState(false);
 
   const followers = useSelector((state: RootState) => state.antisgam.followersData);
   const following = useSelector((state: RootState) => state.antisgam.followingData);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setMinWaitOver(true);
+    }, 5000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  // const analyzeData = useCallback(async (
+  //   followers: string[],
+  //   following: string[]
+  // ): Promise<void> => {
+  //   if (!followers || !following || followers.length === 0 || following.length === 0) return;
+
+  //   const followersSet = new Set(followers);
+  //   const unfollowersSet = new Set(
+  //     following.filter((nickname) => !followersSet.has(nickname))
+  //   );
+
+  //   const sortedUnfollowers = Array.from(unfollowersSet).sort((a, b) =>
+  //     a.localeCompare(b)
+  //   );
+
+  //   dispatch(setUnfollowers(sortedUnfollowers));
+
+  //   navigate('/results');
+  // }, [dispatch, navigate]);
 
   const analyzeData = useCallback(async (
     followers: string[],
@@ -69,14 +101,18 @@ const LoadingScreenProvider: React.FC<Props> = ({ children }) => {
     );
 
     dispatch(setUnfollowers(sortedUnfollowers));
-
-    if (followersSet === unfollowersSet)
-    navigate('/results');
-  }, [dispatch, navigate]);
+    setAnalysisDone(true);
+  }, [dispatch]);
 
   useEffect(() => {
     analyzeData(followers, following);
   }, [analyzeData, followers, following]);
+
+  useEffect(() => {
+    if (minWaitOver && analysisDone) {
+      navigate('/results');
+    }
+  }, [minWaitOver, analysisDone, navigate]);
 
   return (
     <LoadingScreenContext.Provider

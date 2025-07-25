@@ -1,20 +1,13 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { LoadingScreenContext } from './LoadingScreenContext';
-import { Box, Typography, CircularProgress, Card, CardContent } from '@mui/material';
+import { Box, Typography, CircularProgress, Card, CardContent, Container } from '@mui/material';
+import loading from '../../../public/assets/images/loading.svg';
 
 const LoadingScreen: React.FC = () => {
   const context = useContext(LoadingScreenContext);
   if (!context) throw new Error('LoadingScreen deve essere usato all’interno di <LoadingScreenProvider>');
 
-  const [indice, setIndice] = useState(0);
-
-  // useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     setIndice((prev) => (prev + 1) % context.suggerimenti.length);
-  //   }, 5000); // Cambia suggerimento ogni 5 sec
-
-  //   return () => clearInterval(interval);
-  // }, [context.suggerimenti.length]);
+  const [indice, setIndice] = useState(() => Math.floor(Math.random() * context.suggerimenti.length) ?? 0);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -30,21 +23,51 @@ const LoadingScreen: React.FC = () => {
     return () => clearInterval(interval);
   }, [context.suggerimenti.length]);
 
-
   return (
-    <Box
+    <Container
       sx={{
-        height: '100vh',
+        height: '100%',
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        // bgcolor: '#f5f5f5',
+        justifyContent: 'space-between',
+        py: 3,
+        maxWidth: { xs: '100%', md: '900px' },
+        mx: 'auto',
       }}
     >
-      <CircularProgress color="primary" size={90} />
 
-      <Box sx={{ mt: 4, maxWidth: 400, px: 2 }}>
+      {/* Blocco centrale */}
+      <Box
+        sx={{
+          textAlign: 'center',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          flexGrow: 1,
+          justifyContent: 'center',
+        }}
+      >
+        <Box
+          component="img"
+          src={loading}
+          alt="Loading"
+          sx={{
+            width: {
+              xs: '60%',
+              sm: '50%',
+              md: '40%',
+            },
+            maxWidth: 300,
+            mb: 4,
+            mx: 'auto',
+          }}
+        />
+
+        <CircularProgress color="primary" size={90} />
+      </Box>
+
+      {/* Card fissa in fondo */}
+      <Box sx={{ mt: 4, px: 2 }}>
         <Card>
           <CardContent>
             <Typography variant="body1" align="center">
@@ -53,7 +76,7 @@ const LoadingScreen: React.FC = () => {
           </CardContent>
         </Card>
       </Box>
-    </Box>
+    </Container>
   );
 };
 
