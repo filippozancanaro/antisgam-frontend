@@ -48,7 +48,7 @@ const TutorialModal: React.FC<Props> = ({ open, onClose }) => {
             <Typography variant="subtitle1" gutterBottom>
               👋 Benvenuto! Ecco come funziona l'app.
             </Typography>
-            <StyledImage src="/assets/tutorial/barbados.jpg" alt="Step 1" />
+            <StyledImage src="/assets/tutorial/1.jpg" alt="Step 1" />
             <Typography variant="body2">
               Carica i tuoi file ZIP o JSON con i dati di Instagram. Segui le istruzioni nella sezione 1 della homepage.
             </Typography>
@@ -56,7 +56,7 @@ const TutorialModal: React.FC<Props> = ({ open, onClose }) => {
 
           {/* Step 2 */}
           <Grid size={{ xs: 12 }}>
-            <StyledImage src="/assets/tutorial/barbados.jpg" alt="Step 2" />
+            <StyledImage src="/assets/tutorial/2.jpg" alt="Step 2" />
             <Typography variant="body2">
               Una volta caricati, premi "Andiamo!" per vedere chi ha smesso di seguirti. L'app farà tutto in automatico.
             </Typography>
@@ -64,7 +64,7 @@ const TutorialModal: React.FC<Props> = ({ open, onClose }) => {
 
           {/* Step 3 */}
           <Grid size={{ xs: 12 }}>
-            <StyledImage src="/assets/tutorial/barbados.jpg" alt="Step 3" />
+            <StyledImage src="/assets/tutorial/3.jpg" alt="Step 3" />
             <Typography variant="body2">
               Puoi copiare la lista, esportarla, oppure… semplicemente perdonarli 😄
             </Typography>

@@ -70,6 +70,7 @@ const LoadingScreenProvider: React.FC<Props> = ({ children }) => {
 
     dispatch(setUnfollowers(sortedUnfollowers));
 
+    if (followersSet === unfollowersSet)
     navigate('/results');
   }, [dispatch, navigate]);
 

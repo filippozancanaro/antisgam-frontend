@@ -10,12 +10,12 @@ const AppToolbar: React.FC = () => {
   const { title, menuClickHandler } = context;
 
   return (
-    <AppBar position="static">
+    <AppBar position="static" color="default">
       <MuiToolbar>
-        <IconButton edge="start" color="inherit" aria-label="menu" onClick={menuClickHandler}>
+        <IconButton edge="start" color="primary" aria-label="menu" onClick={menuClickHandler}>
           <MenuIcon />
         </IconButton>
-        <Typography variant="h6" component="div" sx={{ ml: 2 }}>
+        <Typography variant="h6" component="div" color='primary' sx={{ ml: 2 }}>
           {title}
         </Typography>
       </MuiToolbar>
