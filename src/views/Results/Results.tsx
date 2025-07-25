@@ -40,7 +40,7 @@ const Results: React.FC = () => {
               ECCO CHI HA SMESSO DI SEGUIRTI
             </Typography>
             <Typography variant="subtitle1" color="text.secondary" gutterBottom>
-              Ora va e vendicati, <Button variant="text" size="small" onClick={() => setModalOpen(true)}> ma prima leggi qui </Button>
+              Ora va e vendicati, ma occhio ai <Button variant="text" size="small" onClick={() => setModalOpen(true)}> limiti di Instagram </Button>
             </Typography>
           </Grid>
           <Grid size={{ md: 3, lg: 1, xl: 2 }} sx={{ display: { xs: 'none', lg: 'block' } }} />

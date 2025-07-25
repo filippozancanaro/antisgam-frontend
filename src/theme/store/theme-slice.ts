@@ -1,9 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 
+type UserThemeMode = 'auto' | 'light' | 'dark';
 type ThemeMode = 'light' | 'dark';
 
 interface ThemeState {
+  userchoice: UserThemeMode;
   mode: ThemeMode;
 }
 
@@ -15,6 +17,7 @@ const getSystemTheme = (): ThemeMode => {
 };
 
 const initialState: ThemeState = {
+  userchoice: 'auto',
   mode: getSystemTheme(),
 };
 
@@ -22,6 +25,9 @@ const themeSlice = createSlice({
   name: 'theme',
   initialState,
   reducers: {
+    setUserThemePreference: (state, action: PayloadAction<UserThemeMode>) => {
+      state.userchoice = action.payload;
+    },
     setTheme: (state, action: PayloadAction<ThemeMode>) => {
       state.mode = action.payload;
     },
@@ -31,5 +37,5 @@ const themeSlice = createSlice({
   },
 });
 
-export const { setTheme, toggleTheme } = themeSlice.actions;
+export const { setUserThemePreference, setTheme, toggleTheme } = themeSlice.actions;
 export default themeSlice.reducer;

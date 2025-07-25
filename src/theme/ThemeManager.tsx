@@ -9,11 +9,16 @@ interface Props {
 }
 
 const ThemeManager = ({ children }: Props) => {
+  const userChoice = useSelector((state: RootState) => state.theme.userchoice);
+
   const mode = useSelector((state: RootState) => state.theme.mode);
   const theme = mode === 'dark' ? darkTheme : lightTheme;
 
+  const finaltheme = userChoice === 'auto' ? theme : (userChoice === 'dark'  ? darkTheme : lightTheme);
+  const tema = finaltheme ?? theme;
+
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProvider theme={tema}>
       <CssBaseline />
       {children}
     </ThemeProvider>

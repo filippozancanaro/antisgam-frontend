@@ -12,6 +12,7 @@ const AppToolbar: React.FC = () => {
   return (
     <AppBar position="static" color="default">
       <MuiToolbar>
+        {}
         <IconButton edge="start" color="primary" aria-label="menu" onClick={menuClickHandler}>
           <MenuIcon />
         </IconButton>
