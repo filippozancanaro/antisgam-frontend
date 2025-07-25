@@ -23,81 +23,88 @@ const Results: React.FC = () => {
   const hasUnfollowers = unfollowers?.length > 0;
 
   return (
-    <Box sx={{ p: 4 }}>
-      <Typography variant="h4" gutterBottom>
-        Ecco chi ha smesso di seguirti
-      </Typography>
+    <Box sx={{ p: 2 }}>
+      <Grid container spacing={2}>
 
-      <Typography variant="subtitle1" color="text.secondary" gutterBottom>
-        (ora va e vendicati)
-      </Typography>
+        <Grid size={{ md: 3, lg: 1, xl: 2 }} sx={{ display: { xs: 'none', lg: 'block' } }} />
+        <Grid size={{ xs: 12, md: 6, lg: 10, xl: 8 }}>
+          <Typography variant="h4" gutterBottom>
+            ECCO CHI HA SMESSO DI SEGUIRTI
+          </Typography>
+          <Typography variant="subtitle1" color="text.secondary" gutterBottom>
+            (ora va e vendicati)
+          </Typography>
+        </Grid>
+        <Grid size={{ md: 3, lg: 1, xl: 2 }} sx={{ display: { xs: 'none', lg: 'block' } }} />
 
-      <Box
-        sx={{
-          maxHeight: 400,
-          overflowY: 'auto',
-          mt: 3,
-          mb: 4,
-          border: '1px solid #ccc',
-          borderRadius: 2,
-          p: 2,
-        }}
-      >
-        {hasUnfollowers ? (
-          <List>
-            {unfollowers.map((nickname, index) => (
-              <ListItem key={index}>
-                <ListItemIcon>
-                  <PersonIcon color="primary" />
-                </ListItemIcon>
-                <ListItemText primary={nickname} />
-              </ListItem>
-            ))}
-          </List>
-        ) : (
+        <Grid size={{ md: 3, lg: 1, xl: 2 }} sx={{ display: { xs: 'none', lg: 'block' } }} />
+        <Grid size={{ xs: 12, md: 6, lg: 10, xl: 8 }}>
           <Box
             sx={{
-              textAlign: 'center',
-              mt: 4,
-              mb: 4
+              maxHeight: 300,
+              overflowY: 'auto',
+              mt: 1,
+              mb: 1,
+              border: '1px solid #ccc',
+              borderRadius: 2,
+              p: 1,
             }}
           >
-            <CelebrationIcon color="primary" sx={{ fontSize: 48 }} />
-            <Typography variant="h5" mt={2}>
-              Nessuno ti ha unfollowato, grande!
-            </Typography>
+            {hasUnfollowers ? (
+              <List>
+                {unfollowers.map((nickname, index) => (
+                  <ListItem key={index}>
+                    <ListItemIcon>
+                      <PersonIcon color="primary" />
+                    </ListItemIcon>
+                    <ListItemText primary={nickname} />
+                  </ListItem>
+                ))}
+              </List>
+            ) : (
+              <Box
+                sx={{
+                  textAlign: 'center',
+                  mt: 4,
+                  mb: 4
+                }}
+              >
+                <CelebrationIcon color="primary" sx={{ fontSize: 48 }} />
+                <Typography variant="h5" mt={2}>
+                  Nessuno ti ha unfollowato, grande!
+                </Typography>
+              </Box>
+            )}
           </Box>
-        )}
-      </Box>
+        </Grid>
+        <Grid size={{ md: 3, lg: 1, xl: 2 }} sx={{ display: { xs: 'none', lg: 'block' } }} />
 
-      <Grid
-        container
-        spacing={2}
-        justifyContent="center"
-        sx={{ textAlign: 'center' }}
-      >
-        <Grid size={{ xs: 12, sm: 6 }}>
-          <Button
-            variant="contained"
-            startIcon={<ContentCopyIcon />}
-            onClick={copyToClipboard}
-            disabled={!hasUnfollowers}
-          >
-            Copia negli appunti
-          </Button>
+        {/* Azioni disponibili */}
+        <Grid size={{ xs: 12 }}>
+          <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+            <Button
+              variant="contained"
+              startIcon={<ContentCopyIcon />}
+              onClick={copyToClipboard}
+              disabled={!hasUnfollowers}
+            >
+              Copia negli appunti
+            </Button>
+          </Box>
+        </Grid>
+        <Grid size={{ xs: 12 }}>
+          <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+            <Button
+              variant="outlined"
+              startIcon={<RestartAltIcon />}
+              onClick={restart}
+            >
+              Ricominciamo!
+            </Button>
+          </Box>
         </Grid>
 
-        <Grid size={{ xs: 12, sm: 6 }}>
-          <Button
-            variant="outlined"
-            startIcon={<RestartAltIcon />}
-            onClick={restart}
-          >
-            Ricominciamo!
-          </Button>
-        </Grid>
       </Grid>
-
     </Box>
   );
 };
