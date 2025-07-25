@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import {
   Box,
   Typography,
@@ -14,6 +14,7 @@ import CelebrationIcon from '@mui/icons-material/Celebration';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import { ResultsContext } from './ResultsContext';
+import { DlgResults } from './components';
 
 const Results: React.FC = () => {
   const context = useContext(ResultsContext);
@@ -22,90 +23,98 @@ const Results: React.FC = () => {
   const { unfollowers, copyToClipboard, restart } = context;
   const hasUnfollowers = unfollowers?.length > 0;
 
+  const [modalOpen, setModalOpen] = useState(false);
+
   return (
-    <Box sx={{ p: 2 }}>
-      <Grid container spacing={2}>
+    <>
+      {modalOpen === true &&
+        <DlgResults open={modalOpen} onClose={() => setModalOpen(false)} />
+      }
 
-        <Grid size={{ md: 3, lg: 1, xl: 2 }} sx={{ display: { xs: 'none', lg: 'block' } }} />
-        <Grid size={{ xs: 12, md: 6, lg: 10, xl: 8 }}>
-          <Typography variant="h4" gutterBottom>
-            ECCO CHI HA SMESSO DI SEGUIRTI
-          </Typography>
-          <Typography variant="subtitle1" color="text.secondary" gutterBottom>
-            (ora va e vendicati)
-          </Typography>
-        </Grid>
-        <Grid size={{ md: 3, lg: 1, xl: 2 }} sx={{ display: { xs: 'none', lg: 'block' } }} />
+      <Box sx={{ p: 2 }}>
+        <Grid container spacing={2}>
 
-        <Grid size={{ md: 3, lg: 1, xl: 2 }} sx={{ display: { xs: 'none', lg: 'block' } }} />
-        <Grid size={{ xs: 12, md: 6, lg: 10, xl: 8 }}>
-          <Box
-            sx={{
-              maxHeight: 300,
-              overflowY: 'auto',
-              mt: 1,
-              mb: 1,
-              border: '1px solid #ccc',
-              borderRadius: 2,
-              p: 1,
-            }}
-          >
-            {hasUnfollowers ? (
-              <List>
-                {unfollowers.map((nickname, index) => (
-                  <ListItem key={index}>
-                    <ListItemIcon>
-                      <PersonIcon color="primary" />
-                    </ListItemIcon>
-                    <ListItemText primary={nickname} />
-                  </ListItem>
-                ))}
-              </List>
-            ) : (
-              <Box
-                sx={{
-                  textAlign: 'center',
-                  mt: 4,
-                  mb: 4
-                }}
+          <Grid size={{ md: 3, lg: 1, xl: 2 }} sx={{ display: { xs: 'none', lg: 'block' } }} />
+          <Grid size={{ xs: 12, md: 6, lg: 10, xl: 8 }}>
+            <Typography variant="h4" gutterBottom>
+              ECCO CHI HA SMESSO DI SEGUIRTI
+            </Typography>
+            <Typography variant="subtitle1" color="text.secondary" gutterBottom>
+              Ora va e vendicati, <Button variant="text" size="small" onClick={() => setModalOpen(true)}> ma prima leggi qui </Button>
+            </Typography>
+          </Grid>
+          <Grid size={{ md: 3, lg: 1, xl: 2 }} sx={{ display: { xs: 'none', lg: 'block' } }} />
+
+          <Grid size={{ md: 3, lg: 1, xl: 2 }} sx={{ display: { xs: 'none', lg: 'block' } }} />
+          <Grid size={{ xs: 12, md: 6, lg: 10, xl: 8 }}>
+            <Box
+              sx={{
+                maxHeight: 300,
+                overflowY: 'auto',
+                mt: 1,
+                mb: 1,
+                border: '1px solid #ccc',
+                borderRadius: 2,
+                p: 1,
+              }}
+            >
+              {hasUnfollowers ? (
+                <List>
+                  {unfollowers.map((nickname, index) => (
+                    <ListItem key={index}>
+                      <ListItemIcon>
+                        <PersonIcon color="primary" />
+                      </ListItemIcon>
+                      <ListItemText primary={nickname} />
+                    </ListItem>
+                  ))}
+                </List>
+              ) : (
+                <Box
+                  sx={{
+                    textAlign: 'center',
+                    mt: 4,
+                    mb: 4
+                  }}
+                >
+                  <CelebrationIcon color="primary" sx={{ fontSize: 48 }} />
+                  <Typography variant="h5" mt={2}>
+                    Nessuno ti ha unfollowato, grande!
+                  </Typography>
+                </Box>
+              )}
+            </Box>
+          </Grid>
+          <Grid size={{ md: 3, lg: 1, xl: 2 }} sx={{ display: { xs: 'none', lg: 'block' } }} />
+
+          {/* Azioni disponibili */}
+          <Grid size={{ xs: 12 }}>
+            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+              <Button
+                variant="contained"
+                startIcon={<ContentCopyIcon />}
+                onClick={copyToClipboard}
+                disabled={!hasUnfollowers}
               >
-                <CelebrationIcon color="primary" sx={{ fontSize: 48 }} />
-                <Typography variant="h5" mt={2}>
-                  Nessuno ti ha unfollowato, grande!
-                </Typography>
-              </Box>
-            )}
-          </Box>
-        </Grid>
-        <Grid size={{ md: 3, lg: 1, xl: 2 }} sx={{ display: { xs: 'none', lg: 'block' } }} />
+                Copia negli appunti
+              </Button>
+            </Box>
+          </Grid>
+          <Grid size={{ xs: 12 }}>
+            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+              <Button
+                variant="outlined"
+                startIcon={<RestartAltIcon />}
+                onClick={restart}
+              >
+                Ricominciamo!
+              </Button>
+            </Box>
+          </Grid>
 
-        {/* Azioni disponibili */}
-        <Grid size={{ xs: 12 }}>
-          <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-            <Button
-              variant="contained"
-              startIcon={<ContentCopyIcon />}
-              onClick={copyToClipboard}
-              disabled={!hasUnfollowers}
-            >
-              Copia negli appunti
-            </Button>
-          </Box>
         </Grid>
-        <Grid size={{ xs: 12 }}>
-          <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-            <Button
-              variant="outlined"
-              startIcon={<RestartAltIcon />}
-              onClick={restart}
-            >
-              Ricominciamo!
-            </Button>
-          </Box>
-        </Grid>
-
-      </Grid>
-    </Box>
+      </Box>
+    </>
   );
 };
 
