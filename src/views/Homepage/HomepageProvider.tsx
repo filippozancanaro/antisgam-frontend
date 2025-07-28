@@ -5,9 +5,10 @@ import type { IFollower } from '../../interfaces/followers/followers';
 import type { IFollowingWrapper } from '../../interfaces/following/following';
 import { ZipManager } from '../../utilities';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { setFollowers, setFollowing } from '../../shared/antisgam-core-state/antisgam-slice';
+import { useDispatch, useSelector } from 'react-redux';
+import { setFollowers, setFollowing, setPendingRequests, setRemovedSuggestions } from '../../shared/antisgam-core-state/antisgam-slice';
 import { useGlobalCleanup } from '../../shared/antisgam-cleanup/AntisgamCleanup';
+import type { RootState } from '../../store/store';
 
 interface Props {
   children: ReactNode;
@@ -18,9 +19,14 @@ const HomepageProvider: React.FC<Props> = ({ children }) => {
   const dispatch = useDispatch();
   const cleanup = useGlobalCleanup();
 
-  const [mode, setMode] = useState<'zip' | 'json'>('zip');
+  const enableJsonFiles = useSelector((state: RootState) => state.uploaderJson.enableJsonFiles);
+  const initialMode = !enableJsonFiles ? 'zip' : 'zip';
+
+  const [mode, setMode] = useState<'zip' | 'json'>(initialMode);
   const [formFollowers, setFormFollowers] = useState<Set<string> | null>(null);
   const [formFollowing, setFormFollowing] = useState<Set<string> | null>(null);
+  const [formPending, setFormPending] = useState<Set<string> | null>(null);
+  const [formSuggestions, setFormSuggestions] = useState<Set<string> | null>(null);
   const [uploaderETag, setUploaderETag] = useState<number>(0);
 
   const changeMode = (value: 'zip' | 'json') => {
@@ -194,7 +200,7 @@ const HomepageProvider: React.FC<Props> = ({ children }) => {
     setFormFollowing(followingNicknames);
   }
 
-  const cleanupFormField = (fieldName?: 'followers' | 'following') => {
+  const cleanupFormField = (fieldName?: 'followers' | 'following' | 'pending' | 'suggestions') => {
     if (!fieldName)
       return;
 
@@ -204,6 +210,14 @@ const HomepageProvider: React.FC<Props> = ({ children }) => {
 
     if (fieldName === 'following') {
       setFormFollowing(null);
+    }
+
+    if (fieldName === 'pending') {
+      setFormPending(null);
+    }
+
+    if (fieldName === 'suggestions') {
+      setFormSuggestions(null);
     }
   }
 
@@ -219,15 +233,22 @@ const HomepageProvider: React.FC<Props> = ({ children }) => {
     // 1. Salvataggio su Redux
     dispatch(setFollowers(Array.from(formFollowers)));
     dispatch(setFollowing(Array.from(formFollowing)));
+    dispatch(setPendingRequests(Array.from(formPending ?? [])));
+    dispatch(setRemovedSuggestions(Array.from(formSuggestions ?? [])));
 
     // 2. Redirect su "/loading"
     navigate('/loading');
   };
 
   const resetForm = async (): Promise<void> => {
+    // 0. Reset della modalità
+    setMode('zip');
+
     // 1. Reset dello state
     cleanupFormField('followers');
     cleanupFormField('following');
+    cleanupFormField('pending');
+    cleanupFormField('suggestions');
 
     // modifico l'etag per forzare il re-render del componente Uploader
     const updatedUploaderETag = (uploaderETag < (Number.MAX_VALUE - 4)) ? uploaderETag + 1 : 0;
@@ -240,6 +261,7 @@ const HomepageProvider: React.FC<Props> = ({ children }) => {
   return (
     <HomepageContext.Provider
       value={{
+        enableJsonFiles,
         uploaderETag,
         mode,
         formFollowers,

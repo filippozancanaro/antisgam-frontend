@@ -12,11 +12,11 @@ const Uploader: React.FC = () => {
     const context = useContext(HomepageContext);
     if (!context) throw new Error('Uploader deve essere usato all’interno di <HomepageProvider>');
 
-    const { manageJsonFile, manageZipFile, cleanupFormField } = context;
+    const { mode, manageJsonFile, manageZipFile, cleanupFormField } = context;
 
     return (
         <>
-            {context.mode === 'zip' ?
+            {mode === 'zip' ?
                 <>
                     <Grid size={{ md: 3, xl: 4 }} sx={{ display: { xs: 'none', md: 'block' } }} />
                     {/* Modalità ZIP */}

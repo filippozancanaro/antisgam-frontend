@@ -1,8 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 
-type UserThemeMode = 'auto' | 'light' | 'dark';
-type ThemeMode = 'light' | 'dark';
+export type ThemeMode = 'light' | 'dark';
+export type UserThemeMode = 'auto' | 'light' | 'dark';
 
 interface ThemeState {
   userchoice: UserThemeMode;

@@ -42,10 +42,12 @@ const Homepage: React.FC = () => {
           </Grid>
           <Grid size={{ xs: 12, md: 6, lg: 5, xl: 4 }}>
             <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-              <Tabs value={context.mode} onChange={(_e, value: 'zip' | 'json') => modeSelectionHandler(value)} aria-label="basic tabs example">
-                <Tab label="Carica ZIP" value="zip" />
-                <Tab label="Carica JSON" value="json" />
-              </Tabs>
+              {context.enableJsonFiles === true &&
+                <Tabs value={context.mode} onChange={(_e, value: 'zip' | 'json') => modeSelectionHandler(value)} aria-label="basic tabs example">
+                  <Tab label="Carica ZIP" value="zip" />
+                  <Tab label="Carica JSON" value="json" />
+                </Tabs>
+              }
             </Box>
           </Grid>
           <Grid size={{ md: 3, lg: 1, xl: 2 }} sx={{ display: { xs: 'none', lg: 'block' } }} />

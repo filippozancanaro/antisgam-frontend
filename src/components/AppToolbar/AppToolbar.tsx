@@ -7,16 +7,15 @@ const AppToolbar: React.FC = () => {
   const context = useContext(AppToolbarContext);
   if (!context) throw new Error('Toolbar deve essere usato all’interno di <AppToolbarProvider>');
 
-  const { title, menuClickHandler } = context;
+  const { title, menuClickHandler, navigateToHomepage } = context;
 
   return (
     <AppBar position="static" color="default">
       <MuiToolbar>
-        {}
         <IconButton edge="start" color="primary" aria-label="menu" onClick={menuClickHandler}>
           <MenuIcon />
         </IconButton>
-        <Typography variant="h6" component="div" color='primary' sx={{ ml: 2 }}>
+        <Typography variant="h6" component="div" color='primary' sx={{ ml: 2, cursor: 'pointer' }} onClick={() => navigateToHomepage()}>
           {title}
         </Typography>
       </MuiToolbar>
