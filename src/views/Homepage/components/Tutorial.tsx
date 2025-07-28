@@ -9,37 +9,151 @@ import {
   Grid,
   useMediaQuery,
   useTheme,
-  Card,
-  CardContent,
-  CardHeader
 } from '@mui/material';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import MenuIcon from '@mui/icons-material/Menu';
-
-import { styled } from '@mui/material/styles';
+import TutorialStep from './TutorialStep';
 
 interface Props {
   open: boolean;
   onClose: () => void;
 }
 
-const SvgImage = styled('img')(({ theme }) => ({
-  width: '100%',
-  maxWidth: '300px',
-  marginBottom: theme.spacing(2)
-}));
-
-const StyledImage = styled('img')(({ theme }) => ({
-  width: '100%',
-  maxWidth: '300px',
-  borderRadius: theme.shape.borderRadius,
-  boxShadow: theme.shadows[2],
-  marginBottom: theme.spacing(2)
-}));
+interface IStep {
+  number: string | number
+  text: string
+  image: string
+  imageAlt: string
+  fullWidth?: boolean
+  isSvg?: boolean
+  highlight?: boolean
+}
 
 const TutorialModal: React.FC<Props> = ({ open, onClose }) => {
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
+
+  const steps: IStep[] = [
+    {
+      number: '1.',
+      text: 'Fai click sul tasto "menu" (📑) in alto a sinistra sulla pagina del tuo profilo Instagram',
+      image: '/assets/tutorial/1.jpg',
+      imageAlt: 'Step 1',
+    },
+    {
+      number: '2.',
+      text: 'Clicca su "Centro gestione account"',
+      image: '/assets/tutorial/2.jpg',
+      imageAlt: 'Step 2',
+    },
+    {
+      number: '3.',
+      text: 'Seleziona "le tue informazioni e autorizzazioni"',
+      image: '/assets/tutorial/3.jpg',
+      imageAlt: 'Step 3',
+    },
+    {
+      number: '4.',
+      text: 'Clicca su "Scarica le tue informazioni"',
+      image: '/assets/tutorial/4.jpg',
+      imageAlt: 'Step 4',
+    },
+    {
+      number: '🚀 Pro Tip!',
+      text: 'Dallo step 1 puoi anche usare la ricerca per arrivare rapidamente a "Scarica le tue informazioni"!',
+      image: '/assets/tutorial/3_5.jpg',
+      imageAlt: 'Pro Tip',
+      fullWidth: true,
+    },
+    {
+      number: '5.',
+      text: 'Clicca su "Scarica sul dispositivo"',
+      image: '/assets/tutorial/5.jpg',
+      imageAlt: 'Step 5',
+    },
+    {
+      number: '6.',
+      text: 'Seleziona "Scarica o trasferisci informazioni"',
+      image: '/assets/tutorial/6.jpg',
+      imageAlt: 'Step 6',
+    },
+    {
+      number: '7.',
+      text: 'Seleziona "Alcune delle tue informazioni"',
+      image: '/assets/tutorial/7.jpg',
+      imageAlt: 'Step 7',
+    },
+    {
+      number: '8.',
+      text: 'Trova "Follower e persone/Pagine seguite", selezionalo e fai click su "Avanti"',
+      image: '/assets/tutorial/8.jpg',
+      imageAlt: 'Step 8',
+    },
+    {
+      number: '9.',
+      text: 'Verifica che la mail su "Notifica" sia corretta, dopo di che clicca su "Formato"',
+      image: '/assets/tutorial/9.jpg',
+      imageAlt: 'Step 9',
+    },
+    {
+      number: '10. (IMPORTANTE)',
+      text: 'Seleziona "JSON" e fai click su "X"',
+      image: '/assets/tutorial/10.jpg',
+      imageAlt: 'Step 10',
+      highlight: true,
+    },
+    {
+      number: '11.',
+      text: 'Opzionale ma può velocizzare il download: seleziona "Bassa" come "Qualità dei contenuti multimediali"',
+      image: '/assets/tutorial/11.jpg',
+      imageAlt: 'Step 11',
+    },
+    {
+      number: '12.',
+      text: 'Opzionale, per la prima esecuzione seleziona "Dall\'inizio" come "Intervallo di date"',
+      image: '/assets/tutorial/12.jpg',
+      imageAlt: 'Step 12',
+    },
+    {
+      number: '13.',
+      text: 'Verifica che sia tutto impostato come nello screen successivo, dopo di che clicca su "Crea file"',
+      image: '/assets/tutorial/13.jpg',
+      imageAlt: 'Step 13',
+    },
+    {
+      number: '14.',
+      text: 'Apparirà un messaggio di conferma della richiesta ed una box con la richiesta in corso: ora devi solo...',
+      image: '/assets/tutorial/14.jpg',
+      imageAlt: 'Step 14',
+    },
+    {
+      number: 'ATTENDERE 🕑',
+      text: 'Esatto: attendere pazientemente che Meta elabori i dati. Di solito è abbastanza veloce, ma nel frattempo puoi sempre uscire per un aperitivo (o giocare con il gatto, che ne so).',
+      image: '/assets/images/wait.svg',
+      imageAlt: 'Step 15',
+      fullWidth: true,
+      isSvg: true,
+    },
+    {
+      number: '16.',
+      text: 'Appena arriva la mail di Meta (tipo questa)...',
+      image: '/assets/tutorial/16.jpg',
+      imageAlt: 'Step 16',
+    },
+    {
+      number: '17.',
+      text: '...torna a "Scarica le tue informazioni" e clicca su "Scarica" per scaricare il file ZIP con i tuoi dati.',
+      image: '/assets/tutorial/17.jpg',
+      imageAlt: 'Step 17',
+    },
+    {
+      number: 'TORNA QUI E DECOLLIAMO! 🚀',
+      text: '...sei ancora qui? Dai, corri ad analizzare il file!',
+      image: '/assets/images/launch.svg',
+      imageAlt: 'Final Step',
+      fullWidth: true,
+      isSvg: true,
+    },
+  ];
 
   return (
     <Dialog
@@ -58,7 +172,7 @@ const TutorialModal: React.FC<Props> = ({ open, onClose }) => {
           {/* Introduzione */}
           <Grid size={{ xs: 12 }}>
             <Typography variant="h6" gutterBottom color="primary" sx={{ textAlign: 'center' }}>
-              👋 BENVENUTO/A IN ANTISGAM 👋 
+              👋 BENVENUTO/A IN ANTISGAM 👋
             </Typography>
             <Typography variant="subtitle1" gutterBottom fontSize="16" sx={{ textAlign: 'center' }}>
               LA PRIMA ED UNICA APP PER SGAMARE GLI UNFOLLOWERS E NON FARSI BANNARE!
@@ -81,397 +195,18 @@ const TutorialModal: React.FC<Props> = ({ open, onClose }) => {
             </Typography>
           </Grid>
 
-          {/* Step 1 */}
-          <Grid size={{ xs: 12, lg: 6 }}>
-            <Card>
-              <CardHeader
-                sx={{ paddingBottom: 0 }}
-                title={
-                  <Typography variant="h6" fontSize={18}>
-                    1.
-                  </Typography>
-                }
+          {steps.map((step) => (
+            <Grid key={step.number} size={{ xs: 12, lg: step.fullWidth ? 12 : 6 }}>
+              <TutorialStep
+                number={step.number}
+                text={step.text}
+                imagePath={step.image}
+                imageAlt={step.imageAlt}
+                isSvg={step.isSvg}
+                highlight={step.highlight}
               />
-
-              <CardContent sx={{ justifyContent: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-
-                <Typography variant="body2" gutterBottom>
-                  Fai click sul tasto "menu" (<MenuIcon fontSize='small' color="secondary" />) in alto a sinistra sulla pagina del tuo profilo Instagram
-                </Typography>
-                <StyledImage src="/assets/tutorial/1.jpg" alt="Step 1" />
-
-              </CardContent>
-            </Card>
-          </Grid>
-          {/* Step 2 */}
-          <Grid size={{ xs: 12, lg: 6 }}>
-            <Card>
-              <CardHeader
-                sx={{ paddingBottom: 0 }}
-                title={
-                  <Typography variant="h6" fontSize={18}>
-                    2.
-                  </Typography>
-                }
-              />
-              <CardContent sx={{ justifyContent: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                <Typography variant="body2" gutterBottom>
-                  Clicca su "Centro gestione account"
-                </Typography>
-                <StyledImage src="/assets/tutorial/2.jpg" alt="Step 2" />
-              </CardContent>
-            </Card>
-          </Grid>
-
-          {/* Step 3 */}
-          <Grid size={{ xs: 12, lg: 6 }}>
-            <Card>
-              <CardHeader
-                sx={{ paddingBottom: 0 }}
-                title={
-                  <Typography variant="h6" fontSize={18}>
-                    3.
-                  </Typography>
-                }
-              />
-              <CardContent sx={{ justifyContent: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                <Typography variant="body2" gutterBottom>
-                  Seleziona "le tue informazioni e autorizzazioni"
-                </Typography>
-                <StyledImage src="/assets/tutorial/3.jpg" alt="Step 3" />
-              </CardContent>
-            </Card>
-          </Grid>
-
-          {/* Step 4 */}
-          <Grid size={{ xs: 12, lg: 6 }}>
-            <Card>
-              <CardHeader
-                sx={{ paddingBottom: 0 }}
-                title={
-                  <Typography variant="h6" fontSize={18}>
-                    4.
-                  </Typography>
-                }
-              />
-              <CardContent sx={{ justifyContent: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                <Typography variant="body2" gutterBottom>
-                  Clicca su "Scarica le tue informazioni"
-                </Typography>
-                <StyledImage src="/assets/tutorial/4.jpg" alt="Step 4" />
-              </CardContent>
-            </Card>
-          </Grid>
-
-          {/* Pro Tip */}
-          <Grid size={{ xs: 12 }}>
-            <Card>
-              <CardHeader
-                sx={{ paddingBottom: 0 }}
-                title={
-                  <Typography variant="h6" fontSize={18}>
-                    🚀 Pro Tip!
-                  </Typography>
-                }
-              />
-              <CardContent sx={{ justifyContent: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                <Typography variant="body2" gutterBottom>
-                  Dallo step 1 puoi anche usare la ricerca per arrivare rapidamente a "Scarica le tue informazioni"!
-                </Typography>
-                <StyledImage src="/assets/tutorial/3_5.jpg" alt="Pro Tip" />
-              </CardContent>
-            </Card>
-          </Grid>
-
-          {/* Step 5 */}
-          <Grid size={{ xs: 12, lg: 6 }}>
-            <Card>
-              <CardHeader
-                sx={{ paddingBottom: 0 }}
-                title={
-                  <Typography variant="h6" fontSize={18}>
-                    5.
-                  </Typography>
-                }
-              />
-              <CardContent sx={{ justifyContent: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                <Typography variant="body2" gutterBottom>
-                  Clicca su "Scarica sul dispositivo"
-                </Typography>
-                <StyledImage src="/assets/tutorial/5.jpg" alt="Step 5" />
-              </CardContent>
-            </Card>
-          </Grid>
-
-          {/* Step 6 */}
-          <Grid size={{ xs: 12, lg: 6 }}>
-            <Card>
-              <CardHeader
-                sx={{ paddingBottom: 0 }}
-                title={
-                  <Typography variant="h6" fontSize={18}>
-                    6.
-                  </Typography>
-                }
-              />
-              <CardContent sx={{ justifyContent: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                <Typography variant="body2" gutterBottom>
-                  Seleziona "Scarica o trasferisci informazioni"
-                </Typography>
-                <StyledImage src="/assets/tutorial/6.jpg" alt="Step 6" />
-              </CardContent>
-            </Card>
-          </Grid>
-
-          {/* Step 7 */}
-          <Grid size={{ xs: 12, lg: 6 }}>
-            <Card>
-              <CardHeader
-                sx={{ paddingBottom: 0 }}
-                title={
-                  <Typography variant="h6" fontSize={18}>
-                    7.
-                  </Typography>
-                }
-              />
-              <CardContent sx={{ justifyContent: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                <Typography variant="body2" gutterBottom>
-                  Seelziona "Alcune delle tue informazioni"
-                </Typography>
-                <StyledImage src="/assets/tutorial/7.jpg" alt="Step 7" />
-              </CardContent>
-            </Card>
-          </Grid>
-
-          {/* Step 8 */}
-          <Grid size={{ xs: 12, lg: 6 }}>
-            <Card>
-              <CardHeader
-                sx={{ paddingBottom: 0 }}
-                title={
-                  <Typography variant="h6" fontSize={18}>
-                    8.
-                  </Typography>
-                }
-              />
-              <CardContent sx={{ justifyContent: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                <Typography variant="body2" gutterBottom>
-                  Trova "Follower e persone/Pagine seguite", selezionalo e fai click su "Avanti"
-                </Typography>
-                <StyledImage src="/assets/tutorial/8.jpg" alt="Step 8" />
-              </CardContent>
-            </Card>
-          </Grid>
-
-          {/* Step 9 */}
-          <Grid size={{ xs: 12, lg: 6 }}>
-            <Card>
-              <CardHeader
-                sx={{ paddingBottom: 0 }}
-                title={
-                  <Typography variant="h6" fontSize={18}>
-                    9.
-                  </Typography>
-                }
-              />
-              <CardContent sx={{ justifyContent: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                <Typography variant="body2" gutterBottom>
-                  Verifica che la mail su "Notifica" sia corretta, dopo di che clicca su "Formato"
-                </Typography>
-                <StyledImage src="/assets/tutorial/9.jpg" alt="Step 9" />
-              </CardContent>
-            </Card>
-          </Grid>
-
-          {/* Step 10 */}
-          <Grid size={{ xs: 12, lg: 6 }}>
-            <Card>
-              <CardHeader
-                sx={{ paddingBottom: 0 }}
-                title={
-                  <Typography variant="h6" fontSize={18}>
-                    10. <b>(IMPORTANTE)</b>
-                  </Typography>
-                }
-              />
-              <CardContent sx={{ justifyContent: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                <Typography variant="body2" color="primary" gutterBottom>
-                  <b>Seleziona "JSON" e fai click su "X"</b>
-                </Typography>
-                <StyledImage src="/assets/tutorial/10.jpg" alt="Step 10" />
-              </CardContent>
-            </Card>
-          </Grid>
-
-          {/* Step 11 */}
-          <Grid size={{ xs: 12, lg: 6 }}>
-            <Card>
-              <CardHeader
-                sx={{ paddingBottom: 0 }}
-                title={
-                  <Typography variant="h6" fontSize={18}>
-                    11.
-                  </Typography>
-                }
-              />
-              <CardContent sx={{ justifyContent: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                <Typography variant="body2" gutterBottom>
-                  Opzionale ma può velocizzare il download: seleziona "Bassa" come "Qualità dei contenuti multimediali"
-                </Typography>
-                <StyledImage src="/assets/tutorial/11.jpg" alt="Step 11" />
-              </CardContent>
-            </Card>
-          </Grid>
-
-          {/* Step 12 */}
-          <Grid size={{ xs: 12, lg: 6 }}>
-            <Card>
-              <CardHeader
-                sx={{ paddingBottom: 0 }}
-                title={
-                  <Typography variant="h6" fontSize={18}>
-                    12.
-                  </Typography>
-                }
-              />
-              <CardContent sx={{ justifyContent: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                <Typography variant="body2" gutterBottom>
-                  Opzionale, per la prima esecuzione seleziona "Dall'inizio" come "Intervallo di date"
-                </Typography>
-                <StyledImage src="/assets/tutorial/12.jpg" alt="Step 12" />
-              </CardContent>
-            </Card>
-          </Grid>
-
-          {/* Step 13 */}
-          <Grid size={{ xs: 12, lg: 6 }}>
-            <Card>
-              <CardHeader
-                sx={{ paddingBottom: 0 }}
-                title={
-                  <Typography variant="h6" fontSize={18}>
-                    13.
-                  </Typography>
-                }
-              />
-              <CardContent sx={{ justifyContent: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                <Typography variant="body2" gutterBottom>
-                  Verifica che sia tutto impostato come nello screen successivo, dopo di che clicca su "Crea file"
-                </Typography>
-                <StyledImage src="/assets/tutorial/13.jpg" alt="Step 13" />
-              </CardContent>
-            </Card>
-          </Grid>
-
-          {/* Step 14 */}
-          <Grid size={{ xs: 12, lg: 6 }}>
-            <Card>
-              <CardHeader
-                sx={{ paddingBottom: 0 }}
-                title={
-                  <Typography variant="h6" fontSize={18}>
-                    14.
-                  </Typography>
-                }
-              />
-              <CardContent sx={{ justifyContent: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                <Typography variant="body2" gutterBottom>
-                  Apparirà un messaggio di conferma della richiesta ed una box con la richiesta in corso: ora devi solo...
-                </Typography>
-                <StyledImage src="/assets/tutorial/14.jpg" alt="Step 14" />
-              </CardContent>
-            </Card>
-          </Grid>
-
-          {/* Step 15 */}
-          <Grid size={{ xs: 12 }}>
-            <Card>
-              <CardHeader
-                sx={{ paddingBottom: 0 }}
-                title={
-                  <Typography variant="h6" fontSize={18}>
-                    ATTENDERE 🕑
-                  </Typography>
-                }
-              />
-              <CardContent sx={{ justifyContent: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                <Typography variant="body2">
-                  Esatto: attendere pazientemente che Meta elabori i dati.
-                </Typography>
-                <Typography variant="body2" gutterBottom>
-                  Di solito è abbastanza veloce, ma nel frattempo puoi sempre uscire per un aperitivo (o giocare con il gatto, che ne so).
-                </Typography>
-
-                <SvgImage src="/assets/images/wait.svg" alt="Wait" />
-
-              </CardContent>
-            </Card>
-          </Grid>
-
-          {/* Step 16 */}
-          <Grid size={{ xs: 12, lg: 6 }}>
-            <Card>
-              <CardHeader
-                sx={{ paddingBottom: 0 }}
-                title={
-                  <Typography variant="h6" fontSize={18}>
-                    16.
-                  </Typography>
-                }
-              />
-              <CardContent sx={{ justifyContent: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                <Typography variant="body2" gutterBottom>
-                  Appena arriva la mail di Meta (tipo questa)...
-                </Typography>
-                <StyledImage src="/assets/tutorial/16.jpg" alt="Step 16" />
-              </CardContent>
-            </Card>
-          </Grid>
-
-
-          {/* Step 17 */}
-          <Grid size={{ xs: 12, lg: 6 }}>
-            <Card>
-              <CardHeader
-                sx={{ paddingBottom: 0 }}
-                title={
-                  <Typography variant="h6" fontSize={18}>
-                    17.
-                  </Typography>
-                }
-              />
-              <CardContent sx={{ justifyContent: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                <Typography variant="body2" gutterBottom>
-                  ...torna a "Scarica le tue informazioni" e clicca su "Scarica" per scaricare il file ZIP con i tuoi dati.
-                </Typography>
-                <StyledImage src="/assets/tutorial/17.jpg" alt="Step 17" />
-              </CardContent>
-            </Card>
-          </Grid>
-
-
-          {/* Step 18 */}
-          <Grid size={{ xs: 12 }}>
-            <Card>
-              <CardHeader
-                sx={{ paddingBottom: 0 }}
-                title={
-                  <Typography variant="h6" fontSize={18}>
-                    TORNA QUI E DECOLLIAMO! 🚀
-                  </Typography>
-                }
-              />
-              <CardContent sx={{ justifyContent: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                <Typography variant="body2">
-                 ...sei ancora qui? Dai, corri ad analizzare il file!
-                </Typography>
-
-                <SvgImage src="/assets/images/launch.svg" alt="Andiamo!" />
-
-              </CardContent>
-            </Card>
-          </Grid>
-
+            </Grid>
+          ))}
 
         </Grid>
       </DialogContent>
