@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { LoadingScreenContext } from './LoadingScreenContext';
 import { Box, Typography, CircularProgress, Card, CardContent, Container } from '@mui/material';
-import loading from '../../../public/assets/images/loading.svg';
 
 const LoadingScreen: React.FC = () => {
   const context = useContext(LoadingScreenContext);
@@ -49,7 +48,7 @@ const LoadingScreen: React.FC = () => {
       >
         <Box
           component="img"
-          src={loading}
+          src={'/assets/images/loading.svg'}
           alt="Loading"
           sx={{
             width: {
