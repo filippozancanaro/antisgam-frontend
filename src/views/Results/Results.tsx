@@ -196,7 +196,7 @@ const Results: React.FC = () => {
                           </ListItemIcon>
                           <ListItemText primary={nickname} />
                         </ListItem>
-                    )) : <ListItem>Nessuna suggerimento rimosso</ListItem>}
+                    )) : <ListItem>Nessun suggerimento rimosso</ListItem>}
                   </List>
                 </Box>
                 <Box sx={{ display: 'flex', justifyContent: 'center' }}>
