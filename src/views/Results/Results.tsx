@@ -7,12 +7,18 @@ import {
   List,
   ListItem,
   ListItemIcon,
-  ListItemText
+  ListItemText,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails
 } from '@mui/material';
+
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import PersonIcon from '@mui/icons-material/Person';
 import CelebrationIcon from '@mui/icons-material/Celebration';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
+
 import { ResultsContext } from './ResultsContext';
 import { DlgResults } from './components';
 
@@ -20,7 +26,7 @@ const Results: React.FC = () => {
   const context = useContext(ResultsContext);
   if (!context) throw new Error('Results deve essere usato all’interno di <ResultsProvider>');
 
-  const { unfollowers, copyToClipboard, restart } = context;
+  const { unfollowers, removedSuggestions, pendingRequests, copyToClipboard, restart } = context;
   const hasUnfollowers = unfollowers?.length > 0;
 
   const [modalOpen, setModalOpen] = useState(false);
@@ -93,7 +99,7 @@ const Results: React.FC = () => {
               <Button
                 variant="contained"
                 startIcon={<ContentCopyIcon />}
-                onClick={copyToClipboard}
+                onClick={() => copyToClipboard('unfollowers')}
                 disabled={!hasUnfollowers}
               >
                 Copia negli appunti
@@ -112,8 +118,101 @@ const Results: React.FC = () => {
             </Box>
           </Grid>
 
+          {/* Altri dati */}
+          <Grid size={{ md: 3, lg: 1, xl: 2 }} sx={{ display: { xs: 'none', lg: 'block' } }} />
+          <Grid size={{ xs: 12, md: 6, lg: 10, xl: 8 }}>
+            <Typography variant="h5" gutterBottom>
+              ALTRI DATI
+            </Typography>
+          </Grid>
+          <Grid size={{ md: 3, lg: 1, xl: 2 }} sx={{ display: { xs: 'none', lg: 'block' } }} />
+
+
+          <Grid size={{ md: 3, lg: 1, xl: 2 }} sx={{ display: { xs: 'none', lg: 'block' } }} />
+          <Grid size={{ xs: 12, md: 12, lg: 5, xl: 4 }}>
+            {/* Richieste inviate e mai accettate */}
+            <Accordion>
+              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                <Typography>Richieste inviate e mai accettate</Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <Box
+                  sx={{
+                    maxHeight: 300,
+                    overflowY: 'auto',
+                    border: '1px solid #ccc',
+                    borderRadius: 2,
+                    p: 1,
+                    mb: 2
+                  }}
+                >
+                  <List>
+                    {pendingRequests.map((nickname, index) => (
+                      <ListItem key={index}>
+                        <ListItemIcon>
+                          <PersonIcon color="primary" />
+                        </ListItemIcon>
+                        <ListItemText primary={nickname} />
+                      </ListItem>
+                    ))}
+                  </List>
+                </Box>
+                <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                  <Button
+                    variant="outlined"
+                    startIcon={<ContentCopyIcon />}
+                    onClick={() => copyToClipboard('pending')}
+                  >
+                    Copia
+                  </Button>
+                </Box>
+              </AccordionDetails>
+            </Accordion>
+          </Grid>
+          <Grid size={{ xs: 12, md: 12, lg: 5, xl: 4 }}>
+            {/* Suggerimenti rimossi */}
+            <Accordion>
+              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                <Typography>Suggerimenti rimossi</Typography>
+              </AccordionSummary>
+              <AccordionDetails>
+                <Box
+                  sx={{
+                    maxHeight: 300,
+                    overflowY: 'auto',
+                    border: '1px solid #ccc',
+                    borderRadius: 2,
+                    p: 1,
+                    mb: 2
+                  }}
+                >
+                  <List>
+                    {removedSuggestions.map((nickname, index) => (
+                      <ListItem key={index}>
+                        <ListItemIcon>
+                          <PersonIcon color="primary" />
+                        </ListItemIcon>
+                        <ListItemText primary={nickname} />
+                      </ListItem>
+                    ))}
+                  </List>
+                </Box>
+                <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                  <Button
+                    variant="outlined"
+                    startIcon={<ContentCopyIcon />}
+                    onClick={() => copyToClipboard('suggestions')}
+                  >
+                    Copia
+                  </Button>
+                </Box>
+              </AccordionDetails>
+            </Accordion>
+          </Grid>
+          <Grid size={{ md: 3, lg: 1, xl: 2 }} sx={{ display: { xs: 'none', lg: 'block' } }} />
+
         </Grid>
-      </Box>
+      </Box >
     </>
   );
 };

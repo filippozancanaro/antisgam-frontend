@@ -2,8 +2,10 @@ import { createContext } from 'react';
 
 interface IResultsContext {
   unfollowers: string[];
+  pendingRequests: string[];
+  removedSuggestions: string[];
   
-  copyToClipboard: () => void;
+  copyToClipboard: (what: 'unfollowers' | 'pending' | 'suggestions') => void;
   restart: () => void;
 }
 

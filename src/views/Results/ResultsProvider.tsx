@@ -11,11 +11,38 @@ interface Props {
 
 const ResultsProvider: React.FC<Props> = ({ children }) => {
   const unfollowers = useSelector((state: RootState) => state.antisgam.unfollowersData);
+  const pendingRequests = useSelector((state: RootState) => state.antisgam.pendingRequests);
+  const removedSuggestions = useSelector((state: RootState) => state.antisgam.removedSuggestions);
   const cleanup = useGlobalCleanup();
 
-  const copyToClipboard = () => {
-    if (!unfollowers || unfollowers.length === 0) return;
-    const text = unfollowers.join('\n');
+  const copyToClipboard = (what: 'unfollowers' | 'pending' | 'suggestions') => {
+
+    let text: string = '';
+
+    if (what === 'unfollowers') {
+      if (!unfollowers || unfollowers?.length === 0)
+        return;
+      
+      text = unfollowers.join('\n');
+    }
+
+    if (what === 'pending') {
+      if (!pendingRequests || pendingRequests?.length === 0)
+        return;
+      
+      text = pendingRequests.join('\n');
+    }
+
+    if (what === 'suggestions') {
+      if (!removedSuggestions || removedSuggestions?.length === 0)
+        return;
+      
+      text = removedSuggestions.join('\n');
+    }
+
+    if (text == null || text === '')
+      return;
+
     navigator.clipboard.writeText(text).then(() => {
       console.log('Copiato negli appunti!');
     });
@@ -29,6 +56,8 @@ const ResultsProvider: React.FC<Props> = ({ children }) => {
     <ResultsContext.Provider
       value={{
         unfollowers,
+        pendingRequests,
+        removedSuggestions,
         copyToClipboard,
         restart
       }}
