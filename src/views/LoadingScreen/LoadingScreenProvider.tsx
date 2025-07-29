@@ -4,7 +4,7 @@ import { LoadingScreenContext } from './LoadingScreenContext';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import type { RootState } from '../../store/store';
-import { setUnfollowers } from '../../shared/antisgam-core-state/antisgam-slice';
+import { setPendingRequests, setRemovedSuggestions, setUnfollowers } from '../../shared/antisgam-core-state/antisgam-slice';
 import { useCallback } from 'react';
 
 interface Props {
@@ -56,6 +56,8 @@ const LoadingScreenProvider: React.FC<Props> = ({ children }) => {
 
   const followers = useSelector((state: RootState) => state.antisgam.followersData);
   const following = useSelector((state: RootState) => state.antisgam.followingData);
+  const pendingRequests = useSelector((state: RootState) => state.antisgam.pendingRequests);
+  const removedSuggestions = useSelector((state: RootState) => state.antisgam.removedSuggestions);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -68,7 +70,9 @@ const LoadingScreenProvider: React.FC<Props> = ({ children }) => {
 
   const analyzeData = useCallback(async (
     followers: string[],
-    following: string[]
+    following: string[],
+    pendingRequests: string[] | null,
+    removedSuggestions: string[] | null,
   ): Promise<void> => {
     if (!followers || !following || followers.length === 0 || following.length === 0) return;
 
@@ -82,12 +86,35 @@ const LoadingScreenProvider: React.FC<Props> = ({ children }) => {
     );
 
     dispatch(setUnfollowers(sortedUnfollowers));
+
+    // aggiungo una verifica sulle richieste in pending
+    if (pendingRequests && pendingRequests?.length > 0) {
+      const pendingRequestsSet = new Set(pendingRequests);
+
+      const sortedPendingReq = Array.from(pendingRequestsSet).sort((a, b) =>
+        a.localeCompare(b)
+      );
+
+      dispatch(setPendingRequests(sortedPendingReq));
+    }
+
+    // aggiungo una verifica sulle suggestions rimosse
+    if (removedSuggestions && removedSuggestions?.length > 0) {
+      const RemovedSuggestionsSet = new Set(removedSuggestions);
+
+      const sortedRemovedSuggestions = Array.from(RemovedSuggestionsSet).sort((a, b) =>
+        a.localeCompare(b)
+      );
+
+      dispatch(setRemovedSuggestions(sortedRemovedSuggestions));
+    }
+
     setAnalysisDone(true);
   }, [dispatch]);
 
   useEffect(() => {
-    analyzeData(followers, following);
-  }, [analyzeData, followers, following]);
+    analyzeData(followers, following, pendingRequests, removedSuggestions);
+  }, [analyzeData, followers, following, pendingRequests, removedSuggestions]);
 
   useEffect(() => {
     if (minWaitOver && analysisDone) {

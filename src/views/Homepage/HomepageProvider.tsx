@@ -9,6 +9,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setFollowers, setFollowing, setPendingRequests, setRemovedSuggestions } from '../../shared/antisgam-core-state/antisgam-slice';
 import { useGlobalCleanup } from '../../shared/antisgam-cleanup/AntisgamCleanup';
 import type { RootState } from '../../store/store';
+import type { IPendingFollowRequestsWrapper } from '../../interfaces/pending-follow-requests/pending-follow-requests';
+import type { IRemovedSuggestionsWrapper } from '../../interfaces/removed-suggestions/removed-suggestions';
 
 interface Props {
   children: ReactNode;
@@ -127,13 +129,54 @@ const HomepageProvider: React.FC<Props> = ({ children }) => {
       return;
     }
 
+
+    // Recupero tutti i files "pending_follow_requests * .json"
+    const pendingFollowRequestsFiles = ZipManager.getFilesFromZip(
+      zip,
+      pathSegments,
+      null, // evito in questa fase di mettere un nome fisso, non so come si comporti il naming per i vippones con tanti followerz (maledetti vippones)
+      {
+        nameStartsWith: 'pending_follow_requests',
+        nameEndsWith: '.json'
+      }
+    );
+
+    if (pendingFollowRequestsFiles?.length <= 0) {
+      console.error('Nessun file pending follow requests trovato nello zip.');
+      return;
+    }
+
+    // Recupero tutti i files "removed_suggestions * .json"
+    const removedSuggestionsFiles = ZipManager.getFilesFromZip(
+      zip,
+      pathSegments,
+      null, // evito in questa fase di mettere un nome fisso, non so come si comporti il naming per i vippones con tanti followerz (maledetti vippones)
+      {
+        nameStartsWith: 'removed_suggestions',
+        nameEndsWith: '.json'
+      }
+    );
+
+    if (removedSuggestionsFiles?.length <= 0) {
+      console.error('Nessun file removed suggestions trovato nello zip.');
+      return;
+    }
+
     // Estraggo il contenuto JSON dei file
     const followersContents = await Promise.all(
-      followersFiles.map((f) => f.async('string'))
+      (followersFiles ?? []).map((f) => f.async('string'))
     );
 
     const followingContents = await Promise.all(
-      followingFiles.map((f) => f.async('string'))
+      (followingFiles ?? []).map((f) => f.async('string'))
+    );
+
+    const pendingFollowRequestsContents = await Promise.all(
+      (pendingFollowRequestsFiles ?? []).map((f) => f.async('string'))
+    );
+
+    const removedSuggestionsContents = await Promise.all(
+      (removedSuggestionsFiles ?? []).map((f) => f.async('string'))
     );
 
     // Aggiungo i followers e following allo state
@@ -147,6 +190,18 @@ const HomepageProvider: React.FC<Props> = ({ children }) => {
       followingContents.forEach((f) => {
         const parsedF = JSON.parse(f) as IFollowingWrapper;
         addFollowingToForm(parsedF);
+      });
+
+    if (pendingFollowRequestsContents && pendingFollowRequestsContents?.length > 0)
+      pendingFollowRequestsContents.forEach((f) => {
+        const parsedPending = JSON.parse(f) as IPendingFollowRequestsWrapper;
+        addPendingFollowRequestsToForm(parsedPending);
+      });
+
+    if (removedSuggestionsContents && removedSuggestionsContents?.length > 0)
+      removedSuggestionsContents.forEach((f) => {
+        const parsedRemoved = JSON.parse(f) as IRemovedSuggestionsWrapper;
+        addRemovedSuggestionsToForm(parsedRemoved);
       });
   };
 
@@ -198,6 +253,56 @@ const HomepageProvider: React.FC<Props> = ({ children }) => {
     console.log('Aggiungo following nicknames:', followingNicknames);
 
     setFormFollowing(followingNicknames);
+  }
+
+  const addPendingFollowRequestsToForm = (pendingRequests: IPendingFollowRequestsWrapper) => {
+    // recupero tutti i nicknames e li salvo nello state
+    console.log('Aggiungo pending requests:', pendingRequests);
+
+    if (!pendingRequests || pendingRequests.relationships_follow_requests_sent == null || pendingRequests?.relationships_follow_requests_sent == null)
+      return;
+
+    // creo un set di nicknames per evitare duplicati
+    const pendingNicknames: Set<string> = new Set<string>();
+    pendingRequests.relationships_follow_requests_sent.forEach((rf) => {
+
+      if (rf.string_list_data && rf.string_list_data.length > 0) {
+        rf.string_list_data.forEach((follower) => {
+          if (follower.value && !pendingNicknames.has(follower.value))
+            pendingNicknames.add(follower.value);
+        });
+      }
+
+    });
+
+    console.log('Aggiungo pending requests nicknames:', pendingNicknames);
+
+    setFormPending(pendingNicknames);
+  }
+
+  const addRemovedSuggestionsToForm = (dismissed: IRemovedSuggestionsWrapper) => {
+    // recupero tutti i nicknames e li salvo nello state
+    console.log('Aggiungo removed suggestions:', dismissed);
+
+    if (!dismissed || dismissed.relationships_dismissed_suggested_users == null || dismissed?.relationships_dismissed_suggested_users == null)
+      return;
+
+    // creo un set di nicknames per evitare duplicati
+    const removedSuggestionsNicknames: Set<string> = new Set<string>();
+    dismissed.relationships_dismissed_suggested_users.forEach((rf) => {
+
+      if (rf.string_list_data && rf.string_list_data.length > 0) {
+        rf.string_list_data.forEach((removedSuggestion) => {
+          if (removedSuggestion.value && !removedSuggestionsNicknames.has(removedSuggestion.value))
+            removedSuggestionsNicknames.add(removedSuggestion.value);
+        });
+      }
+
+    });
+
+    console.log('Aggiungo removed suggestions nicknames:', removedSuggestionsNicknames);
+
+    setFormSuggestions(removedSuggestionsNicknames);
   }
 
   const cleanupFormField = (fieldName?: 'followers' | 'following' | 'pending' | 'suggestions') => {
