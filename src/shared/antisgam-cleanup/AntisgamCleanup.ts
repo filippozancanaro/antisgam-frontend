@@ -8,7 +8,7 @@ export const useGlobalCleanup = () => {
 
   return () => {
     dispatch(resetAntisgam());
-    console.log('[Cleanup] Stato antisgam azzerato');
+    // console.log('[Cleanup] Stato antisgam azzerato');
 
     navigate('/');
   };

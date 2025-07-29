@@ -11,6 +11,7 @@ import { useGlobalCleanup } from '../../shared/antisgam-cleanup/AntisgamCleanup'
 import type { RootState } from '../../store/store';
 import type { IPendingFollowRequestsWrapper } from '../../interfaces/pending-follow-requests/pending-follow-requests';
 import type { IRemovedSuggestionsWrapper } from '../../interfaces/removed-suggestions/removed-suggestions';
+import { useSnackbar } from 'notistack';
 
 interface Props {
   children: ReactNode;
@@ -20,6 +21,7 @@ const HomepageProvider: React.FC<Props> = ({ children }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const cleanup = useGlobalCleanup();
+  const { enqueueSnackbar } = useSnackbar();
 
   const enableJsonFiles = useSelector((state: RootState) => state.uploaderJson.enableJsonFiles);
   const initialMode = !enableJsonFiles ? 'zip' : 'zip';
@@ -75,6 +77,7 @@ const HomepageProvider: React.FC<Props> = ({ children }) => {
       return;
     } catch (error) {
       console.warn('Errore nel parsing JSON:', error);
+      enqueueSnackbar('Errore nell\'analisi del file JSON, si prega di verificare il file e riprovare', { variant: 'error' });
       return;
     }
   };
@@ -109,7 +112,8 @@ const HomepageProvider: React.FC<Props> = ({ children }) => {
     );
 
     if (followersFiles?.length <= 0) {
-      console.error('Nessun file followers trovato nello zip.');
+      // console.error('Nessun file followers trovato nello zip.');
+      enqueueSnackbar('Nessun file json "followers" trovato nello zip', { variant: 'error' });
       return;
     }
 
@@ -125,7 +129,8 @@ const HomepageProvider: React.FC<Props> = ({ children }) => {
     );
 
     if (followingFiles?.length <= 0) {
-      console.error('Nessun file following trovato nello zip.');
+      // console.error('Nessun file following trovato nello zip.');
+      enqueueSnackbar('Nessun file json "following" trovato nello zip', { variant: 'error' });
       return;
     }
 
@@ -142,7 +147,8 @@ const HomepageProvider: React.FC<Props> = ({ children }) => {
     );
 
     if (pendingFollowRequestsFiles?.length <= 0) {
-      console.error('Nessun file pending follow requests trovato nello zip.');
+      // console.error('Nessun file pending follow requests trovato nello zip.');
+      enqueueSnackbar('Nessun file json "pending follow requests" trovato nello zip: l\'analisi finale non restituirà questa informazione', { variant: 'warning' });
       return;
     }
 
@@ -158,7 +164,8 @@ const HomepageProvider: React.FC<Props> = ({ children }) => {
     );
 
     if (removedSuggestionsFiles?.length <= 0) {
-      console.error('Nessun file removed suggestions trovato nello zip.');
+      // console.error('Nessun file removed suggestions trovato nello zip.');
+      enqueueSnackbar('Nessun file json "removed suggestions" trovato nello zip: l\'analisi finale non restituirà questa informazione', { variant: 'warning' });
       return;
     }
 
@@ -207,7 +214,7 @@ const HomepageProvider: React.FC<Props> = ({ children }) => {
 
   const addFollowersToForm = (followersList: IFollower[]) => {
     // recupero tutti i nicknames e li salvo nello state
-    console.log('Aggiungo followers:', followersList);
+    // console.log('Aggiungo followers:', followersList);
 
     if (!followersList || followersList.length <= 0)
       return;
@@ -225,14 +232,14 @@ const HomepageProvider: React.FC<Props> = ({ children }) => {
 
     });
 
-    console.log('Aggiungo followers nicknames:', followerNicknames);
+    // console.log('Aggiungo followers nicknames:', followerNicknames);
 
     setFormFollowers(followerNicknames);
   }
 
   const addFollowingToForm = (following: IFollowingWrapper) => {
     // recupero tutti i nicknames e li salvo nello state
-    console.log('Aggiungo following:', following);
+    // console.log('Aggiungo following:', following);
 
     if (!following || following.relationships_following == null || following?.relationships_following == null)
       return;
@@ -250,14 +257,14 @@ const HomepageProvider: React.FC<Props> = ({ children }) => {
 
     });
 
-    console.log('Aggiungo following nicknames:', followingNicknames);
+    // console.log('Aggiungo following nicknames:', followingNicknames);
 
     setFormFollowing(followingNicknames);
   }
 
   const addPendingFollowRequestsToForm = (pendingRequests: IPendingFollowRequestsWrapper) => {
     // recupero tutti i nicknames e li salvo nello state
-    console.log('Aggiungo pending requests:', pendingRequests);
+    // console.log('Aggiungo pending requests:', pendingRequests);
 
     if (!pendingRequests || pendingRequests.relationships_follow_requests_sent == null || pendingRequests?.relationships_follow_requests_sent == null)
       return;
@@ -275,14 +282,14 @@ const HomepageProvider: React.FC<Props> = ({ children }) => {
 
     });
 
-    console.log('Aggiungo pending requests nicknames:', pendingNicknames);
+    // console.log('Aggiungo pending requests nicknames:', pendingNicknames);
 
     setFormPending(pendingNicknames);
   }
 
   const addRemovedSuggestionsToForm = (dismissed: IRemovedSuggestionsWrapper) => {
     // recupero tutti i nicknames e li salvo nello state
-    console.log('Aggiungo removed suggestions:', dismissed);
+    // console.log('Aggiungo removed suggestions:', dismissed);
 
     if (!dismissed || dismissed.relationships_dismissed_suggested_users == null || dismissed?.relationships_dismissed_suggested_users == null)
       return;
@@ -300,7 +307,7 @@ const HomepageProvider: React.FC<Props> = ({ children }) => {
 
     });
 
-    console.log('Aggiungo removed suggestions nicknames:', removedSuggestionsNicknames);
+    // console.log('Aggiungo removed suggestions nicknames:', removedSuggestionsNicknames);
 
     setFormSuggestions(removedSuggestionsNicknames);
   }
@@ -327,11 +334,12 @@ const HomepageProvider: React.FC<Props> = ({ children }) => {
   }
 
   const analyzeData = async (): Promise<void> => {
-    console.log(formFollowers);
-    console.log(formFollowing);
+    // console.log(formFollowers);
+    // console.log(formFollowing);
 
     if (!formFollowers || !formFollowing) {
-      console.warn('Followers o Following mancanti, impossibile analizzare.');
+      // console.warn('Followers o Following mancanti, impossibile analizzare.');
+      enqueueSnackbar('Dati sui Followers o Following mancanti, impossibile procedere con la verifica.', { variant: 'error' });
       return;
     }
 
@@ -358,6 +366,8 @@ const HomepageProvider: React.FC<Props> = ({ children }) => {
     // modifico l'etag per forzare il re-render del componente Uploader
     const updatedUploaderETag = (uploaderETag < (Number.MAX_VALUE - 4)) ? uploaderETag + 1 : 0;
     setUploaderETag(updatedUploaderETag);
+
+    enqueueSnackbar('Applicazione resettata.', { variant: 'info' });
 
     // 2. Reset del Redux store
     cleanup();

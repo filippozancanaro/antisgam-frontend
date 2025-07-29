@@ -1,6 +1,7 @@
 import { BrowserRouter } from 'react-router-dom';
 import AppRoutes from './routes/router';
 import { ThemeManager } from './theme';
+import { SnackbarProvider } from 'notistack';
 import './App.scss'
 
 function App() {
@@ -8,9 +9,11 @@ function App() {
   return (
     <>
       <ThemeManager>
-        <BrowserRouter>
-          <AppRoutes />
-        </BrowserRouter>
+        <SnackbarProvider>
+          <BrowserRouter>
+            <AppRoutes />
+          </BrowserRouter>
+        </SnackbarProvider>
       </ThemeManager>
     </>
   )
