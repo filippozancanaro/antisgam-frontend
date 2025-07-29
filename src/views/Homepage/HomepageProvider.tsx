@@ -58,10 +58,10 @@ const HomepageProvider: React.FC<Props> = ({ children }) => {
 
       // 5. Serializzazione per tipo richiesto
       if (type === 'followers') {
-        const followersData = data as IFollower;
+        const followersData = data as IFollower[];
 
         // Aggiungo i followers allo state
-        addFollowersToForm([followersData]);
+        addFollowersToForm(followersData);
         return;
       }
 
