@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import type { ReactNode } from 'react';
 import { LoadingScreenContext } from './LoadingScreenContext';
 import { useNavigate } from 'react-router-dom';
@@ -12,6 +12,7 @@ interface Props {
 }
 
 const LoadingScreenProvider: React.FC<Props> = ({ children }) => {
+  const hasDispatched = useRef(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -29,7 +30,7 @@ const LoadingScreenProvider: React.FC<Props> = ({ children }) => {
     'E se fosse un caricamento infinito?',
     'The alla pesca o the al limone?',
     'Un caricamento non è mai in ritardo, Frodo Baggins, né in anticipo: termina esattamente quando intende farlo',
-    'Se il caricamento sembra infinito, probabilmente lo è realmente',
+    'Se il caricamento sembra infinito, probabilmente lo è davvero',
     'Sto facendo cose...',
     'Un caricamento è come una storia: ha un inizio, uno sviluppo e forse pure una conclusione',
     'Questo caricamento è un po\' come quando incroci il vicino di casa in ascensore: aspettiamo in silenzio, ok?',
@@ -113,7 +114,10 @@ const LoadingScreenProvider: React.FC<Props> = ({ children }) => {
   }, [dispatch]);
 
   useEffect(() => {
-    analyzeData(followers, following, pendingRequests, removedSuggestions);
+    if (!hasDispatched.current) {
+      analyzeData(followers, following, pendingRequests, removedSuggestions);
+      hasDispatched.current = true;
+    }
   }, [analyzeData, followers, following, pendingRequests, removedSuggestions]);
 
   useEffect(() => {
