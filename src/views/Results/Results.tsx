@@ -147,14 +147,15 @@ const Results: React.FC = () => {
                   }}
                 >
                   <List>
-                    {pendingRequests.map((nickname, index) => (
-                      <ListItem key={index}>
-                        <ListItemIcon>
-                          <PersonIcon color="primary" />
-                        </ListItemIcon>
-                        <ListItemText primary={nickname} />
-                      </ListItem>
-                    ))}
+                    {pendingRequests?.length > 0 ? 
+                      pendingRequests.map((nickname, index) => (
+                        <ListItem key={index}>
+                          <ListItemIcon>
+                            <PersonIcon color="primary" />
+                          </ListItemIcon>
+                          <ListItemText primary={nickname} />
+                        </ListItem>
+                    )) : <ListItem>Nessuna richiesta trovata</ListItem>}
                   </List>
                 </Box>
                 <Box sx={{ display: 'flex', justifyContent: 'center' }}>
@@ -187,14 +188,15 @@ const Results: React.FC = () => {
                   }}
                 >
                   <List>
-                    {removedSuggestions.map((nickname, index) => (
-                      <ListItem key={index}>
-                        <ListItemIcon>
-                          <PersonIcon color="primary" />
-                        </ListItemIcon>
-                        <ListItemText primary={nickname} />
-                      </ListItem>
-                    ))}
+                    {removedSuggestions?.length > 0 ? 
+                      removedSuggestions.map((nickname, index) => (
+                        <ListItem key={index}>
+                          <ListItemIcon>
+                            <PersonIcon color="primary" />
+                          </ListItemIcon>
+                          <ListItemText primary={nickname} />
+                        </ListItem>
+                    )) : <ListItem>Nessuna suggerimento rimosso</ListItem>}
                   </List>
                 </Box>
                 <Box sx={{ display: 'flex', justifyContent: 'center' }}>
