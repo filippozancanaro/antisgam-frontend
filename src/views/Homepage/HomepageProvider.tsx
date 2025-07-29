@@ -148,8 +148,7 @@ const HomepageProvider: React.FC<Props> = ({ children }) => {
 
     if (pendingFollowRequestsFiles?.length <= 0) {
       // console.error('Nessun file pending follow requests trovato nello zip.');
-      enqueueSnackbar('Nessun file json "pending follow requests" trovato nello zip: l\'analisi finale non restituirà questa informazione', { variant: 'warning' });
-      return;
+      enqueueSnackbar('WARNING: Nessun file json "pending follow requests" trovato nello zip: l\'analisi finale non restituirà questa informazione', { variant: 'warning' });
     }
 
     // Recupero tutti i files "removed_suggestions * .json"
@@ -165,8 +164,7 @@ const HomepageProvider: React.FC<Props> = ({ children }) => {
 
     if (removedSuggestionsFiles?.length <= 0) {
       // console.error('Nessun file removed suggestions trovato nello zip.');
-      enqueueSnackbar('Nessun file json "removed suggestions" trovato nello zip: l\'analisi finale non restituirà questa informazione', { variant: 'warning' });
-      return;
+      enqueueSnackbar('WARNING: Nessun file json "removed suggestions" trovato nello zip: l\'analisi finale non restituirà questa informazione', { variant: 'warning' });
     }
 
     // Estraggo il contenuto JSON dei file
