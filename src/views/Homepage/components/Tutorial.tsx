@@ -97,21 +97,21 @@ const TutorialModal: React.FC<Props> = ({ open, onClose }) => {
     {
       number: '10. (IMPORTANTE)',
       text: 'Seleziona "Dall\'inizio" come "Intervallo di date"',
-      image: '/assets/tutorial/12.jpg',
+      image: '/assets/tutorial/10.jpg',
       imageAlt: 'Step 10',
       highlight: true
     },
     {
       number: '11. (IMPORTANTE)',
       text: 'Seleziona "JSON" e fai click su "X"',
-      image: '/assets/tutorial/10.jpg',
+      image: '/assets/tutorial/11.jpg',
       imageAlt: 'Step 11',
       highlight: true
     },
     {
       number: '12.',
       text: 'Opzionale ma può velocizzare il download: seleziona "Bassa" come "Qualità dei contenuti multimediali"',
-      image: '/assets/tutorial/11.jpg',
+      image: '/assets/tutorial/12.jpg',
       imageAlt: 'Step 12',
     },
     {
