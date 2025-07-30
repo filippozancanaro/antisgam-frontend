@@ -8,8 +8,9 @@ import {
   Tabs,
   Tab,
 } from '@mui/material';
-import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
+import FolderZipIcon from '@mui/icons-material/FolderZip';
 import RocketLaunchIcon from '@mui/icons-material/RocketLaunch';
+import HelpIcon from '@mui/icons-material/Help';
 import { Uploader, DlgTutorial } from './components';
 
 const Homepage: React.FC = () => {
@@ -30,14 +31,32 @@ const Homepage: React.FC = () => {
 
       <Box sx={{ p: 2 }}>
         <Grid container spacing={2}>
+
+          {/* Bottone "Dove li trovo?" */}
+          <Grid size={{ md: 3, lg: 1, xl: 2 }} sx={{ display: { xs: 'none', lg: 'block' } }} />
+          <Grid size={{ xs: 12, md: 6, lg: 10, xl: 8 }}>
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              <Typography variant="h5" sx={{ pb: 2 }}>
+                1 - LEGGI IL TUTORIAL E RECUPERA I DATI
+              </Typography>
+            </Box>
+            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+              <Button fullWidth startIcon={<HelpIcon />} variant="outlined" size="large" onClick={() => setModalOpen(true)}>
+                Spiegami tutto
+              </Button>
+            </Box>
+          </Grid>
+          <Grid size={{ md: 3, lg: 1, xl: 2 }} sx={{ display: { xs: 'none', lg: 'block' } }} />
+
+
           <Grid size={{ md: 3, lg: 1, xl: 2 }} sx={{ display: { xs: 'none', lg: 'block' } }} />
           {/* Titolo: 1 - CARICA LE LISTE */}
           <Grid size={{ xs: 12, md: 6, lg: 5, xl: 4 }}>
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
               <Typography variant="h5" sx={{ mr: 1 }}>
-                1 - CARICA I TUOI DATI {context.enableJsonFiles === true && <> O LE LISTE</>}
+                2 - CARICA I TUOI DATI {context.enableJsonFiles === true && <> O LE LISTE</>}
               </Typography>
-              <FormatListBulletedIcon color="primary" />
+              <FolderZipIcon color="primary" />
             </Box>
           </Grid>
           <Grid size={{ xs: 12, md: 6, lg: 5, xl: 4 }}>
@@ -54,21 +73,12 @@ const Homepage: React.FC = () => {
 
           <Uploader key={`uploader_${context.uploaderETag}`} />
 
-          {/* Bottone "Dove li trovo?" */}
-          <Grid size={{ xs: 12 }}>
-            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-              <Button variant="outlined" size="large" onClick={() => setModalOpen(true)}>
-                Spiegami tutto
-              </Button>
-            </Box>
-          </Grid>
-
           {/* Titolo: 2 - ESEGUI */}
           <Grid size={{ md: 3, lg: 1, xl: 2 }} sx={{ display: { xs: 'none', lg: 'block' } }} />
           <Grid size={{ xs: 12, md: 6, lg: 10, xl: 8 }}>
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
               <Typography variant="h5" sx={{ mr: 1 }}>
-                2 - ESEGUI
+                3 - ESEGUI L'ANALISI
               </Typography>
               <RocketLaunchIcon color="primary" />
             </Box>
@@ -76,22 +86,33 @@ const Homepage: React.FC = () => {
           <Grid size={{ md: 3, lg: 1, xl: 2 }} sx={{ display: { xs: 'none', lg: 'block' } }} />
 
           {/* Bottone "ANDIAMO!" */}
-          <Grid size={{ xs: 12 }}>
+          <Grid size={{ md: 3, lg: 1, xl: 2 }} sx={{ display: { xs: 'none', lg: 'block' } }} />
+          <Grid size={{ xs: 12, md: 6, lg: 10, xl: 8 }}>
             <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-              <Button variant="contained" size="large" onClick={() => context.analyzeData()}>
+              <Button
+                fullWidth
+                variant="contained"
+                size="large"
+                startIcon={<RocketLaunchIcon />}
+                onClick={() => context.analyzeData()}
+              >
                 ANDIAMO!
               </Button>
             </Box>
           </Grid>
+          <Grid size={{ md: 3, lg: 1, xl: 2 }} sx={{ display: { xs: 'none', lg: 'block' } }} />
 
           {/* Bottone testo "oppure, ricominciamo" */}
-          <Grid size={{ xs: 12 }}>
+          <Grid size={{ md: 3, lg: 1, xl: 2 }} sx={{ display: { xs: 'none', lg: 'block' } }} />
+          <Grid size={{ xs: 12, md: 6, lg: 10, xl: 8 }}>
             <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-              <Button variant="text" size="medium" onClick={() => context.resetForm()}>
+              <Button fullWidth variant="text" size="medium" onClick={() => context.resetForm()}>
                 oppure, ricominciamo
               </Button>
             </Box>
           </Grid>
+          <Grid size={{ md: 3, lg: 1, xl: 2 }} sx={{ display: { xs: 'none', lg: 'block' } }} />
+
         </Grid>
       </Box>
     </>

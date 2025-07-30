@@ -2,19 +2,36 @@ import { List, ListItemButton, ListItemIcon, ListItemText } from '@mui/material'
 import HomeIcon from '@mui/icons-material/Home';
 import SettingsIcon from '@mui/icons-material/Settings';
 import { useNavigate } from 'react-router-dom';
+import { useGlobalCleanup } from '../../../shared/antisgam-cleanup/AntisgamCleanup';
+import type { JSX } from 'react';
+
+interface IRouteMenuItem {
+    label: string;
+    path: string;
+    icon: JSX.Element;
+    shouldCleanupState: boolean;
+}
 
 const RoutingList = () => {
     const navigate = useNavigate();
+    const cleanup = useGlobalCleanup();
 
-    const routes = [
-        { label: 'Antisgam', icon: <HomeIcon color="primary" />, path: '/' },
-        { label: 'Impostazioni', icon: <SettingsIcon color="primary" />, path: '/settings' },
+    const routes: IRouteMenuItem[] = [
+        { label: 'Antisgam', icon: <HomeIcon color="primary" />, path: '/', shouldCleanupState: true },
+        { label: 'Impostazioni', icon: <SettingsIcon color="primary" />, path: '/settings', shouldCleanupState: true },
     ];
+
+    const routeClickHandler = (path: string, shouldCleanupState: boolean) => {
+        if (shouldCleanupState === true)
+            cleanup();
+        
+        navigate(path);
+    }
 
     return (
         <List>
-            {routes.map(({ label, icon, path }, index) => (
-                <ListItemButton key={index} onClick={() => navigate(path)}>
+            {(routes ?? []).map(({ label, icon, path, shouldCleanupState }, index) => (
+                <ListItemButton key={index} onClick={() => routeClickHandler(path, shouldCleanupState)}>
                     <ListItemIcon>{icon}</ListItemIcon>
                     <ListItemText primary={label} />
                 </ListItemButton>

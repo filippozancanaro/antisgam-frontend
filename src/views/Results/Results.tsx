@@ -46,7 +46,7 @@ const Results: React.FC = () => {
               ECCO CHI HA SMESSO DI SEGUIRTI
             </Typography>
             <Typography variant="subtitle1" color="text.secondary" gutterBottom>
-              Ora va e vendicati, ma occhio ai <Button variant="text" size="small" onClick={() => setModalOpen(true)}> limiti di Instagram </Button>
+              Ora va e vendicati, ma fai attenzione ai <Button variant="outlined" size="small" onClick={() => setModalOpen(true)}> limiti di Instagram </Button>
             </Typography>
           </Grid>
           <Grid size={{ md: 3, lg: 1, xl: 2 }} sx={{ display: { xs: 'none', lg: 'block' } }} />
@@ -85,7 +85,7 @@ const Results: React.FC = () => {
                 >
                   <CelebrationIcon color="primary" sx={{ fontSize: 48 }} />
                   <Typography variant="h5" mt={2}>
-                    Nessuno ti ha unfollowato, grande!
+                    Nessuno ti ha unfollowato, ottimo!
                   </Typography>
                 </Box>
               )}
@@ -162,6 +162,7 @@ const Results: React.FC = () => {
                   <Button
                     variant="outlined"
                     startIcon={<ContentCopyIcon />}
+                    fullWidth
                     onClick={() => copyToClipboard('pending')}
                   >
                     Copia
@@ -202,6 +203,7 @@ const Results: React.FC = () => {
                 <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                   <Button
                     variant="outlined"
+                    fullWidth
                     startIcon={<ContentCopyIcon />}
                     onClick={() => copyToClipboard('suggestions')}
                   >

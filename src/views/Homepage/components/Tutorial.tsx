@@ -35,7 +35,7 @@ const TutorialModal: React.FC<Props> = ({ open, onClose }) => {
   const steps: IStep[] = [
     {
       number: '1.',
-      text: 'Fai click sul tasto "menu" (📑) in alto a sinistra sulla pagina del tuo profilo Instagram',
+      text: 'Fai click sul tasto "menu" in alto a sinistra sulla pagina del tuo profilo Instagram',
       image: '/assets/tutorial/1.jpg',
       imageAlt: 'Step 1',
     },
@@ -96,21 +96,22 @@ const TutorialModal: React.FC<Props> = ({ open, onClose }) => {
     },
     {
       number: '10. (IMPORTANTE)',
-      text: 'Seleziona "JSON" e fai click su "X"',
-      image: '/assets/tutorial/10.jpg',
+      text: 'Seleziona "Dall\'inizio" come "Intervallo di date"',
+      image: '/assets/tutorial/12.jpg',
       imageAlt: 'Step 10',
-      highlight: true,
+      highlight: true
     },
     {
-      number: '11.',
-      text: 'Opzionale ma può velocizzare il download: seleziona "Bassa" come "Qualità dei contenuti multimediali"',
-      image: '/assets/tutorial/11.jpg',
+      number: '11. (IMPORTANTE)',
+      text: 'Seleziona "JSON" e fai click su "X"',
+      image: '/assets/tutorial/10.jpg',
       imageAlt: 'Step 11',
+      highlight: true
     },
     {
       number: '12.',
-      text: 'Opzionale, per la prima esecuzione seleziona "Dall\'inizio" come "Intervallo di date"',
-      image: '/assets/tutorial/12.jpg',
+      text: 'Opzionale ma può velocizzare il download: seleziona "Bassa" come "Qualità dei contenuti multimediali"',
+      image: '/assets/tutorial/11.jpg',
       imageAlt: 'Step 12',
     },
     {
@@ -127,7 +128,7 @@ const TutorialModal: React.FC<Props> = ({ open, onClose }) => {
     },
     {
       number: 'ATTENDERE 🕑',
-      text: 'Esatto: attendere pazientemente che Meta elabori i dati. Di solito è abbastanza veloce, ma nel frattempo puoi sempre uscire per un aperitivo (o giocare con il gatto, che ne so).',
+      text: 'Esatto: attendere pazientemente che Meta elabori i dati. Potrebbe metterci un po\', ma nel frattempo puoi sempre uscire per un aperitivo (o giocare con il gatto, che ne so).',
       image: '/assets/images/wait.svg',
       imageAlt: 'Step 15',
       fullWidth: true,
@@ -184,7 +185,7 @@ const TutorialModal: React.FC<Props> = ({ open, onClose }) => {
               e...si, purtroppo è l'unico modo per non essere bannati da Meta: triste ma vero.
             </Typography>
             <Typography variant="body1" color="textPrimary" gutterBottom sx={{ textAlign: 'center' }}>
-              Ah, prima di cominciare, ricorda: <b>FAI ATTENZIONE ALLO STEP 10</b>. Mi raccomando! 😁
+              Ah, prima di iniziare, ricorda: <b>FAI ATTENZIONE AGLI STEP 10 e 11</b>. Mi raccomando! 😁
             </Typography>
           </Grid>
 

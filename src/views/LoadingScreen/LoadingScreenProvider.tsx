@@ -31,7 +31,7 @@ const LoadingScreenProvider: React.FC<Props> = ({ children }) => {
     'The alla pesca o the al limone?',
     'Un caricamento non è mai in ritardo, Frodo Baggins, né in anticipo: termina esattamente quando intende farlo',
     'Se il caricamento sembra infinito, probabilmente lo è davvero',
-    'Sto facendo cose...',
+    'Sapevi che queste frasi sono randomiche? Torna qui spesso per vederne altre!',
     'Un caricamento è come una storia: ha un inizio, uno sviluppo e forse pure una conclusione',
     'Questo caricamento è un po\' come quando incroci il vicino di casa in ascensore: aspettiamo in silenzio, ok?',
     'Lo sapevi che le formiche sono immuni al danno da caduta?',
