@@ -35,7 +35,7 @@ const Homepage: React.FC = () => {
           <Grid size={{ xs: 12, md: 6, lg: 5, xl: 4 }}>
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
               <Typography variant="h5" sx={{ mr: 1 }}>
-                1 - CARICA I TUOI DATI O LE LISTE
+                1 - CARICA I TUOI DATI {context.enableJsonFiles === true && <> O LE LISTE</>}
               </Typography>
               <FormatListBulletedIcon color="primary" />
             </Box>
