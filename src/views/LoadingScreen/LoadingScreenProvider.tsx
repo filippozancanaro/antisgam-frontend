@@ -47,7 +47,7 @@ const LoadingScreenProvider: React.FC<Props> = ({ children }) => {
     'Sei sicuro di voler continuare? Il caricamento potrebbe essere lungo',
     'Ripensaci, il caricamento potrebbe essere infinito',
     'Davvero ti interessa sapere chi ha smesso di seguirti? Guarda che se ci rimani male non è colpa mia',
-    'Sei sicuro di voler vedere chi ti ha bloccato? Potrebbe essere doloroso',
+    'Sei sicuro di voler vedere chi non ricambia il follow? Potrebbe essere doloroso',
     'La curiosità è un buon motivo per aspettare un caricamento, ma non sempre porta a qualcosa di buono'
   ];
 

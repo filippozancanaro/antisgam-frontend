@@ -43,7 +43,7 @@ const Results: React.FC = () => {
           <Grid size={{ md: 3, lg: 1, xl: 2 }} sx={{ display: { xs: 'none', lg: 'block' } }} />
           <Grid size={{ xs: 12, md: 6, lg: 10, xl: 8 }}>
             <Typography variant="h4" gutterBottom>
-              ECCO CHI HA SMESSO DI SEGUIRTI
+              ECCO CHI SEGUI MA NON TI SEGUE
             </Typography>
             <Typography variant="subtitle1" color="text.secondary" gutterBottom>
               Ora va e vendicati, ma fai attenzione ai <Button variant="outlined" size="small" onClick={() => setModalOpen(true)}> limiti di Instagram </Button>
@@ -85,7 +85,7 @@ const Results: React.FC = () => {
                 >
                   <CelebrationIcon color="primary" sx={{ fontSize: 48 }} />
                   <Typography variant="h5" mt={2}>
-                    Nessuno ti ha unfollowato, ottimo!
+                    Tutti i tuoi seguiti ti seguono a loro volta, ottimo!
                   </Typography>
                 </Box>
               )}

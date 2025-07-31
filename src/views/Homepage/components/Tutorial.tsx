@@ -175,9 +175,14 @@ const TutorialModal: React.FC<Props> = ({ open, onClose }) => {
             <Typography variant="h6" gutterBottom color="primary" sx={{ textAlign: 'center' }}>
               👋 BENVENUTO/A IN ANTISGAM 👋
             </Typography>
-            <Typography variant="subtitle1" gutterBottom fontSize="16" sx={{ textAlign: 'center' }}>
-              LA PRIMA ED UNICA APP PER SGAMARE GLI UNFOLLOWERS E NON FARSI BANNARE!
+            <Typography variant="subtitle1" fontSize="16" sx={{ textAlign: 'center' }}>
+              LA PRIMA ED UNICA APP PER SGAMARE GLI UNFOLLOWERS* E NON FARSI BANNARE!
             </Typography>
+            <Typography variant="subtitle1" color="textSecondary" gutterBottom sx={{ textAlign: 'center', fontSize: 10 }}>
+              *o meglio, chi segui ma non ti segue a sua volta
+            </Typography>
+          </Grid>
+          <Grid size={{ xs: 12 }}>
             <Typography variant="subtitle2" color="textSecondary" sx={{ textAlign: 'center' }}>
               se sei qui probabilmente starai cercando di capire quali dati caricare e come funziona l'app: non preoccuparti, è un po' lungo ma è tutto molto semplice!
             </Typography>
@@ -185,7 +190,7 @@ const TutorialModal: React.FC<Props> = ({ open, onClose }) => {
               e...si, purtroppo è l'unico modo per non essere bannati da Meta: triste ma vero.
             </Typography>
             <Typography variant="body1" color="textPrimary" gutterBottom sx={{ textAlign: 'center' }}>
-              Ah, prima di iniziare, ricorda: <b>FAI ATTENZIONE AGLI STEP 10 e 11</b>. Mi raccomando! 😁
+              Ricorda: <b>FAI ATTENZIONE AGLI STEP 10 e 11</b>: mi raccomando! 😁
             </Typography>
           </Grid>
 
