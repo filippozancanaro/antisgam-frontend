@@ -35,7 +35,7 @@ const TutorialModal: React.FC<Props> = ({ open, onClose }) => {
   const steps: IStep[] = [
     {
       number: '1.',
-      text: 'Fai click sul tasto "menu" in alto a sinistra sulla pagina del tuo profilo Instagram',
+      text: 'Fai click sul tasto "menu" in alto a destra sulla pagina del tuo profilo Instagram',
       image: '/assets/tutorial/1.jpg',
       imageAlt: 'Step 1',
     },
