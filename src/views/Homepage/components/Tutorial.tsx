@@ -90,20 +90,20 @@ const TutorialModal: React.FC<Props> = ({ open, onClose }) => {
     },
     {
       number: '9.',
-      text: 'Verifica che la mail su "Notifica" sia corretta, dopo di che clicca su "Formato"',
+      text: 'Verifica che la mail su "Notifica" sia corretta, dopo di che clicca su "Intervallo di date" per lo step 10 e su "Formato" per lo step 11',
       image: '/assets/tutorial/9.jpg',
       imageAlt: 'Step 9',
     },
     {
-      number: '10. (IMPORTANTE)',
+      number: '10. (IMPORTANTE) - INTERVALLO DI DATE',
       text: 'Seleziona "Dall\'inizio" come "Intervallo di date"',
       image: '/assets/tutorial/10.jpg',
       imageAlt: 'Step 10',
       highlight: true
     },
     {
-      number: '11. (IMPORTANTE)',
-      text: 'Seleziona "JSON" e fai click su "X"',
+      number: '11. (IMPORTANTE) - FORMATO',
+      text: 'Su "Formato" seleziona "JSON" e fai click su "X"',
       image: '/assets/tutorial/11.jpg',
       imageAlt: 'Step 11',
       highlight: true
