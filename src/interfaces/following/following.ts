@@ -1,6 +1,6 @@
 export interface IFollowingStringListData  {
     href: string | null | undefined;
-    value: string | null | undefined;
+    // value: string | null | undefined;
     timestamp: number | string | null | undefined;
 }
 

@@ -244,15 +244,9 @@ const HomepageProvider: React.FC<Props> = ({ children }) => {
 
     // creo un set di nicknames per evitare duplicati
     const followingNicknames: Set<string> = new Set<string>();
-    following.relationships_following.forEach((rf) => {
-
-      if (rf.string_list_data && rf.string_list_data.length > 0) {
-        rf.string_list_data.forEach((follower) => {
-          if (follower.value && !followingNicknames.has(follower.value))
-            followingNicknames.add(follower.value);
-        });
-      }
-
+    following.relationships_following.forEach((follower) => {
+      if (follower.title && !followingNicknames.has(follower.title))
+            followingNicknames.add(follower.title);
     });
 
     // console.log('Aggiungo following nicknames:', followingNicknames);
