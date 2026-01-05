@@ -12,14 +12,14 @@ import {
 } from '@mui/material';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import { SettingsContext } from './SettingsContext';
-import type { UserThemeMode } from '../../theme/store/theme-slice';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import type { UserThemeMode } from '../../store/atoms/theme-atoms';
 
 const Settings: React.FC = () => {
   const context = useContext(SettingsContext);
   if (!context) throw new Error('Settings deve essere usato all’interno di <SettingsProvider>');
 
-  const { themeForm, updateTheme, enableJsonFilesForm, updateEnableJsonFiles, saveChanges, discardChanges } = context;
+  const { themeForm, updateTheme, saveChanges, discardChanges } = context;
 
   return (
     <>
@@ -50,23 +50,6 @@ const Settings: React.FC = () => {
                   <FormControlLabel value="auto" control={<Radio />} label="Automatico" />
                   <FormControlLabel value="light" control={<Radio />} label="Chiaro" />
                   <FormControlLabel value="dark" control={<Radio />} label="Scuro" />
-                </RadioGroup>
-              </FormControl>
-            </Box>
-
-            <Box sx={{paddingBottom: 2}}>
-              <Typography variant="h6" color="text.secondary" gutterBottom>
-                Caricamento
-              </Typography>
-
-              <FormControl>
-                <FormLabel>
-                  Abilita files JSON (funzione avanzata)
-                </FormLabel>
-                <RadioGroup value={enableJsonFilesForm} onChange={(_event, value) => updateEnableJsonFiles(value === 'true')}
-                >
-                  <FormControlLabel value={false} control={<Radio />} label="No" />
-                  <FormControlLabel value={true} control={<Radio />} label="Si" />
                 </RadioGroup>
               </FormControl>
             </Box>
