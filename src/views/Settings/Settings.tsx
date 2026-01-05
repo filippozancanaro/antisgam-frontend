@@ -12,8 +12,8 @@ import {
 } from '@mui/material';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import { SettingsContext } from './SettingsContext';
-import type { UserThemeMode } from '../../theme/store/theme-slice';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import type { UserThemeMode } from '../../store/atoms/theme-atoms';
 
 const Settings: React.FC = () => {
   const context = useContext(SettingsContext);

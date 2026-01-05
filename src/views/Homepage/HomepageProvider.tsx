@@ -5,10 +5,9 @@ import type { IFollower } from '../../interfaces/followers/followers';
 import type { IFollowingWrapper } from '../../interfaces/following/following';
 import { ZipManager } from '../../utilities';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { setFollowers, setFollowing, setPendingRequests, setRemovedSuggestions } from '../../shared/antisgam-core-state/antisgam-slice';
 import { useGlobalCleanup } from '../../shared/antisgam-cleanup/AntisgamCleanup';
-import type { RootState } from '../../store/store';
 import type { IPendingFollowRequestsWrapper } from '../../interfaces/pending-follow-requests/pending-follow-requests';
 import type { IRemovedSuggestionsWrapper } from '../../interfaces/removed-suggestions/removed-suggestions';
 import { useSnackbar } from 'notistack';
@@ -23,19 +22,12 @@ const HomepageProvider: React.FC<Props> = ({ children }) => {
   const cleanup = useGlobalCleanup();
   const { enqueueSnackbar } = useSnackbar();
 
-  const enableJsonFiles = useSelector((state: RootState) => state.uploaderJson.enableJsonFiles);
-  const initialMode = !enableJsonFiles ? 'zip' : 'zip';
-
-  const [mode, setMode] = useState<'zip' | 'json'>(initialMode);
+  const [mode] = useState<'zip' | 'json'>('zip');
   const [formFollowers, setFormFollowers] = useState<Set<string> | null>(null);
   const [formFollowing, setFormFollowing] = useState<Set<string> | null>(null);
   const [formPending, setFormPending] = useState<Set<string> | null>(null);
   const [formSuggestions, setFormSuggestions] = useState<Set<string> | null>(null);
   const [uploaderETag, setUploaderETag] = useState<number>(0);
-
-  const changeMode = (value: 'zip' | 'json') => {
-    setMode(value);
-  };
 
   const manageJsonFile = async (
     file: File | null,
@@ -346,9 +338,6 @@ const HomepageProvider: React.FC<Props> = ({ children }) => {
   };
 
   const resetForm = async (): Promise<void> => {
-    // 0. Reset della modalità
-    setMode('zip');
-
     // 1. Reset dello state
     cleanupFormField('followers');
     cleanupFormField('following');
@@ -368,13 +357,11 @@ const HomepageProvider: React.FC<Props> = ({ children }) => {
   return (
     <HomepageContext.Provider
       value={{
-        enableJsonFiles,
         uploaderETag,
         mode,
         formFollowers,
         formFollowing,
 
-        changeMode,
         manageJsonFile,
         manageZipFile,
         cleanupFormField,

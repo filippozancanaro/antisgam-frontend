@@ -5,8 +5,6 @@ import {
   Grid,
   Typography,
   Button,
-  Tabs,
-  Tab,
 } from '@mui/material';
 import FolderZipIcon from '@mui/icons-material/FolderZip';
 import RocketLaunchIcon from '@mui/icons-material/RocketLaunch';
@@ -18,10 +16,6 @@ const Homepage: React.FC = () => {
   if (!context) throw new Error('Homepage deve essere usato all’interno di <HomepageProvider>');
 
   const [modalOpen, setModalOpen] = useState(false);
-
-  const modeSelectionHandler = (value: 'zip' | 'json') => {
-    context.changeMode(value);
-  }
 
   return (
     <>
@@ -54,21 +48,12 @@ const Homepage: React.FC = () => {
           <Grid size={{ xs: 12, md: 6, lg: 5, xl: 4 }}>
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
               <Typography variant="h5" sx={{ mr: 1 }}>
-                2 - CARICA I TUOI DATI {context.enableJsonFiles === true && <> O LE LISTE</>}
+                2 - CARICA I TUOI DATI
               </Typography>
               <FolderZipIcon color="primary" />
             </Box>
           </Grid>
-          <Grid size={{ xs: 12, md: 6, lg: 5, xl: 4 }}>
-            <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-              {context.enableJsonFiles === true &&
-                <Tabs value={context.mode} onChange={(_e, value: 'zip' | 'json') => modeSelectionHandler(value)} aria-label="basic tabs example">
-                  <Tab label="Carica ZIP" value="zip" />
-                  <Tab label="Carica JSON" value="json" />
-                </Tabs>
-              }
-            </Box>
-          </Grid>
+          <Grid size={{ xs: 12, md: 6, lg: 5, xl: 4 }} />
           <Grid size={{ md: 3, lg: 1, xl: 2 }} sx={{ display: { xs: 'none', lg: 'block' } }} />
 
           <Uploader key={`uploader_${context.uploaderETag}`} />

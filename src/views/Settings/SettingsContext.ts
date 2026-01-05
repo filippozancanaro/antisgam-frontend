@@ -1,5 +1,5 @@
 import { createContext } from 'react';
-import type { UserThemeMode } from '../../theme/store/theme-slice';
+import type { UserThemeMode } from '../../store/atoms/theme-atoms';
 
 interface ISettingsContext {
   themeForm: UserThemeMode;

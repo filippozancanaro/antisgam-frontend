@@ -13,15 +13,14 @@ import SystemUpdateAlt from '@mui/icons-material/SystemUpdateAlt';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { FilePickerContext } from './FilePickerContext';
-import type { RootState } from '../../store/store';
-import { useSelector } from 'react-redux';
 import lightStyles from './styles/FilePicker.light.module.scss';
 import darkStyles from './styles/FilePicker.dark.module.scss';
+import { useAtomValue } from 'jotai/react';
+import { effectiveThemeAtom } from '../../store/atoms/theme-atoms';
 
 const FilePicker: React.FC = () => {
-  const themeMode = useSelector((state: RootState) => state.theme.mode);
-  const isDark = themeMode === 'dark';
-  const styles = isDark ? darkStyles : lightStyles;
+  const themeSelection = useAtomValue(effectiveThemeAtom);
+  const styles = themeSelection === 'dark' ? darkStyles : lightStyles;
 
   const context = useContext(FilePickerContext);
   const inputRef = useRef<HTMLInputElement>(null);

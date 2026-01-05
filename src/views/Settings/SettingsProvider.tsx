@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import type { ReactNode } from 'react';
 import { SettingsContext } from './SettingsContext';
-import { type UserThemeMode } from '../../theme/store/theme-slice';
 import { useNavigate } from 'react-router-dom';
 import { useAtomValue, useSetAtom } from 'jotai/react';
-import { setThemeAtom, userThemeChoiceAtom } from '../../store/atoms/theme-atoms';
+import { setThemeAtom, userThemeChoiceAtom, type UserThemeMode } from '../../store/atoms/theme-atoms';
 
 interface Props {
   children: ReactNode;
