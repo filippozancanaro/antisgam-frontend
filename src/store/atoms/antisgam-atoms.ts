@@ -47,7 +47,7 @@ export const commitLastScanToHistoryAtom = atom(null, (get, set) => {
     date: currentDate,
     data: lastScan,
   };
-  const updatedHistory = [newScan, ...prev.scansHistory];
+  const updatedHistory = [newScan, ...prev.scansHistory].slice(0, 10);
 
   set(antisgamHistoryAtom, {
     ...prev,
