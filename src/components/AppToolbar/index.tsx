@@ -2,12 +2,16 @@ import React from 'react';
 import AppToolbarProvider from './AppToolbarProvider';
 import AppToolbar from './AppToolbar';
 
-const ExportedComponent: React.FC = () => {
+interface ToolbarProps {
+  toggleDrawer: () => void;
+}
+
+const Toolbar: React.FC<ToolbarProps> = ({toggleDrawer}) => {
   return (
-    <AppToolbarProvider>
+    <AppToolbarProvider onToggleDrawer={toggleDrawer}>
       <AppToolbar />
     </AppToolbarProvider>
   );
 };
 
-export default ExportedComponent;
+export default Toolbar;

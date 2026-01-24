@@ -1,31 +1,24 @@
 import React from 'react';
 import { Drawer, Box } from '@mui/material';
-import { useSelector, useDispatch } from 'react-redux';
-import type { RootState } from '../../store/store';
-import { toggleDrawer } from './store/drawer-slice';
+
+export type DrawerAnchor = 'left' | 'right' | 'top' | 'bottom';
 
 interface SideDrawerProps {
+  isOpened: boolean;
+  position: DrawerAnchor;
   children: React.ReactNode;
   width?: number;
+
+  closeDrawer: () => void
 }
 // source: https://stackblitz.com/edit/react-usnmyx?file=demo.tsx
-// copy pasting isn't bad, but it is not the best practice
-// it is better to understand the code and then write it yourself
-// but in this case, it is a good example of how to use MUI Drawer component
-// and how to manage the state with Redux
-// so... let's do it! :D
-const SideDrawer: React.FC<SideDrawerProps> = ({ children, width = 250 }) => {
-  const dispatch = useDispatch();
-  const { open, position } = useSelector((state: RootState) => state.drawer);
+// copy pasting isn't bad, but in this case it is just a good example of how to use MUI Drawer component
+// and how to manage the state with Redux so... :)
+const SideDrawer: React.FC<SideDrawerProps> = ({ position, isOpened, closeDrawer, children, width = 250 }) => {
 
   const handleToggle = () => {
-    dispatch(toggleDrawer());
+    closeDrawer();
   };
-
-  const drawerSx =
-    position === 'top' || position === 'bottom'
-      ? { height: width, width: '100%' }
-      : { width };
 
   const boxSx = {
     width: position === 'top' || position === 'bottom' ? 'auto' : width,
@@ -37,9 +30,8 @@ const SideDrawer: React.FC<SideDrawerProps> = ({ children, width = 250 }) => {
   return (
     <Drawer
       anchor={position}
-      open={open}
+      open={isOpened}
       onClose={handleToggle}
-      PaperProps={{ sx: drawerSx }}
     >
       <Box sx={boxSx} onClick={handleToggle} onKeyDown={handleToggle}>
         {children}
