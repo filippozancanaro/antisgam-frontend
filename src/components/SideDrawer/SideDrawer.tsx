@@ -12,8 +12,6 @@ interface SideDrawerProps {
   closeDrawer: () => void
 }
 // source: https://stackblitz.com/edit/react-usnmyx?file=demo.tsx
-// copy pasting isn't bad, but in this case it is just a good example of how to use MUI Drawer component
-// and how to manage the state with Redux so... :)
 const SideDrawer: React.FC<SideDrawerProps> = ({ position, isOpened, closeDrawer, children, width = 250 }) => {
 
   const handleToggle = () => {
