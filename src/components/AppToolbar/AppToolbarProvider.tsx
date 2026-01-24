@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import type { ReactNode } from 'react';
-import { AppToolbarContext } from './AppToolbarContext';
-import { useNavigate } from 'react-router-dom';
-import { useGlobalCleanup } from '../../shared/antisgam-cleanup/AntisgamCleanup';
+import React, { useState } from "react";
+import type { ReactNode } from "react";
+import { AppToolbarContext } from "./AppToolbarContext";
+import { useNavigate } from "react-router-dom";
+import { useGlobalCleanup } from "../../shared/antisgam-cleanup/useAntisgamCleanup";
 
 interface Props {
   onToggleDrawer: () => void;
@@ -11,7 +11,7 @@ interface Props {
 }
 
 const AppToolbarProvider: React.FC<Props> = ({ onToggleDrawer, children }) => {
-  const [title] = useState('ANTISGAM');
+  const [title] = useState("ANTISGAM");
   const navigate = useNavigate();
   const cleanup = useGlobalCleanup();
 
@@ -21,12 +21,14 @@ const AppToolbarProvider: React.FC<Props> = ({ onToggleDrawer, children }) => {
 
   const navigateToHomepage = () => {
     cleanup();
-    
-    navigate('/');
+
+    navigate("/");
   };
 
   return (
-    <AppToolbarContext.Provider value={{ title, menuClickHandler, navigateToHomepage }}>
+    <AppToolbarContext.Provider
+      value={{ title, menuClickHandler, navigateToHomepage }}
+    >
       {children}
     </AppToolbarContext.Provider>
   );
