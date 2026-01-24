@@ -2,19 +2,30 @@ import { Box } from '@mui/material';
 import { Outlet } from 'react-router-dom';
 import { AppToolbar, SideDrawer } from '..';
 import { RoutingList } from './components';
+import { useState } from 'react';
 
-const ApplicationRoute = () => {
+const ApplicationRoute: React.FC = () => {
+
+  const [drawerOpened, setDrawerOpened] = useState<boolean>(false);
+
+  const toggleDrawer = () => {
+    setDrawerOpened(!drawerOpened);
+  }
+
+  const handleCloseDrawer = () => {
+    setDrawerOpened(false);
+  }
 
   return (
     <Box sx={{ display: 'flex', height: '100vh', overflow: 'hidden' }}>
-      <SideDrawer>
+      <SideDrawer position='left' closeDrawer={handleCloseDrawer} isOpened={drawerOpened}>
         <Box sx={{ padding: 2 }}>
           <RoutingList />
         </Box>
       </SideDrawer>
 
       <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
-        <AppToolbar />
+        <AppToolbar toggleDrawer={toggleDrawer} />
 
         <Box
           component="main"
