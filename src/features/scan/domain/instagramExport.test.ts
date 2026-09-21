@@ -20,6 +20,15 @@ describe("readInstagramExport", () => {
     expect(warnings).toEqual([]);
   });
 
+  it("legge pending e removed_suggestions nel formato label_values (export 2026)", async () => {
+    const file = await buildExportZip({ format: "2026" });
+    const { input, warnings } = await readInstagramExport(file);
+
+    expect(input.pendingRequests).toEqual(EXPECTED.pendingRequests);
+    expect(input.removedSuggestions.sort()).toEqual(EXPECTED.removedSuggestions);
+    expect(warnings).toEqual([]);
+  });
+
   it("tollera una cartella radice extra nello zip", async () => {
     const file = await buildExportZip({ rootFolder: "instagram-user-2025-01-01" });
     const { input } = await readInstagramExport(file);

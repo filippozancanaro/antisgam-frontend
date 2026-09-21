@@ -4,6 +4,8 @@ import following from "./following.json";
 import pendingFollowRequests from "./pending_follow_requests.json";
 import removedSuggestions from "./removed_suggestions.json";
 import legacyHistory from "./legacy_history.json";
+import pendingFollowRequests2026 from "./pending_follow_requests_2026.json";
+import removedSuggestions2026 from "./removed_suggestions_2026.json";
 
 export const fixtures = {
   followers1,
@@ -12,6 +14,9 @@ export const fixtures = {
   pendingFollowRequests,
   removedSuggestions,
   legacyHistory,
+  /** Formato "label_values" degli export dal 2026 (stessi utenti delle fixture legacy). */
+  pendingFollowRequests2026,
+  removedSuggestions2026,
 };
 
 /** Risultato atteso analizzando l'export completo (followers_1 + followers_2 + following). */

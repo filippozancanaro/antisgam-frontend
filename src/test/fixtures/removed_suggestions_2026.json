@@ -1,0 +1,22 @@
+[
+  {
+    "timestamp": 1785331069,
+    "media": [],
+    "label_values": [
+      { "label": "URL", "value": "" },
+      { "label": "Nome", "value": "SPAM SAM" },
+      { "label": "Nome utente", "value": "spam_sam" }
+    ],
+    "fbid": "17841400000000002"
+  },
+  {
+    "timestamp": 1779013966,
+    "media": [],
+    "label_values": [
+      { "label": "URL", "value": "" },
+      { "label": "Nome", "value": "Ad Amy" },
+      { "label": "Nome utente", "value": "ad_amy" }
+    ],
+    "fbid": "17841400000000003"
+  }
+]

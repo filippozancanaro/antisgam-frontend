@@ -11,6 +11,8 @@ export interface ExportZipOptions {
   includeRemoved?: boolean;
   /** Entry aggiuntive `{ path: contenuto }`, sovrascrivono quelle standard. */
   extraEntries?: Record<string, string>;
+  /** Formato dei file opzionali: "legacy" (wrapper + string_list_data) o "2026" (label_values). */
+  format?: "legacy" | "2026";
 }
 
 /** Costruisce in memoria uno zip con la struttura dell'export Instagram. */
@@ -21,6 +23,7 @@ export const buildExportZip = async ({
   includePending = true,
   includeRemoved = true,
   extraEntries = {},
+  format = "legacy",
 }: ExportZipOptions = {}): Promise<File> => {
   const zip = new JSZip();
   const base = [rootFolder, ...EXPORT_FOLDER].filter(Boolean).join("/");
@@ -31,8 +34,13 @@ export const buildExportZip = async ({
     add("followers_2.json", fixtures.followers2);
   }
   if (includeFollowing) add("following.json", fixtures.following);
-  if (includePending) add("pending_follow_requests.json", fixtures.pendingFollowRequests);
-  if (includeRemoved) add("removed_suggestions.json", fixtures.removedSuggestions);
+  const is2026 = format === "2026";
+  if (includePending) {
+    add("pending_follow_requests.json", is2026 ? fixtures.pendingFollowRequests2026 : fixtures.pendingFollowRequests);
+  }
+  if (includeRemoved) {
+    add("removed_suggestions.json", is2026 ? fixtures.removedSuggestions2026 : fixtures.removedSuggestions);
+  }
 
   Object.entries(extraEntries).forEach(([path, content]) => zip.file(path, content));
 
