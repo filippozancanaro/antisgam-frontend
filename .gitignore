@@ -24,3 +24,6 @@ dist-ssr
 *.sw?
 
 hosting.*.cache
+# Test / tooling
+coverage
+.firebase/

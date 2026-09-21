@@ -1,4 +1,3 @@
-import React from 'react';
 import { Card, CardHeader, CardContent, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
@@ -27,20 +26,20 @@ const SvgImage = styled('img')(({ theme }) => ({
   marginBottom: theme.spacing(2),
 }));
 
-const TutorialStep: React.FC<Props> = ({
+const TutorialStep = ({
   number,
   text,
   imagePath,
   imageAlt,
   isSvg = false,
   highlight = false,
-}) => {
+}: Props) => {
   return (
     <Card>
       <CardHeader
         sx={{ paddingBottom: 0 }}
         title={
-          <Typography variant="h6" fontSize={18}>
+          <Typography variant="h6" sx={{ fontSize: 18 }}>
             {number}
           </Typography>
         }

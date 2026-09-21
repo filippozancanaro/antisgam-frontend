@@ -1,0 +1,24 @@
+{
+  "relationships_following": [
+    {
+      "title": "alice",
+      "media_list_data": [],
+      "string_list_data": [{ "href": "https://www.instagram.com/alice", "timestamp": 1700000010 }]
+    },
+    {
+      "title": "bob",
+      "media_list_data": [],
+      "string_list_data": [{ "href": "https://www.instagram.com/bob", "timestamp": 1700000011 }]
+    },
+    {
+      "title": "zed",
+      "media_list_data": [],
+      "string_list_data": [{ "href": "https://www.instagram.com/zed", "value": "zed", "timestamp": 1700000012 }]
+    },
+    {
+      "title": "eve",
+      "media_list_data": [],
+      "string_list_data": [{ "href": "https://www.instagram.com/eve", "timestamp": 1700000013 }]
+    }
+  ]
+}

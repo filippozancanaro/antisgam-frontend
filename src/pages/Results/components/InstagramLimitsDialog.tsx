@@ -1,4 +1,3 @@
-import React from 'react';
 import {
   Dialog,
   DialogTitle,
@@ -20,7 +19,7 @@ interface Props {
   onClose: () => void;
 }
 
-const TutorialModal: React.FC<Props> = ({ open, onClose }) => {
+const InstagramLimitsDialog = ({ open, onClose }: Props) => {
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -43,7 +42,7 @@ const TutorialModal: React.FC<Props> = ({ open, onClose }) => {
             <Typography variant="h6" gutterBottom color="primary" sx={{ textAlign: 'center' }}>
               ALCUNE INFORMAZIONI IMPORTANTI
             </Typography>
-            <Typography variant="subtitle1" gutterBottom fontSize="16" sx={{ textAlign: 'center' }}>
+            <Typography variant="subtitle1" gutterBottom sx={{ textAlign: 'center', fontSize: 16 }}>
               OVVERO COME NON FARSI SOSPENDERE L'ACCOUNT PER LA TROPPA CATTIVERIA
             </Typography>
           </Grid>
@@ -60,7 +59,7 @@ const TutorialModal: React.FC<Props> = ({ open, onClose }) => {
               <CardHeader
                 sx={{ paddingBottom: 0 }}
                 title={
-                  <Typography variant="h6" fontSize={18}>
+                  <Typography variant="h6" sx={{ fontSize: 18 }}>
                     Quanti Follow/Unfollow posso fare e in quanto tempo?
                   </Typography>
                 }
@@ -84,7 +83,7 @@ const TutorialModal: React.FC<Props> = ({ open, onClose }) => {
               <CardHeader
                 sx={{ paddingBottom: 0 }}
                 title={
-                  <Typography variant="h6" fontSize={18}>
+                  <Typography variant="h6" sx={{ fontSize: 18 }}>
                     Che succede se eccedo questi limiti?
                   </Typography>
                 }
@@ -109,7 +108,7 @@ const TutorialModal: React.FC<Props> = ({ open, onClose }) => {
               <CardHeader
                 sx={{ paddingBottom: 0 }}
                 title={
-                  <Typography variant="h6" fontSize={18}>
+                  <Typography variant="h6" sx={{ fontSize: 18 }}>
                     Parlavi di somma tra follow e unfollow: come mai?
                   </Typography>
                 }
@@ -131,7 +130,7 @@ const TutorialModal: React.FC<Props> = ({ open, onClose }) => {
               <CardHeader
                 sx={{ paddingBottom: 0 }}
                 title={
-                  <Typography variant="h6" fontSize={18}>
+                  <Typography variant="h6" sx={{ fontSize: 18 }}>
                     Perché parli col condizionale?
                   </Typography>
                 }
@@ -165,4 +164,4 @@ const TutorialModal: React.FC<Props> = ({ open, onClose }) => {
   );
 };
 
-export default TutorialModal;
+export default InstagramLimitsDialog;

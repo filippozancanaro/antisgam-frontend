@@ -1,0 +1,26 @@
+{
+  "scansHistory": [
+    {
+      "timestamp": 1700000000000,
+      "date": "2023-11-14T22:13:20.000Z",
+      "data": {
+        "followersData": ["alice", "bob"],
+        "followingData": ["alice", "bob", "zed"],
+        "unfollowersData": ["zed"],
+        "pendingRequests": ["private_pam"],
+        "removedSuggestions": []
+      }
+    },
+    {
+      "timestamp": 1690000000000,
+      "date": "2023-07-22T04:26:40.000Z",
+      "data": {
+        "followersData": ["alice"],
+        "followingData": ["alice", "eve"],
+        "unfollowersData": ["eve"],
+        "pendingRequests": [],
+        "removedSuggestions": ["spam_sam"]
+      }
+    }
+  ]
+}
