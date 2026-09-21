@@ -5,7 +5,6 @@ import {
   Box,
   Button,
   Grid,
-  ListItem,
   Typography,
 } from "@mui/material";
 import CelebrationIcon from "@mui/icons-material/Celebration";
@@ -33,6 +32,17 @@ const ScanResults = ({ record }: Props) => {
   const { unfollowers, pendingRequests, removedSuggestions } = record.data;
   const hasUnfollowers = unfollowers.length > 0;
   const scanDate = useMemo(() => formatScanDate(record.timestamp), [record.timestamp]);
+
+  // Sezioni opzionali: l'export può non contenerle (o Meta può cambiarne il formato),
+  // quindi mostriamo solo quelle con dati invece di accordion vuoti.
+  const extraSections = useMemo(
+    () =>
+      [
+        { title: "Richieste inviate e mai accettate", nicknames: pendingRequests },
+        { title: "Suggerimenti rimossi", nicknames: removedSuggestions },
+      ].filter((section) => section.nicknames.length > 0),
+    [pendingRequests, removedSuggestions],
+  );
 
   return (
     <>
@@ -87,61 +97,43 @@ const ScanResults = ({ record }: Props) => {
             </Button>
           </Grid>
 
-          <PageSection>
-            <Typography variant="h5" gutterBottom>
-              ALTRI DATI
-            </Typography>
-          </PageSection>
+          {extraSections.length > 0 && (
+            <PageSection>
+              <Typography variant="h5" gutterBottom>
+                ALTRI DATI
+              </Typography>
+            </PageSection>
+          )}
 
-          <Grid size={{ xs: 12, lg: 5, xl: 4 }} offset={{ lg: 1, xl: 2 }}>
-            <Accordion>
-              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                <Typography>Richieste inviate e mai accettate</Typography>
-              </AccordionSummary>
-              <AccordionDetails>
-                <NicknameList
-                  aria-label="Richieste inviate"
-                  nicknames={pendingRequests}
-                  sx={{ mb: 2 }}
-                  emptyContent={<ListItem>Nessuna richiesta trovata</ListItem>}
-                />
-                <Button
-                  variant="outlined"
-                  fullWidth
-                  startIcon={<ContentCopyIcon />}
-                  disabled={pendingRequests.length === 0}
-                  onClick={() => copy(pendingRequests.join("\n"))}
-                >
-                  Copia
-                </Button>
-              </AccordionDetails>
-            </Accordion>
-          </Grid>
-
-          <Grid size={{ xs: 12, lg: 5, xl: 4 }}>
-            <Accordion>
-              <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                <Typography>Suggerimenti rimossi</Typography>
-              </AccordionSummary>
-              <AccordionDetails>
-                <NicknameList
-                  aria-label="Suggerimenti rimossi"
-                  nicknames={removedSuggestions}
-                  sx={{ mb: 2 }}
-                  emptyContent={<ListItem>Nessun suggerimento rimosso</ListItem>}
-                />
-                <Button
-                  variant="outlined"
-                  fullWidth
-                  startIcon={<ContentCopyIcon />}
-                  disabled={removedSuggestions.length === 0}
-                  onClick={() => copy(removedSuggestions.join("\n"))}
-                >
-                  Copia
-                </Button>
-              </AccordionDetails>
-            </Accordion>
-          </Grid>
+          {extraSections.map((section, index) => (
+            <Grid
+              key={section.title}
+              size={{ xs: 12, lg: 5, xl: 4 }}
+              offset={index === 0 ? { lg: 1, xl: 2 } : undefined}
+            >
+              <Accordion>
+                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                  <Typography>{section.title}</Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <NicknameList
+                    aria-label={section.title}
+                    nicknames={section.nicknames}
+                    sx={{ mb: 2 }}
+                    emptyContent={null}
+                  />
+                  <Button
+                    variant="outlined"
+                    fullWidth
+                    startIcon={<ContentCopyIcon />}
+                    onClick={() => copy(section.nicknames.join("\n"))}
+                  >
+                    Copia
+                  </Button>
+                </AccordionDetails>
+              </Accordion>
+            </Grid>
+          ))}
         </Grid>
       </Box>
     </>

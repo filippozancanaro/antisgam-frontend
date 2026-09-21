@@ -51,6 +51,36 @@ describe("Results", () => {
     expect(await screen.findByText("Testo copiato negli appunti")).toBeInTheDocument();
   });
 
+  describe("sezione ALTRI DATI", () => {
+    const render = (data: Partial<ScanResult>) => {
+      const { store, record } = seed(data);
+      renderWithProviders(<Results />, { store, route: `/results/${record.id}`, path: "/results/:scanId?" });
+    };
+
+    it("mostra solo gli accordion che hanno dati", () => {
+      render({ pendingRequests: ["private_pam"], removedSuggestions: [] });
+
+      expect(screen.getByText("ALTRI DATI")).toBeInTheDocument();
+      expect(screen.getByText("Richieste inviate e mai accettate")).toBeInTheDocument();
+      expect(screen.queryByText("Suggerimenti rimossi")).not.toBeInTheDocument();
+    });
+
+    it("mostra entrambi gli accordion quando entrambi hanno dati", () => {
+      render({ pendingRequests: ["private_pam"], removedSuggestions: ["spam_sam"] });
+
+      expect(screen.getByText("Richieste inviate e mai accettate")).toBeInTheDocument();
+      expect(screen.getByText("Suggerimenti rimossi")).toBeInTheDocument();
+    });
+
+    it("nasconde l'intera sezione se non ci sono dati opzionali", () => {
+      render({ pendingRequests: [], removedSuggestions: [] });
+
+      expect(screen.queryByText("ALTRI DATI")).not.toBeInTheDocument();
+      expect(screen.queryByText("Richieste inviate e mai accettate")).not.toBeInTheDocument();
+      expect(screen.queryByText("Suggerimenti rimossi")).not.toBeInTheDocument();
+    });
+  });
+
   it("senza id reindirizza alla scansione più recente", () => {
     const { store, record } = seed();
     renderWithProviders(<Results />, { store, route: "/results", path: "/results/:scanId?" });
