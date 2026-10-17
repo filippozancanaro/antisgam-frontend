@@ -1,90 +1,62 @@
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  Grid,
-  Typography,
-  useMediaQuery,
-  useTheme,
-} from "@mui/material";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import { CheckCircle2 } from "lucide-react";
+import { Button, Dialog } from "@/shared/ui";
+import { cx } from "@/shared/utils/cx";
 import TutorialStep from "./TutorialStep";
 import { TUTORIAL_STEPS } from "./tutorialSteps";
+import styles from "./TutorialDialog.module.scss";
 
 interface Props {
   open: boolean;
   onClose: () => void;
 }
 
-const TutorialDialog = ({ open, onClose }: Props) => {
-  const theme = useTheme();
-  const fullScreen = useMediaQuery(theme.breakpoints.down("sm"));
+const TutorialDialog = ({ open, onClose }: Props) => (
+  <Dialog
+    open={open}
+    onClose={onClose}
+    size="xl"
+    title="Tutorial"
+    footer={
+      <Button variant="primary" icon={<CheckCircle2 />} onPress={onClose}>
+        Ok, ho capito!
+      </Button>
+    }
+  >
+    <div className={styles.intro}>
+      <h3 className={styles.welcome}>👋 BENVENUTO/A IN ANTISGAM 👋</h3>
+      <p className={styles.claim}>
+        LA PRIMA ED UNICA APP PER SGAMARE GLI UNFOLLOWERS* E NON FARSI BANNARE!
+      </p>
+      <p className={styles.note}>*o meglio, chi segui ma non ti segue a sua volta</p>
+      <p className={styles.text}>
+        se sei qui probabilmente starai cercando di capire quali dati caricare e come funziona l&apos;app: non
+        preoccuparti, è un po&apos; lungo ma è tutto molto semplice!
+      </p>
+      <p className={styles.text}>
+        e...si, purtroppo è l&apos;unico modo per non essere bannati da Meta: triste ma vero.
+      </p>
+      <p className={styles.text}>
+        Ricorda: <b>FAI ATTENZIONE AGLI STEP 10 e 11</b>: mi raccomando! 😁
+      </p>
+    </div>
 
-  return (
-    <Dialog open={open} onClose={onClose} fullScreen={fullScreen} maxWidth="xl" fullWidth>
-      <DialogTitle variant="h5">Tutorial</DialogTitle>
+    <h3 className={styles.sectionTitle}>COME RECUPERARE I DATI</h3>
 
-      <DialogContent dividers sx={{ maxHeight: fullScreen ? "100%" : 600, overflowY: "auto" }}>
-        <Grid container spacing={4}>
-          <Grid size={{ xs: 12 }}>
-            <Typography variant="h6" gutterBottom color="primary" sx={{ textAlign: "center" }}>
-              👋 BENVENUTO/A IN ANTISGAM 👋
-            </Typography>
-            <Typography variant="subtitle1" sx={{ textAlign: "center", fontSize: 16 }}>
-              LA PRIMA ED UNICA APP PER SGAMARE GLI UNFOLLOWERS* E NON FARSI BANNARE!
-            </Typography>
-            <Typography
-              variant="subtitle1"
-              color="textSecondary"
-              gutterBottom
-              sx={{ textAlign: "center", fontSize: 10 }}
-            >
-              *o meglio, chi segui ma non ti segue a sua volta
-            </Typography>
-          </Grid>
-          <Grid size={{ xs: 12 }}>
-            <Typography variant="subtitle2" color="textSecondary" sx={{ textAlign: "center" }}>
-              se sei qui probabilmente starai cercando di capire quali dati caricare e come funziona l'app: non
-              preoccuparti, è un po' lungo ma è tutto molto semplice!
-            </Typography>
-            <Typography variant="subtitle2" color="textSecondary" gutterBottom sx={{ textAlign: "center" }}>
-              e...si, purtroppo è l'unico modo per non essere bannati da Meta: triste ma vero.
-            </Typography>
-            <Typography variant="body1" color="textPrimary" gutterBottom sx={{ textAlign: "center" }}>
-              Ricorda: <b>FAI ATTENZIONE AGLI STEP 10 e 11</b>: mi raccomando! 😁
-            </Typography>
-          </Grid>
-
-          <Grid size={{ xs: 12 }} sx={{ display: "flex", justifyContent: "center" }}>
-            <Typography variant="h6" color="primary" gutterBottom>
-              COME RECUPERARE I DATI
-            </Typography>
-          </Grid>
-
-          {TUTORIAL_STEPS.map((step) => (
-            <Grid key={step.number} size={{ xs: 12, lg: step.fullWidth ? 12 : 6 }}>
-              <TutorialStep
-                number={step.number}
-                text={step.text}
-                imagePath={step.image}
-                imageAlt={step.imageAlt}
-                isSvg={step.isSvg}
-                highlight={step.highlight}
-              />
-            </Grid>
-          ))}
-        </Grid>
-      </DialogContent>
-
-      <DialogActions sx={{ justifyContent: "center", py: 2 }}>
-        <Button variant="contained" color="primary" onClick={onClose} startIcon={<CheckCircleIcon />}>
-          Ok, ho capito!
-        </Button>
-      </DialogActions>
-    </Dialog>
-  );
-};
+    <div className={styles.steps}>
+      {TUTORIAL_STEPS.map((step) => (
+        <div key={step.number} className={cx(styles.cell, step.fullWidth && styles.cellWide)}>
+          <TutorialStep
+            number={step.number}
+            text={step.text}
+            imagePath={step.image}
+            imageAlt={step.imageAlt}
+            isSvg={step.isSvg}
+            highlight={step.highlight}
+          />
+        </div>
+      ))}
+    </div>
+  </Dialog>
+);
 
 export default TutorialDialog;

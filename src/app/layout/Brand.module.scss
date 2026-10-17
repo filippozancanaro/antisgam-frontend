@@ -1,0 +1,30 @@
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.logo {
+  width: 2.5rem;
+  height: 2.5rem;
+  object-fit: contain;
+}
+
+.word {
+  background: var(--gradient-brand);
+  background-clip: text;
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  -webkit-text-fill-color: transparent;
+}
+
+.compact .logo {
+  width: 2rem;
+  height: 2rem;
+}
+
+.compact .word {
+  font-size: var(--text-lg);
+}

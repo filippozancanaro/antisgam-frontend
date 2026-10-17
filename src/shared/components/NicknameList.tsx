@@ -1,43 +1,32 @@
-import { Box, List, ListItem, ListItemIcon, ListItemText, type SxProps, type Theme } from "@mui/material";
-import PersonIcon from "@mui/icons-material/Person";
+import { AtSign } from "lucide-react";
 import type { ReactNode } from "react";
+import { cx } from "@/shared/utils/cx";
+import styles from "./NicknameList.module.scss";
 
 interface Props {
   nicknames: readonly string[];
+  /** Mostrato al posto della lista quando non ci sono nickname. */
   emptyContent: ReactNode;
-  maxHeight?: number;
-  sx?: SxProps<Theme>;
+  className?: string;
   "aria-label"?: string;
 }
 
 /** Lista scrollabile di nickname con stato vuoto personalizzabile. */
-const NicknameList = ({ nicknames, emptyContent, maxHeight = 300, sx, "aria-label": ariaLabel }: Props) => (
-  <Box
-    sx={{
-      maxHeight,
-      overflowY: "auto",
-      border: 1,
-      borderColor: "divider",
-      borderRadius: 2,
-      p: 1,
-      ...sx,
-    }}
-  >
+const NicknameList = ({ nicknames, emptyContent, className, "aria-label": ariaLabel }: Props) => (
+  <div className={cx(styles.wrapper, className)}>
     {nicknames.length > 0 ? (
-      <List dense aria-label={ariaLabel}>
+      <ul className={styles.list} aria-label={ariaLabel}>
         {nicknames.map((nickname) => (
-          <ListItem key={nickname}>
-            <ListItemIcon>
-              <PersonIcon color="primary" />
-            </ListItemIcon>
-            <ListItemText primary={nickname} />
-          </ListItem>
+          <li key={nickname} className={styles.item}>
+            <AtSign className={styles.icon} aria-hidden="true" />
+            {nickname}
+          </li>
         ))}
-      </List>
+      </ul>
     ) : (
       emptyContent
     )}
-  </Box>
+  </div>
 );
 
 export default NicknameList;

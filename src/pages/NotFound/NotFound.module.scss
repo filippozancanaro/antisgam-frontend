@@ -1,0 +1,27 @@
+.image {
+  width: 60%;
+  max-width: 17rem;
+}
+
+.code {
+  background: var(--gradient-brand);
+  background-clip: text;
+  font-family: var(--font-display);
+  font-size: var(--text-4xl);
+  font-weight: 700;
+  line-height: 1;
+  -webkit-text-fill-color: transparent;
+}
+
+.title {
+  font-size: var(--text-2xl);
+  letter-spacing: 0.08em;
+}
+
+.subtitle {
+  font-size: var(--text-lg);
+}
+
+.text {
+  color: var(--color-text-muted);
+}

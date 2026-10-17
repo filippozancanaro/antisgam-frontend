@@ -60,7 +60,7 @@ describe("Results", () => {
     it("mostra solo gli accordion che hanno dati", () => {
       render({ pendingRequests: ["private_pam"], removedSuggestions: [] });
 
-      expect(screen.getByText("ALTRI DATI")).toBeInTheDocument();
+      expect(screen.getByText("Altri dati")).toBeInTheDocument();
       expect(screen.getByText("Richieste inviate e mai accettate")).toBeInTheDocument();
       expect(screen.queryByText("Suggerimenti rimossi")).not.toBeInTheDocument();
     });
@@ -75,7 +75,7 @@ describe("Results", () => {
     it("nasconde l'intera sezione se non ci sono dati opzionali", () => {
       render({ pendingRequests: [], removedSuggestions: [] });
 
-      expect(screen.queryByText("ALTRI DATI")).not.toBeInTheDocument();
+      expect(screen.queryByText("Altri dati")).not.toBeInTheDocument();
       expect(screen.queryByText("Richieste inviate e mai accettate")).not.toBeInTheDocument();
       expect(screen.queryByText("Suggerimenti rimossi")).not.toBeInTheDocument();
     });

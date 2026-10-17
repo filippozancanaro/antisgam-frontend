@@ -1,24 +1,14 @@
-import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
-  Box,
-  Button,
-  Grid,
-  Typography,
-} from "@mui/material";
-import CelebrationIcon from "@mui/icons-material/Celebration";
-import ContentCopyIcon from "@mui/icons-material/ContentCopy";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import RestartAltIcon from "@mui/icons-material/RestartAlt";
+import { Copy, PartyPopper, RotateCcw, TriangleAlert } from "lucide-react";
 import { useMemo } from "react";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { useScanHistory, useScanRecord } from "@/features/scan/hooks/useScanHistory";
 import type { ScanRecord } from "@/features/scan/model/types";
-import { NicknameList, PageSection } from "@/shared/components";
+import { NicknameList } from "@/shared/components";
 import { useClipboard, useDisclosure } from "@/shared/hooks";
+import { Accordion, AccordionItem, Badge, Button, Page, Section } from "@/shared/ui";
 import { formatScanDate } from "@/shared/utils/formatDate";
 import InstagramLimitsDialog from "./components/InstagramLimitsDialog";
+import styles from "./Results.module.scss";
 
 interface Props {
   record: ScanRecord;
@@ -38,8 +28,8 @@ const ScanResults = ({ record }: Props) => {
   const extraSections = useMemo(
     () =>
       [
-        { title: "Richieste inviate e mai accettate", nicknames: pendingRequests },
-        { title: "Suggerimenti rimossi", nicknames: removedSuggestions },
+        { id: "pending", title: "Richieste inviate e mai accettate", nicknames: pendingRequests },
+        { id: "removed", title: "Suggerimenti rimossi", nicknames: removedSuggestions },
       ].filter((section) => section.nicknames.length > 0),
     [pendingRequests, removedSuggestions],
   );
@@ -48,94 +38,67 @@ const ScanResults = ({ record }: Props) => {
     <>
       {limitsDialog.isOpen && <InstagramLimitsDialog open onClose={limitsDialog.close} />}
 
-      <Box sx={{ p: 2 }}>
-        <Grid container spacing={2}>
-          <PageSection>
-            <Typography variant="h4" gutterBottom>
-              ECCO CHI SEGUI MA NON TI SEGUE
-            </Typography>
-            <Typography variant="subtitle1" color="text.secondary" gutterBottom>
-              Ora va e vendicati, ma fai attenzione ai{" "}
-              <Button variant="outlined" size="small" onClick={limitsDialog.open}>
-                limiti di Instagram
-              </Button>
-            </Typography>
-            <Typography variant="caption" color="text.secondary">
-              Scansione del {scanDate}
-            </Typography>
-          </PageSection>
+      <Page
+        eyebrow={`Scansione del ${scanDate}`}
+        title="Ecco chi segui ma non ti segue"
+        description={
+          <span className={styles.subtitle}>
+            Ora va e vendicati, ma fai attenzione ai
+            <Button variant="secondary" size="sm" icon={<TriangleAlert />} onPress={limitsDialog.open}>
+              limiti di Instagram
+            </Button>
+          </span>
+        }
+        actions={
+          <Badge tone={hasUnfollowers ? "accent" : "success"}>
+            {hasUnfollowers ? `${unfollowers.length} unfollowers` : "nessun unfollower"}
+          </Badge>
+        }
+      >
+        <Section>
+          <NicknameList
+            aria-label="Unfollowers"
+            nicknames={unfollowers}
+            emptyContent={
+              <div className={styles.empty}>
+                <PartyPopper className={styles.emptyIcon} aria-hidden="true" />
+                <p className={styles.emptyText}>Tutti i tuoi seguiti ti seguono a loro volta, ottimo!</p>
+              </div>
+            }
+          />
 
-          <PageSection>
-            <NicknameList
-              aria-label="Unfollowers"
-              nicknames={unfollowers}
-              sx={{ my: 1 }}
-              emptyContent={
-                <Box sx={{ textAlign: "center", my: 4 }}>
-                  <CelebrationIcon color="primary" sx={{ fontSize: 48 }} />
-                  <Typography variant="h5" sx={{ mt: 2 }}>
-                    Tutti i tuoi seguiti ti seguono a loro volta, ottimo!
-                  </Typography>
-                </Box>
-              }
-            />
-          </PageSection>
-
-          <Grid size={{ xs: 12 }} sx={{ display: "flex", justifyContent: "center" }}>
+          <div className={styles.actions}>
             <Button
-              variant="contained"
-              startIcon={<ContentCopyIcon />}
-              onClick={() => copy(unfollowers.join("\n"))}
-              disabled={!hasUnfollowers}
+              variant="primary"
+              icon={<Copy />}
+              onPress={() => copy(unfollowers.join("\n"))}
+              isDisabled={!hasUnfollowers}
             >
               Copia negli appunti
             </Button>
-          </Grid>
-          <Grid size={{ xs: 12 }} sx={{ display: "flex", justifyContent: "center" }}>
-            <Button variant="outlined" startIcon={<RestartAltIcon />} onClick={() => navigate("/")}>
+            <Button variant="secondary" icon={<RotateCcw />} onPress={() => navigate("/")}>
               Ricominciamo!
             </Button>
-          </Grid>
+          </div>
+        </Section>
 
-          {extraSections.length > 0 && (
-            <PageSection>
-              <Typography variant="h5" gutterBottom>
-                ALTRI DATI
-              </Typography>
-            </PageSection>
-          )}
-
-          {extraSections.map((section, index) => (
-            <Grid
-              key={section.title}
-              size={{ xs: 12, lg: 5, xl: 4 }}
-              offset={index === 0 ? { lg: 1, xl: 2 } : undefined}
-            >
-              <Accordion>
-                <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                  <Typography>{section.title}</Typography>
-                </AccordionSummary>
-                <AccordionDetails>
-                  <NicknameList
-                    aria-label={section.title}
-                    nicknames={section.nicknames}
-                    sx={{ mb: 2 }}
-                    emptyContent={null}
-                  />
-                  <Button
-                    variant="outlined"
-                    fullWidth
-                    startIcon={<ContentCopyIcon />}
-                    onClick={() => copy(section.nicknames.join("\n"))}
-                  >
-                    Copia
-                  </Button>
-                </AccordionDetails>
-              </Accordion>
-            </Grid>
-          ))}
-        </Grid>
-      </Box>
+        {extraSections.length > 0 && (
+          <Section title="Altri dati" description="Informazioni extra trovate nell'export.">
+            <Accordion>
+              {extraSections.map((section) => (
+                <AccordionItem key={section.id} id={section.id} title={section.title}>
+                  <NicknameList aria-label={section.title} nicknames={section.nicknames} emptyContent={null} />
+                  <div className={styles.accordionAction}>
+                    <Button variant="secondary" size="sm" icon={<Copy />} onPress={() => copy(section.nicknames.join("\n"))}>
+                      Copia
+                    </Button>
+                  </div>
+                </AccordionItem>
+              ))}
+            </Accordion>
+          </Section>
+        )}
+      </Page>
     </>
   );
 };

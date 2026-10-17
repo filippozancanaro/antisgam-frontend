@@ -60,7 +60,7 @@ describe("ScanHistoryList", () => {
 
     const list = screen.getByRole("list", { name: "Ultime scansioni" });
     const [selected, other] = within(list).getAllByRole("button");
-    expect(selected).toHaveClass("Mui-selected");
-    expect(other).not.toHaveClass("Mui-selected");
+    expect(selected).toHaveAttribute("aria-current", "page");
+    expect(other).not.toHaveAttribute("aria-current");
   });
 });

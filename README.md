@@ -36,19 +36,22 @@ Requires Node >= 22.12.
 
 ```
 src/
-  app/              bootstrap: App, router, layout (toolbar, drawer, menu, history)
+  app/              bootstrap: App, router, layout (aside, drawer, brand, history)
   features/
     scan/           analysis domain
       model/        types (ScanInput, ScanResult, ScanRecord, raw export shapes)
       domain/       pure functions: JSON parser, unfollowers analysis, zip reading
       store/        jotai atoms (persisted history with legacy-format migration)
       hooks/        useScanUpload, useScanHistory, useScanRecord
-    theme/          theme preference (auto/light/dark), ThemeManager, MUI themes
+      components/   AnalysisOverlay (the staged wait) + its rotating tips
+    theme/          theme preference (auto/light/dark), ThemeManager
   shared/
-    components/     FilePicker (+ useFilePicker), NicknameList, PageSection
+    ui/             design system on React Aria (Button, Card, Dialog, Drawer, ...)
+    components/     FilePicker (+ useFilePicker), NicknameList
     hooks/          useClipboard, useDisclosure, useRotatingIndex, useTimeout
-    utils/          zip, fileAccept, formatDate
-  pages/            Homepage, LoadingScreen, Results, Settings, NotFound (UI only)
+    utils/          zip, fileAccept, formatDate, cx
+  pages/            Homepage, Results, Settings, NotFound (UI only)
+  styles/           design tokens + global reset
   test/             vitest setup, JSON fixtures in Instagram export format, helpers
 ```
 
@@ -59,9 +62,24 @@ Principles:
 - **Logic in hooks, UI in pages**: no per-page Context/Provider; each page composes feature
   hooks and shared components.
 - **Flow**: Homepage (`useScanUpload`) reads the zip → `analyzeScan` → saves to history →
-  `/loading/:scanId` (staged wait) → `/results/:scanId`. The history in the side menu opens
-  `/results/:scanId` for any saved scan.
+  `AnalysisOverlay` (staged wait, no route of its own) → `/results/:scanId`. The history in the
+  aside opens `/results/:scanId` for any saved scan.
 - `@/` alias → `src/`.
+
+## Design system
+
+Components live in `src/shared/ui` and are built on [React Aria Components][react-aria]
+(focus management, keyboard support and ARIA come from there), styled with SCSS modules.
+There is no component library: every color, space, radius and shadow is a CSS custom property
+declared in `src/styles/tokens.scss`.
+
+Theming is `data-theme="light|dark"` on `<html>`, set by `ThemeManager` from the user
+preference (`auto` follows `prefers-color-scheme`). Components never branch on the theme:
+they only read tokens, so a new theme is just another block of custom properties.
+
+Class names in `*.module.scss` are camelCase so they can be read as `styles.someClass`.
+
+[react-aria]: https://react-spectrum.adobe.com/react-aria/
 
 ## Tests
 

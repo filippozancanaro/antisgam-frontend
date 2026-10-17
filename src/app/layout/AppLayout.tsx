@@ -1,46 +1,43 @@
-import { AppBar, Box, Drawer, IconButton, Toolbar, Typography } from "@mui/material";
-import MenuIcon from "@mui/icons-material/Menu";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Menu } from "lucide-react";
+import { Link, Outlet } from "react-router-dom";
 import { useDisclosure } from "@/shared/hooks";
-import NavigationMenu from "./NavigationMenu";
+import { Drawer, IconButton } from "@/shared/ui";
+import Brand from "./Brand";
+import Sidebar from "./Sidebar";
+import styles from "./AppLayout.module.scss";
 
-const DRAWER_WIDTH = 280;
-const APP_TITLE = "ANTISGAM";
-
+/**
+ * Struttura dell'app: aside laterale sempre visibile da desktop,
+ * drawer a scomparsa (con barra superiore) sotto i 1024px.
+ */
 const AppLayout = () => {
-  const navigate = useNavigate();
   const drawer = useDisclosure();
 
   return (
-    <Box sx={{ display: "flex", height: "100vh", overflow: "hidden" }}>
-      <Drawer anchor="left" open={drawer.isOpen} onClose={drawer.close}>
-        <Box sx={{ width: DRAWER_WIDTH, height: "100%", display: "flex", flexDirection: "column" }} role="presentation">
-          <NavigationMenu onNavigate={drawer.close} />
-        </Box>
+    <div className={styles.shell}>
+      <aside className={styles.aside}>
+        <Sidebar />
+      </aside>
+
+      <Drawer open={drawer.isOpen} onClose={drawer.close} label="Menu di navigazione">
+        <Sidebar onNavigate={drawer.close} />
       </Drawer>
 
-      <Box sx={{ flexGrow: 1, display: "flex", flexDirection: "column", minWidth: 0 }}>
-        <AppBar position="static" color="default">
-          <Toolbar>
-            <IconButton edge="start" color="primary" aria-label="Apri menu" onClick={drawer.toggle}>
-              <MenuIcon />
-            </IconButton>
-            <Typography
-              variant="h6"
-              component="button"
-              onClick={() => navigate("/")}
-              sx={{ ml: 2, cursor: "pointer", background: "none", border: 0, p: 0, color: "primary.main" }}
-            >
-              {APP_TITLE}
-            </Typography>
-          </Toolbar>
-        </AppBar>
+      <div className={styles.main}>
+        <header className={styles.topbar}>
+          <IconButton aria-label="Apri menu" onPress={drawer.open}>
+            <Menu aria-hidden="true" />
+          </IconButton>
+          <Link to="/" className={styles.brandLink}>
+            <Brand compact />
+          </Link>
+        </header>
 
-        <Box component="main" sx={{ flexGrow: 1, overflowY: "auto", overflowX: "hidden", p: 3 }}>
+        <main className={styles.content}>
           <Outlet />
-        </Box>
-      </Box>
-    </Box>
+        </main>
+      </div>
+    </div>
   );
 };
 

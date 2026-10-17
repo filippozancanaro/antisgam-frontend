@@ -1,73 +1,23 @@
-import { Card, CardHeader, CardContent, Typography } from '@mui/material';
-import { styled } from '@mui/material/styles';
+import { cx } from "@/shared/utils/cx";
+import { Card } from "@/shared/ui";
+import styles from "./TutorialStep.module.scss";
 
 interface Props {
   number: string | number;
   text: string;
   imagePath: string;
   imageAlt: string;
+  /** Le illustrazioni svg vanno mostrate senza cornice né ombra. */
   isSvg?: boolean;
+  /** Step da non sbagliare: evidenziato con il colore di accento. */
   highlight?: boolean;
 }
 
-// Styled image per immagini comuni
-const StyledImage = styled('img')(({ theme }) => ({
-  width: '100%',
-  maxWidth: '300px',
-  borderRadius: theme.shape.borderRadius,
-  boxShadow: theme.shadows[2],
-  marginBottom: theme.spacing(2),
-}));
-
-// Image specifica per SVG
-const SvgImage = styled('img')(({ theme }) => ({
-  width: '100%',
-  maxWidth: '300px',
-  marginBottom: theme.spacing(2),
-}));
-
-const TutorialStep = ({
-  number,
-  text,
-  imagePath,
-  imageAlt,
-  isSvg = false,
-  highlight = false,
-}: Props) => {
-  return (
-    <Card>
-      <CardHeader
-        sx={{ paddingBottom: 0 }}
-        title={
-          <Typography variant="h6" sx={{ fontSize: 18 }}>
-            {number}
-          </Typography>
-        }
-      />
-      <CardContent
-        sx={{
-          justifyContent: 'center',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-        }}
-      >
-        <Typography
-          variant="body2"
-          gutterBottom
-          color={highlight ? 'primary' : 'text.primary'}
-          sx={highlight ? { fontWeight: 'bold' } : undefined}
-        >
-          {text}
-        </Typography>
-        {isSvg ? (
-          <SvgImage src={imagePath} alt={imageAlt} />
-        ) : (
-          <StyledImage src={imagePath} alt={imageAlt} />
-        )}
-      </CardContent>
-    </Card>
-  );
-};
+const TutorialStep = ({ number, text, imagePath, imageAlt, isSvg = false, highlight = false }: Props) => (
+  <Card title={number} highlight={highlight} className={styles.step}>
+    <p className={cx(styles.text, highlight && styles.textHighlight)}>{text}</p>
+    <img className={cx(styles.image, isSvg && styles.illustration)} src={imagePath} alt={imageAlt} />
+  </Card>
+);
 
 export default TutorialStep;

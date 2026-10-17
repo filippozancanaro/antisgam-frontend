@@ -1,6 +1,6 @@
 import { useCallback, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useSnackbar } from "notistack";
+import { useToast } from "@/shared/ui";
 import type { ScanInput } from "../model/types";
 import { analyzeScan } from "../domain/analyzer";
 import {
@@ -29,14 +29,17 @@ const WARNING_MESSAGES: Record<ExportWarningCode, string> = {
 /**
  * Gestisce il form della homepage: selezione dello zip, estrazione dei dati,
  * avvio dell'analisi (salvata in cronologia) e reset.
+ * L'analisi è sincrona: `isAnalyzing` serve solo a mostrare l'overlay
+ * finché non si apre la pagina dei risultati.
  */
 export const useScanUpload = () => {
   const navigate = useNavigate();
-  const { enqueueSnackbar } = useSnackbar();
+  const toast = useToast();
   const addScanToHistory = useAddScanToHistory();
 
   const [file, setFile] = useState<File | null>(null);
   const [input, setInput] = useState<ScanInput | null>(null);
+  const [pendingScanId, setPendingScanId] = useState<string | null>(null);
 
   const clearSelection = useCallback(() => {
     setFile(null);
@@ -50,41 +53,48 @@ export const useScanUpload = () => {
 
       try {
         const { input: extracted, warnings } = await readInstagramExport(zipFile);
-        warnings.forEach((code) => enqueueSnackbar(WARNING_MESSAGES[code], { variant: "warning" }));
+        warnings.forEach((code) => toast(WARNING_MESSAGES[code], "warning"));
         setInput(extracted);
       } catch (error) {
         const code: ExportErrorCode = error instanceof InstagramExportError ? error.code : "invalid-zip";
-        enqueueSnackbar(ERROR_MESSAGES[code], { variant: "error" });
+        toast(ERROR_MESSAGES[code], "error");
         setFile(null);
       }
     },
-    [enqueueSnackbar],
+    [toast],
   );
 
   const submit = useCallback(() => {
     if (!input) {
-      enqueueSnackbar(
-        "Dati sui Followers o Following mancanti, impossibile procedere con la verifica.",
-        { variant: "error" },
-      );
+      toast("Dati sui Followers o Following mancanti, impossibile procedere con la verifica.", "error");
       return;
     }
 
     const record = addScanToHistory(analyzeScan(input));
-    navigate(`/loading/${record.id}`);
-  }, [input, addScanToHistory, navigate, enqueueSnackbar]);
+    setPendingScanId(record.id);
+  }, [input, addScanToHistory, toast]);
+
+  /** Fine dell'attesa minima: si apre la pagina dei risultati. */
+  const finishAnalysis = useCallback(() => {
+    if (!pendingScanId) return;
+
+    setPendingScanId(null);
+    navigate(`/results/${pendingScanId}`);
+  }, [pendingScanId, navigate]);
 
   const reset = useCallback(() => {
     clearSelection();
-    enqueueSnackbar("Applicazione resettata.", { variant: "info" });
-  }, [clearSelection, enqueueSnackbar]);
+    toast("Applicazione resettata.", "info");
+  }, [clearSelection, toast]);
 
   return {
     file,
     isReady: input !== null,
+    isAnalyzing: pendingScanId !== null,
     selectZipFile,
     clearSelection,
     submit,
+    finishAnalysis,
     reset,
   };
 };
