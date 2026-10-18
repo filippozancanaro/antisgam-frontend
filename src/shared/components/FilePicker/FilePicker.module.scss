@@ -13,8 +13,10 @@
     background var(--duration-normal) var(--ease);
 }
 
-.zone:hover {
-  border-color: var(--color-accent);
+@media (hover: hover) {
+  .zone:hover {
+    border-color: var(--color-accent);
+  }
 }
 
 .dragging {

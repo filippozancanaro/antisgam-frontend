@@ -36,9 +36,11 @@
     color var(--duration-fast) var(--ease);
 }
 
-.option:hover {
-  border-color: var(--color-accent);
-  color: var(--color-text);
+@media (hover: hover) {
+  .option:hover {
+    border-color: var(--color-accent);
+    color: var(--color-text);
+  }
 }
 
 .option[data-selected] {

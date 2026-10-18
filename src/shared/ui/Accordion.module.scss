@@ -32,8 +32,10 @@
   transition: background var(--duration-fast) var(--ease);
 }
 
-.trigger:hover {
-  background: var(--color-surface-hover);
+@media (hover: hover) {
+  .trigger:hover {
+    background: var(--color-surface-hover);
+  }
 }
 
 .trigger[data-focus-visible] {

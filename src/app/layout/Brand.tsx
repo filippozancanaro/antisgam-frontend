@@ -10,7 +10,8 @@ interface Props {
 /** Logo + nome dell'app. */
 const Brand = ({ compact = false, className }: Props) => (
   <span className={cx(styles.brand, compact && styles.compact, className)}>
-    <img className={styles.logo} src="/assets/logo/logo_stealth.png" alt="" width={40} height={40} />
+    {/* logo_mark.webp è la versione 192px del logo: l'originale è un PNG 2828px da 1,9 MB. */}
+    <img className={styles.logo} src="/assets/logo/logo_mark.webp" alt="" width={40} height={40} />
     <span className={styles.word}>ANTISGAM</span>
   </span>
 );

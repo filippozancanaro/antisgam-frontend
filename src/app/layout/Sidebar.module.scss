@@ -38,10 +38,12 @@
     color var(--duration-fast) var(--ease);
 }
 
-.navLink:hover {
-  background: var(--color-surface-hover);
-  color: var(--color-text);
-  text-decoration: none;
+@media (hover: hover) {
+  .navLink:hover:not(.navLinkActive) {
+    background: var(--color-surface-hover);
+    color: var(--color-text);
+    text-decoration: none;
+  }
 }
 
 .navLinkActive {

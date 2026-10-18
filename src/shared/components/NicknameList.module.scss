@@ -10,7 +10,9 @@
 .list {
   display: grid;
   gap: var(--space-1);
-  grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
+
+  /* `min()` evita che la colonna sfori il contenitore sui display più stretti. */
+  grid-template-columns: repeat(auto-fill, minmax(min(12rem, 100%), 1fr));
 }
 
 .item {

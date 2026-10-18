@@ -13,9 +13,11 @@
     box-shadow var(--duration-normal) var(--ease);
 }
 
-.iconButton:hover:not([data-disabled]) {
-  background: var(--color-surface-hover);
-  color: var(--color-accent);
+@media (hover: hover) {
+  .iconButton:hover:not([data-disabled]) {
+    background: var(--color-surface-hover);
+    color: var(--color-accent);
+  }
 }
 
 .iconButton[data-focus-visible] {

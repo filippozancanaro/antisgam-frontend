@@ -48,9 +48,11 @@
     color var(--duration-fast) var(--ease);
 }
 
-.item:hover {
-  background: var(--color-surface-hover);
-  color: var(--color-text);
+@media (hover: hover) {
+  .item:hover:not(.itemSelected) {
+    background: var(--color-surface-hover);
+    color: var(--color-text);
+  }
 }
 
 .itemSelected {
