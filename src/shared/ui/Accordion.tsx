@@ -26,7 +26,11 @@ export const AccordionItem = ({ id, title, children }: AccordionItemProps) => (
         <ChevronDown className={styles.chevron} aria-hidden="true" />
       </AriaButton>
     </Heading>
-    <DisclosurePanel className={styles.panel}>{children}</DisclosurePanel>
+    <DisclosurePanel className={styles.panel}>
+      {/* Il padding sta qui dentro: da chiuso React Aria usa `hidden="until-found"`,
+          quindi il pannello conserva il proprio box e lascerebbe una striscia vuota. */}
+      <div className={styles.panelInner}>{children}</div>
+    </DisclosurePanel>
   </Disclosure>
 );
 

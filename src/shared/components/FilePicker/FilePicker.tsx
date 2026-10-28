@@ -27,12 +27,9 @@ const FilePicker = ({ label, file, ...options }: FilePickerProps) => {
         onDragLeave={handlers.onDragLeave}
         onDrop={handlers.onDrop}
       >
-        <AriaButton
-          className={styles.trigger}
-          aria-label={label}
-          isDisabled={options.disabled}
-          onPress={openDialog}
-        >
+        {/* Niente aria-label: il nome accessibile viene dal contenuto, così
+            include anche il file selezionato. */}
+        <AriaButton className={styles.trigger} isDisabled={options.disabled} onPress={openDialog}>
           <span className={styles.icon}>
             {isLoading ? (
               <Spinner label="Caricamento" />

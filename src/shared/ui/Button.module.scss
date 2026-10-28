@@ -68,7 +68,10 @@
 
 /* Varianti */
 .primary {
-  background: var(--gradient-brand);
+  /* `border-box` (origine + clip): con l'origine di default il gradiente è
+     dimensionato sul padding-box e, ripetendosi, lascia la coda arancione
+     sul bordo sinistro. */
+  background: var(--gradient-brand) border-box;
   box-shadow: var(--shadow-glow);
   color: #fff;
 }

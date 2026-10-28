@@ -20,11 +20,18 @@
   align-items: center;
   gap: var(--space-2);
   padding: var(--space-2) var(--space-3);
+  border: 1px solid transparent;
   border-radius: var(--radius-md);
   background: var(--color-surface);
   font-size: var(--text-sm);
   font-weight: 500;
   overflow-wrap: anywhere;
+}
+
+/* Nickname comparsi solo nell'ultima scansione: stesso effetto delle card "highlight". */
+.itemHighlighted {
+  border-color: var(--color-accent);
+  box-shadow: var(--shadow-glow);
 }
 
 .icon {

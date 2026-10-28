@@ -1,6 +1,7 @@
 import { Copy, PartyPopper, RotateCcw, TriangleAlert } from "lucide-react";
 import { useMemo } from "react";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
+import { findNewNicknames } from "@/features/scan/domain/comparison";
 import { useScanHistory, useScanRecord } from "@/features/scan/hooks/useScanHistory";
 import type { ScanRecord } from "@/features/scan/model/types";
 import { NicknameList } from "@/shared/components";
@@ -14,24 +15,52 @@ interface Props {
   record: ScanRecord;
 }
 
+/**
+ * Le sezioni extra possono mancare del tutto nell'export (e i record legacy le
+ * hanno sempre vuote): una lista precedente vuota non distingue "il file non
+ * c'era" da "non c'era nessuno", quindi in quel caso non confrontiamo nulla
+ * invece di evidenziare tutti come nuovi.
+ */
+const comparableExtra = (previous: readonly string[] | undefined) =>
+  previous && previous.length > 0 ? previous : undefined;
+
 const ScanResults = ({ record }: Props) => {
   const navigate = useNavigate();
   const copy = useClipboard();
   const limitsDialog = useDisclosure();
 
+  const history = useScanHistory();
   const { unfollowers, pendingRequests, removedSuggestions } = record.data;
   const hasUnfollowers = unfollowers.length > 0;
   const scanDate = useMemo(() => formatScanDate(record.timestamp), [record.timestamp]);
+
+  // La cronologia è dalla più recente: la scansione precedente è quella subito dopo nell'array.
+  const previous = useMemo(() => {
+    const index = history.findIndex((item) => item.id === record.id);
+    return index === -1 ? undefined : history[index + 1]?.data;
+  }, [history, record.id]);
+
+  const newUnfollowers = useMemo(() => findNewNicknames(unfollowers, previous?.unfollowers), [unfollowers, previous]);
 
   // Sezioni opzionali: l'export può non contenerle (o Meta può cambiarne il formato),
   // quindi mostriamo solo quelle con dati invece di accordion vuoti.
   const extraSections = useMemo(
     () =>
       [
-        { id: "pending", title: "Richieste inviate e mai accettate", nicknames: pendingRequests },
-        { id: "removed", title: "Suggerimenti rimossi", nicknames: removedSuggestions },
+        {
+          id: "pending",
+          title: "Richieste inviate e mai accettate",
+          nicknames: pendingRequests,
+          highlighted: findNewNicknames(pendingRequests, comparableExtra(previous?.pendingRequests)),
+        },
+        {
+          id: "removed",
+          title: "Suggerimenti rimossi",
+          nicknames: removedSuggestions,
+          highlighted: findNewNicknames(removedSuggestions, comparableExtra(previous?.removedSuggestions)),
+        },
       ].filter((section) => section.nicknames.length > 0),
-    [pendingRequests, removedSuggestions],
+    [pendingRequests, removedSuggestions, previous],
   );
 
   return (
@@ -59,6 +88,7 @@ const ScanResults = ({ record }: Props) => {
           <NicknameList
             aria-label="Unfollowers"
             nicknames={unfollowers}
+            highlighted={newUnfollowers}
             emptyContent={
               <div className={styles.empty}>
                 <PartyPopper className={styles.emptyIcon} aria-hidden="true" />
@@ -87,7 +117,12 @@ const ScanResults = ({ record }: Props) => {
             <Accordion>
               {extraSections.map((section) => (
                 <AccordionItem key={section.id} id={section.id} title={section.title}>
-                  <NicknameList aria-label={section.title} nicknames={section.nicknames} emptyContent={null} />
+                  <NicknameList
+                    aria-label={section.title}
+                    nicknames={section.nicknames}
+                    highlighted={section.highlighted}
+                    emptyContent={null}
+                  />
                   <div className={styles.accordionAction}>
                     <Button variant="secondary" size="sm" icon={<Copy />} onPress={() => copy(section.nicknames.join("\n"))}>
                       Copia

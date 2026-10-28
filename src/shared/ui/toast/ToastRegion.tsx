@@ -38,8 +38,8 @@ const ToastRegion = () => {
   const toasts = useAtomValue(toastsAtom);
   const dismiss = useSetAtom(dismissToastAtom);
 
-  if (toasts.length === 0) return null;
-
+  // Il contenitore resta sempre montato: una live region creata insieme al suo
+  // contenuto viene annunciata in modo inaffidabile dagli screen reader.
   return (
     <div className={styles.region} aria-live="polite" aria-label="Notifiche">
       {toasts.map((toast) => (

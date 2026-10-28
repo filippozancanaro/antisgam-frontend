@@ -5,7 +5,6 @@ import { useDisclosure } from "@/shared/hooks";
 import { Button, Page, Section } from "@/shared/ui";
 import TutorialDialog from "./components/TutorialDialog";
 import Uploader from "./components/Uploader";
-import styles from "./Homepage.module.scss";
 
 const Homepage = () => {
   const tutorial = useDisclosure();
@@ -18,7 +17,7 @@ const Homepage = () => {
 
       <Page
         eyebrow="Analisi 100% locale"
-        title="Scopri chi non ti ricambia"
+        title="SCOPRI CHI NON RICAMBIA IL FOLLOW"
         description="Carica l'export dei tuoi dati Instagram: i file non lasciano mai questo browser."
       >
         <Section
@@ -39,11 +38,9 @@ const Homepage = () => {
           <Button variant="primary" size="lg" fullWidth icon={<Rocket />} onPress={submit}>
             ANDIAMO!
           </Button>
-          <div className={styles.secondaryAction}>
-            <Button variant="ghost" size="sm" onPress={reset}>
-              oppure, ricominciamo
-            </Button>
-          </div>
+          <Button variant="ghost" size="sm" fullWidth onPress={reset}>
+            oppure, ricominciamo
+          </Button>
         </Section>
       </Page>
     </>

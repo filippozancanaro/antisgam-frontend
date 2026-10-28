@@ -62,5 +62,9 @@
 }
 
 .panel {
+  padding: 0;
+}
+
+.panelInner {
   padding: 0 var(--space-5) var(--space-5);
 }

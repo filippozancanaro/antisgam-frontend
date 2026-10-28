@@ -81,6 +81,59 @@ describe("Results", () => {
     });
   });
 
+  describe("nickname nuovi rispetto alla scansione precedente", () => {
+    const base = { followers: ["alice"], following: ["alice"], removedSuggestions: [] };
+
+    it("evidenzia solo i nickname comparsi nell'ultima scansione", async () => {
+      const store = createStore();
+      store.set(addScanToHistoryAtom, { ...base, unfollowers: ["eve"], pendingRequests: ["pam"] });
+      const latest = store.set(addScanToHistoryAtom, {
+        ...base,
+        unfollowers: ["eve", "zed"],
+        pendingRequests: ["pam", "pip"],
+      });
+      renderWithProviders(<Results />, { store, route: `/results/${latest.id}`, path: "/results/:scanId?" });
+
+      await userEvent.click(screen.getByRole("button", { name: /Richieste inviate e mai accettate/ }));
+
+      const flagged = (name: string) =>
+        within(screen.getByRole("list", { name }))
+          .getAllByRole("listitem")
+          .filter((li) => li.getAttribute("data-new") === "true")
+          .map((li) => li.textContent);
+
+      expect(flagged("Unfollowers")).toEqual(["zed"]);
+      expect(flagged("Richieste inviate e mai accettate")).toEqual(["pip"]);
+    });
+
+    it("non evidenzia le sezioni extra se la scansione precedente non le aveva", async () => {
+      const store = createStore();
+      store.set(addScanToHistoryAtom, { ...base, unfollowers: ["eve"], pendingRequests: [] });
+      const latest = store.set(addScanToHistoryAtom, {
+        ...base,
+        unfollowers: ["eve", "zed"],
+        pendingRequests: ["pam"],
+      });
+      renderWithProviders(<Results />, { store, route: `/results/${latest.id}`, path: "/results/:scanId?" });
+
+      await userEvent.click(screen.getByRole("button", { name: /Richieste inviate e mai accettate/ }));
+
+      // "pam" non è confrontabile: la lista precedente vuota può voler dire
+      // che quel file non era nell'export. Resta evidenziato solo "zed".
+      expect(document.querySelectorAll('[data-new="true"]')).toHaveLength(1);
+      expect(screen.getByRole("list", { name: "Unfollowers" }).querySelector('[data-new="true"]')).toHaveTextContent(
+        "zed",
+      );
+    });
+
+    it("con una sola scansione non evidenzia nessuno", () => {
+      const { store, record } = seed();
+      renderWithProviders(<Results />, { store, route: `/results/${record.id}`, path: "/results/:scanId?" });
+
+      expect(document.querySelectorAll('[data-new="true"]')).toHaveLength(0);
+    });
+  });
+
   it("senza id reindirizza alla scansione più recente", () => {
     const { store, record } = seed();
     renderWithProviders(<Results />, { store, route: "/results", path: "/results/:scanId?" });
