@@ -7,17 +7,12 @@ export interface CardProps extends Omit<HTMLAttributes<HTMLDivElement>, "title">
   title?: ReactNode;
   /** Evidenzia la card con il colore di accento. */
   highlight?: boolean;
-  /** Toglie il padding interno (per contenuti a tutto bordo). */
-  flush?: boolean;
   children?: ReactNode;
 }
 
 /** Superficie di base del design system. */
-const Card = ({ title, highlight = false, flush = false, className, children, ...props }: CardProps) => (
-  <div
-    {...props}
-    className={cx(styles.card, highlight && styles.highlight, flush && styles.flush, className)}
-  >
+const Card = ({ title, highlight = false, className, children, ...props }: CardProps) => (
+  <div {...props} className={cx(styles.card, highlight && styles.highlight, className)}>
     {title !== undefined && <h3 className={styles.title}>{title}</h3>}
     {children}
   </div>

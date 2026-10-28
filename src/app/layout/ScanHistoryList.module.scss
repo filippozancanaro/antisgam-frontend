@@ -41,6 +41,7 @@
   background: transparent;
   color: var(--color-text-muted);
   text-align: left;
+  text-decoration: none;
   cursor: pointer;
   transition:
     background var(--duration-fast) var(--ease),
@@ -49,6 +50,11 @@
 }
 
 @media (hover: hover) {
+  /* Batte la sottolineatura globale degli <a>, anche sulla voce selezionata. */
+  .item:hover {
+    text-decoration: none;
+  }
+
   .item:hover:not(.itemSelected) {
     background: var(--color-surface-hover);
     color: var(--color-text);

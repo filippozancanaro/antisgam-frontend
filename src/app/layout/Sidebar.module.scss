@@ -39,6 +39,10 @@
 }
 
 @media (hover: hover) {
+  .navLink:hover {
+    text-decoration: none;
+  }
+
   .navLink:hover:not(.navLinkActive) {
     background: var(--color-surface-hover);
     color: var(--color-text);

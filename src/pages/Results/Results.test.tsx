@@ -126,6 +126,31 @@ describe("Results", () => {
       );
     });
 
+    it("confronta con la scansione subito precedente, non con la più recente", () => {
+      const store = createStore();
+      store.set(addScanToHistoryAtom, { ...base, unfollowers: ["eve"], pendingRequests: [] });
+      const middle = store.set(addScanToHistoryAtom, {
+        ...base,
+        unfollowers: ["eve", "zed"],
+        pendingRequests: [],
+      });
+      store.set(addScanToHistoryAtom, {
+        ...base,
+        unfollowers: ["eve", "zed", "mallory"],
+        pendingRequests: [],
+      });
+
+      // Aperta dalla cronologia, una scansione di mezzo si confronta con quella più vecchia.
+      renderWithProviders(<Results />, { store, route: `/results/${middle.id}`, path: "/results/:scanId?" });
+
+      const flagged = within(screen.getByRole("list", { name: "Unfollowers" }))
+        .getAllByRole("listitem")
+        .filter((li) => li.getAttribute("data-new") === "true")
+        .map((li) => li.textContent);
+
+      expect(flagged).toEqual(["zed"]);
+    });
+
     it("con una sola scansione non evidenzia nessuno", () => {
       const { store, record } = seed();
       renderWithProviders(<Results />, { store, route: `/results/${record.id}`, path: "/results/:scanId?" });

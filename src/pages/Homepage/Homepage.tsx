@@ -18,7 +18,7 @@ const Homepage = () => {
       <Page
         eyebrow="Analisi 100% locale"
         title="SCOPRI CHI NON RICAMBIA IL FOLLOW"
-        description="Carica l'export dei tuoi dati Instagram: i file non lasciano mai questo browser."
+        description="Carica l'export dei tuoi dati Instagram: i file non lasceranno mai il tuo dispositivo, garantendoti la massima privacy."
       >
         <Section
           step={1}

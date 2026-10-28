@@ -17,7 +17,8 @@ interface Props {
 const NicknameList = ({ nicknames, emptyContent, highlighted, className, "aria-label": ariaLabel }: Props) => (
   <div className={cx(styles.wrapper, className)}>
     {nicknames.length > 0 ? (
-      <ul className={styles.list} aria-label={ariaLabel}>
+      // `role` esplicito: con `list-style: none` Safari toglie la semantica di lista.
+      <ul role="list" className={styles.list} aria-label={ariaLabel}>
         {nicknames.map((nickname) => {
           const isNew = highlighted?.has(nickname) ?? false;
           return (

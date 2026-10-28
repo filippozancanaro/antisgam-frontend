@@ -30,7 +30,7 @@ const Sidebar = ({ onNavigate }: Props) => (
     </NavLink>
 
     <nav aria-label="Navigazione">
-      <ul className={styles.nav}>
+      <ul role="list" className={styles.nav}>
         {MENU_ROUTES.map(({ label, path, icon }) => (
           <li key={path}>
             <NavLink

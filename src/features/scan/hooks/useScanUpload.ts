@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/shared/ui";
 import type { ScanInput } from "../model/types";
@@ -41,21 +41,32 @@ export const useScanUpload = () => {
   const [input, setInput] = useState<ScanInput | null>(null);
   const [pendingScanId, setPendingScanId] = useState<string | null>(null);
 
+  // L'estrazione è asincrona: numeriamo le selezioni così che il risultato di
+  // uno zip abbandonato (ne è stato scelto un altro, o si è resettato tutto)
+  // non vada a sovrascrivere quello buono.
+  const selectionRef = useRef(0);
+
   const clearSelection = useCallback(() => {
+    selectionRef.current += 1;
     setFile(null);
     setInput(null);
   }, []);
 
   const selectZipFile = useCallback(
     async (zipFile: File) => {
+      const selection = (selectionRef.current += 1);
       setFile(zipFile);
       setInput(null);
 
       try {
         const { input: extracted, warnings } = await readInstagramExport(zipFile);
+        if (selection !== selectionRef.current) return;
+
         warnings.forEach((code) => toast(WARNING_MESSAGES[code], "warning"));
         setInput(extracted);
       } catch (error) {
+        if (selection !== selectionRef.current) return;
+
         const code: ExportErrorCode = error instanceof InstagramExportError ? error.code : "invalid-zip";
         toast(ERROR_MESSAGES[code], "error");
         setFile(null);
@@ -89,7 +100,6 @@ export const useScanUpload = () => {
 
   return {
     file,
-    isReady: input !== null,
     isAnalyzing: pendingScanId !== null,
     selectZipFile,
     clearSelection,
