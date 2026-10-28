@@ -1,13 +1,13 @@
 import { useCallback, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useSnackbar } from "notistack";
 import { useUserThemeMode, type UserThemeMode } from "@/features/theme";
 import { useClearScanHistory, useScanHistory } from "@/features/scan/hooks/useScanHistory";
+import { useToast } from "@/shared/ui";
 
 /** Form delle impostazioni: le modifiche vengono applicate solo al salvataggio. */
 export const useSettingsForm = () => {
   const navigate = useNavigate();
-  const { enqueueSnackbar } = useSnackbar();
+  const toast = useToast();
   const [savedTheme, setSavedTheme] = useUserThemeMode();
   const [theme, setTheme] = useState<UserThemeMode>(savedTheme);
 
@@ -26,8 +26,8 @@ export const useSettingsForm = () => {
 
   const clearScanHistory = useCallback(() => {
     clearHistory();
-    enqueueSnackbar("Cronologia delle scansioni cancellata", { variant: "info" });
-  }, [clearHistory, enqueueSnackbar]);
+    toast("Cronologia delle scansioni cancellata", "info");
+  }, [clearHistory, toast]);
 
   return {
     theme,

@@ -1,0 +1,18 @@
+.image {
+  width: 60%;
+  max-width: 15rem;
+  animation: float 3s ease-in-out infinite;
+}
+
+.tip {
+  width: 100%;
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+  text-align: center;
+}
+
+@keyframes float {
+  50% {
+    transform: translateY(-10px);
+  }
+}

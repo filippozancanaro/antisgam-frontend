@@ -1,65 +1,48 @@
-import { Box, Button, Grid, Typography } from "@mui/material";
-import FolderZipIcon from "@mui/icons-material/FolderZip";
-import HelpIcon from "@mui/icons-material/Help";
-import RocketLaunchIcon from "@mui/icons-material/RocketLaunch";
+import { CircleHelp, FolderArchive, Rocket } from "lucide-react";
+import AnalysisOverlay from "@/features/scan/components/AnalysisOverlay";
 import { useScanUpload } from "@/features/scan/hooks/useScanUpload";
-import { PageSection } from "@/shared/components";
 import { useDisclosure } from "@/shared/hooks";
+import { Button, Page, Section } from "@/shared/ui";
 import TutorialDialog from "./components/TutorialDialog";
 import Uploader from "./components/Uploader";
 
 const Homepage = () => {
   const tutorial = useDisclosure();
-  const { file, selectZipFile, clearSelection, submit, reset } = useScanUpload();
+  const { file, selectZipFile, clearSelection, submit, reset, isAnalyzing, finishAnalysis } = useScanUpload();
 
   return (
     <>
       {tutorial.isOpen && <TutorialDialog open onClose={tutorial.close} />}
+      <AnalysisOverlay open={isAnalyzing} onDone={finishAnalysis} />
 
-      <Box sx={{ p: 2 }}>
-        <Grid container spacing={2}>
-          <PageSection>
-            <Typography variant="h5" sx={{ pb: 2 }}>
-              1 - LEGGI IL TUTORIAL E RECUPERA I DATI
-            </Typography>
-            <Button fullWidth startIcon={<HelpIcon />} variant="outlined" size="large" onClick={tutorial.open}>
-              Spiegami tutto
-            </Button>
-          </PageSection>
+      <Page
+        eyebrow="Analisi 100% locale"
+        title="SCOPRI CHI NON RICAMBIA IL FOLLOW"
+        description="Carica l'export dei tuoi dati Instagram: i file non lasceranno mai il tuo dispositivo, garantendoti la massima privacy."
+      >
+        <Section
+          step={1}
+          title="Leggi il tutorial e recupera i dati"
+          description="Servono pochi minuti, ma Meta impiega un po' a preparare lo zip."
+        >
+          <Button variant="secondary" size="lg" fullWidth icon={<CircleHelp />} onPress={tutorial.open}>
+            Spiegami tutto
+          </Button>
+        </Section>
 
-          <PageSection>
-            <Box sx={{ display: "flex", alignItems: "center" }}>
-              <Typography variant="h5" sx={{ mr: 1 }}>
-                2 - CARICA I TUOI DATI
-              </Typography>
-              <FolderZipIcon color="primary" />
-            </Box>
-          </PageSection>
-
+        <Section step={2} title="Carica i tuoi dati" icon={<FolderArchive />}>
           <Uploader file={file} onFileSelected={selectZipFile} onClear={clearSelection} />
+        </Section>
 
-          <PageSection>
-            <Box sx={{ display: "flex", alignItems: "center" }}>
-              <Typography variant="h5" sx={{ mr: 1 }}>
-                3 - ESEGUI L'ANALISI
-              </Typography>
-              <RocketLaunchIcon color="primary" />
-            </Box>
-          </PageSection>
-
-          <PageSection>
-            <Button fullWidth variant="contained" size="large" startIcon={<RocketLaunchIcon />} onClick={submit}>
-              ANDIAMO!
-            </Button>
-          </PageSection>
-
-          <PageSection>
-            <Button fullWidth variant="text" size="medium" onClick={reset}>
-              oppure, ricominciamo
-            </Button>
-          </PageSection>
-        </Grid>
-      </Box>
+        <Section step={3} title="Esegui l'analisi" icon={<Rocket />}>
+          <Button variant="primary" size="lg" fullWidth icon={<Rocket />} onPress={submit}>
+            ANDIAMO!
+          </Button>
+          <Button variant="ghost" size="sm" fullWidth onPress={reset}>
+            oppure, ricominciamo
+          </Button>
+        </Section>
+      </Page>
     </>
   );
 };

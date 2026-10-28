@@ -1,9 +1,9 @@
 import { useCallback } from "react";
-import { useSnackbar } from "notistack";
+import { useToast } from "@/shared/ui/toast/useToast";
 
 /** Copia testo negli appunti notificando l'esito. */
 export const useClipboard = () => {
-  const { enqueueSnackbar } = useSnackbar();
+  const toast = useToast();
 
   return useCallback(
     async (text: string) => {
@@ -11,11 +11,11 @@ export const useClipboard = () => {
 
       try {
         await navigator.clipboard.writeText(text);
-        enqueueSnackbar("Testo copiato negli appunti", { variant: "info" });
+        toast("Testo copiato negli appunti", "success");
       } catch {
-        enqueueSnackbar("Impossibile copiare negli appunti", { variant: "error" });
+        toast("Impossibile copiare negli appunti", "error");
       }
     },
-    [enqueueSnackbar],
+    [toast],
   );
 };

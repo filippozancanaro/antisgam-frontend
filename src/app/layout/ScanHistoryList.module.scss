@@ -1,0 +1,82 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  min-height: 0;
+}
+
+.heading {
+  padding: 0 var(--space-3);
+  color: var(--color-text-faint);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.empty {
+  padding: var(--space-3);
+  color: var(--color-text-faint);
+  font-size: var(--text-sm);
+}
+
+.list {
+  display: flex;
+  overflow-y: auto;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-height: 0;
+  padding-right: var(--space-1);
+}
+
+.item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-1);
+  width: 100%;
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  background: transparent;
+  color: var(--color-text-muted);
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background var(--duration-fast) var(--ease),
+    border-color var(--duration-fast) var(--ease),
+    color var(--duration-fast) var(--ease);
+}
+
+@media (hover: hover) {
+  /* Batte la sottolineatura globale degli <a>, anche sulla voce selezionata. */
+  .item:hover {
+    text-decoration: none;
+  }
+
+  .item:hover:not(.itemSelected) {
+    background: var(--color-surface-hover);
+    color: var(--color-text);
+  }
+}
+
+.itemSelected {
+  border-color: var(--color-accent);
+  background: var(--color-accent-soft);
+  color: var(--color-accent);
+}
+
+.date {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+  font-weight: 600;
+}
+
+.icon {
+  width: 1rem;
+  height: 1rem;
+  color: var(--color-accent);
+}

@@ -1,15 +1,14 @@
-import { SnackbarProvider } from "notistack";
 import { BrowserRouter } from "react-router-dom";
 import { ThemeManager } from "@/features/theme";
+import { ToastRegion } from "@/shared/ui";
 import AppRoutes from "./router";
 
 const App = () => (
   <ThemeManager>
-    <SnackbarProvider maxSnack={3}>
-      <BrowserRouter>
-        <AppRoutes />
-      </BrowserRouter>
-    </SnackbarProvider>
+    <BrowserRouter>
+      <AppRoutes />
+    </BrowserRouter>
+    <ToastRegion />
   </ThemeManager>
 );
 

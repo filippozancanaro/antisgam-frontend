@@ -1,43 +1,44 @@
-import { Box, List, ListItem, ListItemIcon, ListItemText, type SxProps, type Theme } from "@mui/material";
-import PersonIcon from "@mui/icons-material/Person";
+import { AtSign } from "lucide-react";
 import type { ReactNode } from "react";
+import { cx } from "@/shared/utils/cx";
+import styles from "./NicknameList.module.scss";
 
 interface Props {
   nicknames: readonly string[];
+  /** Mostrato al posto della lista quando non ci sono nickname. */
   emptyContent: ReactNode;
-  maxHeight?: number;
-  sx?: SxProps<Theme>;
+  /** Nickname da evidenziare (es. comparsi solo nell'ultima scansione). */
+  highlighted?: ReadonlySet<string>;
+  className?: string;
   "aria-label"?: string;
 }
 
 /** Lista scrollabile di nickname con stato vuoto personalizzabile. */
-const NicknameList = ({ nicknames, emptyContent, maxHeight = 300, sx, "aria-label": ariaLabel }: Props) => (
-  <Box
-    sx={{
-      maxHeight,
-      overflowY: "auto",
-      border: 1,
-      borderColor: "divider",
-      borderRadius: 2,
-      p: 1,
-      ...sx,
-    }}
-  >
+const NicknameList = ({ nicknames, emptyContent, highlighted, className, "aria-label": ariaLabel }: Props) => (
+  <div className={cx(styles.wrapper, className)}>
     {nicknames.length > 0 ? (
-      <List dense aria-label={ariaLabel}>
-        {nicknames.map((nickname) => (
-          <ListItem key={nickname}>
-            <ListItemIcon>
-              <PersonIcon color="primary" />
-            </ListItemIcon>
-            <ListItemText primary={nickname} />
-          </ListItem>
-        ))}
-      </List>
+      // `role` esplicito: con `list-style: none` Safari toglie la semantica di lista.
+      <ul role="list" className={styles.list} aria-label={ariaLabel}>
+        {nicknames.map((nickname) => {
+          const isNew = highlighted?.has(nickname) ?? false;
+          return (
+            <li
+              key={nickname}
+              className={cx(styles.item, isNew && styles.itemHighlighted)}
+              data-new={isNew ? "true" : undefined}
+              // Il bordo da solo non arriva agli screen reader (né a chi non distingue i colori).
+              aria-label={isNew ? `${nickname} (nuovo)` : undefined}
+            >
+              <AtSign className={styles.icon} aria-hidden="true" />
+              {nickname}
+            </li>
+          );
+        })}
+      </ul>
     ) : (
       emptyContent
     )}
-  </Box>
+  </div>
 );
 
 export default NicknameList;

@@ -1,0 +1,42 @@
+.wrapper {
+  overflow-y: auto;
+  max-height: 22rem;
+  padding: var(--space-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface-2);
+}
+
+.list {
+  display: grid;
+  gap: var(--space-1);
+
+  /* `min()` evita che la colonna sfori il contenitore sui display più stretti. */
+  grid-template-columns: repeat(auto-fill, minmax(min(12rem, 100%), 1fr));
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  overflow-wrap: anywhere;
+}
+
+/* Nickname comparsi solo nell'ultima scansione: stesso effetto delle card "highlight". */
+.itemHighlighted {
+  border-color: var(--color-accent);
+  box-shadow: var(--shadow-glow);
+}
+
+.icon {
+  flex-shrink: 0;
+  width: 1rem;
+  height: 1rem;
+  color: var(--color-accent);
+}

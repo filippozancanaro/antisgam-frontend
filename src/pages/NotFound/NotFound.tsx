@@ -1,48 +1,24 @@
-import { Box, Button, Container, Stack, Typography } from "@mui/material";
+import { Home } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { Button, Page } from "@/shared/ui";
+import styles from "./NotFound.module.scss";
 
 const NotFound = () => {
   const navigate = useNavigate();
 
   return (
-    <Container>
-      <Box sx={{ textAlign: "center" }}>
-        <Box
-          component="img"
-          src="/assets/images/page-eaten.svg"
-          alt="Pagina mangiata"
-          sx={{
-            width: { xs: "30%", sm: "50%", md: "80%" },
-            maxWidth: 300,
-            mx: "auto",
-            mb: 4,
-            display: "block",
-          }}
-        />
+    <Page centered>
+      <img className={styles.image} src="/assets/images/page-eaten.svg" alt="Pagina mangiata" />
 
-        <Typography variant="h1" color="primary">
-          404
-        </Typography>
+      <p className={styles.code}>404</p>
+      <h1 className={styles.title}>NOT FOUND</h1>
+      <p className={styles.subtitle}>nel senso che questa pagina non esiste</p>
+      <p className={styles.text}>o magari esiste, ma palesemente non è quello che cercavi.</p>
 
-        <Typography variant="h2" gutterBottom>
-          NOT FOUND
-        </Typography>
-
-        <Typography variant="h5" gutterBottom>
-          nel senso che questa pagina non esiste
-        </Typography>
-
-        <Typography variant="body1" color="text.secondary" sx={{ mb: 4 }}>
-          o magari esiste, ma palesemente non è quello che cercavi.
-        </Typography>
-
-        <Stack direction="row" spacing={2} sx={{ justifyContent: "center" }}>
-          <Button variant="contained" color="primary" onClick={() => navigate("/")}>
-            Torniamo alla Home, ok?
-          </Button>
-        </Stack>
-      </Box>
-    </Container>
+      <Button variant="primary" size="lg" icon={<Home />} onPress={() => navigate("/")}>
+        Torniamo alla Home, ok?
+      </Button>
+    </Page>
   );
 };
 

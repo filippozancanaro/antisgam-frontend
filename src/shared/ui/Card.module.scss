@@ -1,0 +1,30 @@
+.card {
+  padding: var(--space-5);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-sm);
+  color: var(--color-text);
+}
+
+.highlight {
+  position: relative;
+  border-color: var(--color-accent);
+  box-shadow: var(--shadow-glow);
+}
+
+.highlight::before {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  background: var(--gradient-brand);
+  content: "";
+}
+
+.title {
+  margin-bottom: var(--space-3);
+  font-size: var(--text-lg);
+}

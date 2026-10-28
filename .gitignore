@@ -27,3 +27,6 @@ hosting.*.cache
 # Test / tooling
 coverage
 .firebase/
+
+# Claude Code
+.claude/

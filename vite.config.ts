@@ -32,7 +32,7 @@ export default defineConfig({
         // Separa i vendor pesanti dal codice applicativo per un caching migliore.
         codeSplitting: {
           groups: [
-            { name: "mui", test: /node_modules[\\/](@mui|@emotion)[\\/]/ },
+            { name: "aria", test: /node_modules[\\/](react-aria-components|react-aria|react-stately|@react-aria|@react-stately|@react-types|@internationalized)[\\/]/ },
             { name: "react", test: /node_modules[\\/](react|react-dom|react-router|scheduler)[\\/]/ },
           ],
         },

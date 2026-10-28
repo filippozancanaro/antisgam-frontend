@@ -31,7 +31,7 @@ describe("ScanHistoryList", () => {
     renderWithProviders(<ScanHistoryList />, { store });
 
     const list = screen.getByRole("list", { name: "Ultime scansioni" });
-    const items = within(list).getAllByRole("button");
+    const items = within(list).getAllByRole("link");
 
     expect(items).toHaveLength(3);
     expect(items[0]).toHaveTextContent("3 non ti seguono");
@@ -44,7 +44,7 @@ describe("ScanHistoryList", () => {
     renderWithProviders(<ScanHistoryList onNavigate={onNavigate} />, { store, path: "/" });
 
     const list = screen.getByRole("list", { name: "Ultime scansioni" });
-    await userEvent.click(within(list).getAllByRole("button")[1]);
+    await userEvent.click(within(list).getAllByRole("link")[1]);
 
     expect(onNavigate).toHaveBeenCalledOnce();
     expect(screen.getByTestId("location")).toHaveTextContent(`/results/${records[0].id}`);
@@ -59,8 +59,8 @@ describe("ScanHistoryList", () => {
     });
 
     const list = screen.getByRole("list", { name: "Ultime scansioni" });
-    const [selected, other] = within(list).getAllByRole("button");
-    expect(selected).toHaveClass("Mui-selected");
-    expect(other).not.toHaveClass("Mui-selected");
+    const [selected, other] = within(list).getAllByRole("link");
+    expect(selected).toHaveAttribute("aria-current", "page");
+    expect(other).not.toHaveAttribute("aria-current");
   });
 });

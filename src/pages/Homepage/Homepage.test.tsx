@@ -1,6 +1,7 @@
-import { screen, waitFor } from "@testing-library/react";
+import { act, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
+import { LOADING_MIN_DURATION_MS } from "@/features/scan/components/loadingTips";
 import { scanHistoryAtom } from "@/features/scan/store/scanAtoms";
 import { buildExportZip } from "@/test/buildExportZip";
 import { EXPECTED } from "@/test/fixtures";
@@ -10,7 +11,9 @@ import Homepage from "./Homepage";
 const fileInput = () => screen.getByLabelText("File di dati da Instagram (input)");
 
 describe("Homepage", () => {
-  it("carica lo zip, esegue l'analisi, la salva in cronologia e va al loading", async () => {
+  afterEach(() => vi.useRealTimers());
+
+  it("carica lo zip, esegue l'analisi, la salva in cronologia e mostra l'overlay", async () => {
     const { store } = renderWithProviders(<Homepage />, { path: "/" });
 
     await userEvent.upload(fileInput(), await buildExportZip());
@@ -23,7 +26,27 @@ describe("Homepage", () => {
     expect(record.data.unfollowers).toEqual(EXPECTED.unfollowers);
     expect(record.data.pendingRequests).toEqual(EXPECTED.pendingRequests);
     expect(record.data.removedSuggestions).toEqual(EXPECTED.removedSuggestions);
-    expect(screen.getByTestId("location")).toHaveTextContent(`/loading/${record.id}`);
+
+    // L'analisi non è più una rotta: resta sulla home con l'overlay sopra.
+    expect(screen.getByRole("progressbar", { name: "Analisi in corso" })).toBeInTheDocument();
+    expect(screen.queryByTestId("location")).not.toBeInTheDocument();
+  });
+
+  it("al termine dell'attesa l'overlay lascia il posto ai risultati", async () => {
+    vi.useFakeTimers({ shouldAdvanceTime: true });
+    const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
+
+    const { store } = renderWithProviders(<Homepage />, { path: "/" });
+
+    await user.upload(fileInput(), await buildExportZip());
+    expect(await screen.findByText("instagram-export.zip")).toBeInTheDocument();
+
+    await user.click(screen.getByRole("button", { name: "ANDIAMO!" }));
+
+    const [record] = store.get(scanHistoryAtom);
+    act(() => vi.advanceTimersByTime(LOADING_MIN_DURATION_MS));
+
+    expect(screen.getByTestId("location")).toHaveTextContent(`/results/${record.id}`);
   });
 
   it("blocca l'analisi senza dati caricati", async () => {
